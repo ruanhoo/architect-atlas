@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"><head><title>Agentforce Glossary</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Alan's Architect Atlas"/><meta property="og:title" content="Agentforce Glossary"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Agentforce Glossary"/><meta name="twitter:description" content="Alphabetical reference of key terms across the Agentforce domain."/><meta property="og:description" content="Alphabetical reference of key terms across the Agentforce domain."/><meta property="og:image:alt" content="Alphabetical reference of key terms across the Agentforce domain."/><meta property="og:image" content="https://ruanhoo.github.io/architect-atlas/static/og-image.png"/><meta property="og:image:url" content="https://ruanhoo.github.io/architect-atlas/static/og-image.png"/><meta name="twitter:image" content="https://ruanhoo.github.io/architect-atlas/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="ruanhoo.github.io/architect-atlas"/><meta property="og:url" content="https://ruanhoo.github.io/architect-atlas/Agentforce/agentforce-glossary"/><meta property="twitter:url" content="https://ruanhoo.github.io/architect-atlas/Agentforce/agentforce-glossary"/><link rel="icon" href="../static/icon.png"/><meta name="description" content="Alphabetical reference of key terms across the Agentforce domain."/><meta name="generator" content="Quartz"/><link href="../index.css" rel="stylesheet" type="text/css" data-persist="true"/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvYXJjaGl0ZWN0LWF0bGFzLXZhdWx0L2FyY2hpdGVjdC1hdGxhcy12YXVsdC9zaXRlL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBSUo7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTs7QUFFQTtFQUNFOztBQUdGO0VBQ0U7O0FBSUY7RUFDRTtFQUNBO0VBQ0EiLCJzb3VyY2VzQ29udGVudCI6WyIuZXhwYW5kLWJ1dHRvbiB7XG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgZGlzcGxheTogZmxleDtcbiAgZmxvYXQ6IHJpZ2h0O1xuICBwYWRkaW5nOiAwLjRyZW07XG4gIG1hcmdpbjogMC4zcmVtO1xuICByaWdodDogMDsgLy8gTk9URTogcmlnaHQgd2lsbCBiZSBzZXQgaW4gbWVybWFpZC5pbmxpbmUudHNcbiAgY29sb3I6IHZhcigtLWdyYXkpO1xuICBib3JkZXItY29sb3I6IHZhcigtLWRhcmspO1xuICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gIGJvcmRlcjogMXB4IHNvbGlkO1xuICBib3JkZXItcmFkaXVzOiA1cHg7XG4gIG9wYWNpdHk6IDA7XG4gIHRyYW5zaXRpb246IDAuMnM7XG5cbiAgJiA+IHN2ZyB7XG4gICAgZmlsbDogdmFyKC0tbGlnaHQpO1xuICAgIGZpbHRlcjogY29udHJhc3QoMC4zKTtcbiAgfVxuXG4gICY6aG92ZXIge1xuICAgIGN1cnNvcjogcG9pbnRlcjtcbiAgICBib3JkZXItY29sb3I6IHZhcigtLXNlY29uZGFyeSk7XG4gIH1cblxuICAmOmZvY3VzIHtcbiAgICBvdXRsaW5lOiAwO1xuICB9XG59XG5cbnByZSB7XG4gICY6aG92ZXIgPiAuZXhwYW5kLWJ1dHRvbiB7XG4gICAgb3BhY2l0eTogMTtcbiAgICB0cmFuc2l0aW9uOiAwLjJzO1xuICB9XG59XG5cbiNtZXJtYWlkLWNvbnRhaW5lciB7XG4gIHBvc2l0aW9uOiBmaXhlZDtcbiAgY29udGFpbjogbGF5b3V0O1xuICB6LWluZGV4OiA5OTk7XG4gIGxlZnQ6IDA7XG4gIHRvcDogMDtcbiAgd2lkdGg6IDEwMHZ3O1xuICBoZWlnaHQ6IDEwMHZoO1xuICBvdmVyZmxvdzogaGlkZGVuO1xuICBkaXNwbGF5OiBub25lO1xuICBiYWNrZHJvcC1maWx0ZXI6IGJsdXIoNHB4KTtcbiAgYmFja2dyb3VuZDogcmdiYSgwLCAwLCAwLCAwLjUpO1xuXG4gICYuYWN0aXZlIHtcbiAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XG4gIH1cblxuICAmID4gI21lcm1haWQtc3BhY2Uge1xuICAgIGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWxpZ2h0Z3JheSk7XG4gICAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tbGlnaHQpO1xuICAgIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgICBwb3NpdGlvbjogZml4ZWQ7XG4gICAgdG9wOiA1MCU7XG4gICAgbGVmdDogNTAlO1xuICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlKC01MCUsIC01MCUpO1xuICAgIGhlaWdodDogODB2aDtcbiAgICB3aWR0aDogODB2dztcbiAgICBvdmVyZmxvdzogaGlkZGVuO1xuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRlbnQge1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" data-persist="true"/><script src="../prescript.js" type="application/javascript" data-persist="true"></script><script type="application/javascript" data-persist="true">const fetchData = fetch("../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://ruanhoo.github.io/architect-atlas/index.xml"/></head><body data-slug="Agentforce/agentforce-glossary"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="..">Alan's Architect Atlas</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Search</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Search for something" placeholder="Search for something"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Dark mode"><title>Dark mode</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Light mode"><title>Light mode</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Reader mode"><title>Reader mode</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>{if(a.isFolder!==b.isFolder)return a.isFolder?-1:1;if(a.isFolder){let order=[\&quot;data management\&quot;,\&quot;data model\&quot;,\&quot;ldv\&quot;,\&quot;data migration\&quot;,\&quot;security\&quot;,\&quot;permissions &amp; sharing\&quot;,\&quot;other security capabilities\&quot;,\&quot;identity &amp; access management\&quot;,\&quot;integration\&quot;,\&quot;system landscape\&quot;,\&quot;sf licensing\&quot;,\&quot;org strategy\&quot;,\&quot;document management strategy\&quot;,\&quot;other key elements\&quot;,\&quot;sf solutioning\&quot;,\&quot;choosing the right capability\&quot;,\&quot;appexchange (buy vs build)\&quot;,\&quot;experience cloud\&quot;,\&quot;deployment &amp; dev lifecycle\&quot;,\&quot;communication\&quot;],last=[\&quot;references\&quot;],r=[a,b].map(n=>{let k=String(n.displayName).trim().toLowerCase();if(last.includes(k))return 2e3;let i=order.indexOf(k);return i===-1?1e3:i}),d=r[0]-r[1];if(d!==0)return d}else{let na=/^(\\d+)-/.exec(a.slugSegment),nb=/^(\\d+)-/.exec(b.slugSegment);if(na&amp;&amp;!nb)return-1;if(!na&amp;&amp;nb)return 1;if(na&amp;&amp;nb&amp;&amp;Number(na[1])!==Number(nb[1]))return Number(na[1])-Number(nb[1])}return a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;})}&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-148"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Explorer</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-148" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div><div class="sidebar-resizer" role="separator" aria-orientation="vertical" aria-label="Resize sidebar (drag, or use arrow keys; double-click to reset)" tabindex="0"></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../Agentforce/">Agentforce</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Agentforce Glossary</a></div></nav><h1 class="article-title">Agentforce Glossary</h1><p show-comma="true" class="content-meta"><time datetime="2026-11-08T13:16:36.000Z">Nov 08, 2026</time><span>9 min read</span></p><ul class="tags"><li><a href="../tags/agentforce" class="internal tag-link">agentforce</a></li><li><a href="../tags/glossary" class="internal tag-link">glossary</a></li><li><a href="../tags/reference" class="internal tag-link">reference</a></li><li><a href="../tags/cta" class="internal tag-link">cta</a></li></ul></div></div><article class="popover-hint"><p>Alphabetical reference of key terms across the Agentforce domain. Each entry gives a concise definition and links to the dedicated note for deeper coverage.</p>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>How to use </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Use this as a quick-lookup companion during exam prep. Follow <code>[[WikiLinks]]</code> for the full treatment of any concept.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="a">A<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#a" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Action</strong>
+A discrete capability the <a href="../Agentforce/01-AI-Foundations/atlas-reasoning-engine" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/atlas-reasoning-engine">atlas-reasoning-engine</a> can invoke on behalf of an agent — the “hands” of the agent. Actions read data, write records, call external systems, or generate content. Types include Flow, Apex, Prompt Template, MuleSoft API Catalog, and custom HTTP.
+→ See <a href="../Agentforce/10-Developer-Tools/agentforce-actions" class="internal" target="_blank" data-slug="Agentforce/10-Developer-Tools/agentforce-actions">agentforce-actions</a></p>
+<p><strong>Agent</strong>
+A configured autonomous worker with a defined role, system-level instructions, a set of Topics, and associated Actions. The agent perceives context, decides which action to invoke, executes it, observes the result, and repeats until the goal is met.
+→ See <a href="../Agentforce/02-Agentforce-Platform/agentforce-overview" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-overview">agentforce-overview</a></p>
+<p><strong>Agent Builder</strong>
+The declarative Salesforce UI (in Setup) used to configure an agent: define role/instructions, create Topics, attach Actions, and test the agent in a conversational preview panel before activation.
+→ See <a href="../Agentforce/03-Agentforce-Builder/introduction-to-agentforce-builder" class="internal" target="_blank" data-slug="Agentforce/03-Agentforce-Builder/introduction-to-agentforce-builder">introduction-to-agentforce-builder</a>, <a href="../Agentforce/03-Agentforce-Builder/customize-agentforce-and-deploy" class="internal" target="_blank" data-slug="Agentforce/03-Agentforce-Builder/customize-agentforce-and-deploy">customize-agentforce-and-deploy</a></p>
+<p><strong>AgentExchange</strong>
+Salesforce’s marketplace for pre-built agent components (Topics, Actions, agent templates) from Salesforce and third-party partners. Equivalent of AppExchange for agent building blocks.
+→ See <a href="../Agentforce/02-Agentforce-Platform/agentexchange-quick-look" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentexchange-quick-look">agentexchange-quick-look</a></p>
+<p><strong>Agentforce</strong>
+Salesforce’s platform for building and deploying autonomous AI agents that reason, plan, and act across Salesforce data and external systems. Built on the <a href="../Agentforce/01-AI-Foundations/atlas-reasoning-engine" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/atlas-reasoning-engine">atlas-reasoning-engine</a>, natively embedded in the Salesforce Platform, and governed by the <a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a>.
+→ See <a href="../Agentforce/02-Agentforce-Platform/agentforce-overview" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-overview">agentforce-overview</a>, <a href="../Agentforce/02-Agentforce-Platform/introduction-to-agentforce" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/introduction-to-agentforce">introduction-to-agentforce</a></p>
+<p><strong>Agentforce Conversation</strong>
+The licensing unit for Agentforce: one end-to-end interaction from first user message to resolution or handoff. A single conversation can span multiple reasoning steps and action calls; these do not multiply the conversation count.
+→ See <a href="../Agentforce/13-Licensing--and--Limits/agentforce-licensing" class="internal" target="_blank" data-slug="Agentforce/13-Licensing--and--Limits/agentforce-licensing">agentforce-licensing</a></p>
+<p><strong>Agentforce Sales Coach</strong>
+A pre-built agent type that provides role-play simulations, deal coaching, and call debrief assistance for sales reps.
+→ See <a href="../Agentforce/02-Agentforce-Platform/agentforce-overview" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-overview">agentforce-overview</a>, <a href="../Agentforce/07-Agentforce-for-Sales/sell-smarter-with-agentforce" class="internal" target="_blank" data-slug="Agentforce/07-Agentforce-for-Sales/sell-smarter-with-agentforce">sell-smarter-with-agentforce</a></p>
+<p><strong>Agentforce Sales Development Representative (SDR)</strong>
+A pre-built agent type for outbound prospecting and lead nurturing via email, operating autonomously without a human sending each message.
+→ See <a href="../Agentforce/07-Agentforce-for-Sales/agentforce-for-sales-quick-look" class="internal" target="_blank" data-slug="Agentforce/07-Agentforce-for-Sales/agentforce-for-sales-quick-look">agentforce-for-sales-quick-look</a></p>
+<p><strong>Agentforce Service Agent</strong>
+A pre-built agent type for autonomous customer-facing support. Replaces or augments <a href="../einstein-bots" class="internal" target="_blank" data-slug="einstein-bots">einstein-bots</a> and handles varied, multi-step service interactions.
+→ See <a href="../Agentforce/06-Agentforce-for-Service/agentforce-for-service-module" class="internal" target="_blank" data-slug="Agentforce/06-Agentforce-for-Service/agentforce-for-service-module">agentforce-for-service-module</a>, <a href="../Agentforce/02-Agentforce-Platform/agentforce-vs-einstein-bots" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-vs-einstein-bots">agentforce-vs-einstein-bots</a></p>
+<p><strong>Atlas Reasoning Engine</strong>
+The orchestration layer inside Agentforce that drives the agent’s decision loop: Observe → Plan → Act → Observe → repeat. Selects which action to call, in what order, and when the task is complete. Customers configure it via Topics and Actions — they do not train or fine-tune it.
+→ See <a href="../Agentforce/01-AI-Foundations/atlas-reasoning-engine" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/atlas-reasoning-engine">atlas-reasoning-engine</a></p>
+<p><strong>Audit Trail (LLM)</strong>
+A log of all LLM interactions produced by the <a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a>, enabling compliance review of inputs, outputs, and data masking events. Separate from the standard Salesforce Setup Audit Trail.
+→ See <a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a></p>
+<hr/>
+<h2 id="c">C<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#c" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Channel</strong>
+The surface through which users interact with an agent — for example: Messaging (SMS/WhatsApp), Experience Cloud chat, Slack, email, or voice. Configured during agent deployment.
+→ See <a href="../Agentforce/02-Agentforce-Platform/agentforce-overview" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-overview">agentforce-overview</a>, <a href="../Agentforce/08-Deployment--and--Channels/deploy-agent-to-slack" class="internal" target="_blank" data-slug="Agentforce/08-Deployment--and--Channels/deploy-agent-to-slack">deploy-agent-to-slack</a>, <a href="../Agentforce/08-Deployment--and--Channels/agentforce-on-mobile-quick-look" class="internal" target="_blank" data-slug="Agentforce/08-Deployment--and--Channels/agentforce-on-mobile-quick-look">agentforce-on-mobile-quick-look</a></p>
+<p><strong>Context Window</strong>
+The finite block of text passed to the LLM per call, containing the system prompt (role/instructions/topic), conversation history, and grounded data. Size limits constrain how much retrieved data can be injected per reasoning step.
+→ See <a href="../Agentforce/01-AI-Foundations/atlas-reasoning-engine" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/atlas-reasoning-engine">atlas-reasoning-engine</a>, <a href="../Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud">data-grounding-and-data-cloud</a></p>
+<p><strong>Conversation</strong> → See <em>Agentforce Conversation</em></p>
+<p><strong>Custom Agent</strong>
+A purpose-built agent configured from scratch in Agent Builder for any business process, as distinct from pre-built agent types (Service Agent, SDR, Sales Coach).
+→ See <a href="../Agentforce/02-Agentforce-Platform/agentforce-overview" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-overview">agentforce-overview</a>, <a href="../Agentforce/03-Agentforce-Builder/customize-agentforce-and-deploy" class="internal" target="_blank" data-slug="Agentforce/03-Agentforce-Builder/customize-agentforce-and-deploy">customize-agentforce-and-deploy</a></p>
+<hr/>
+<h2 id="d">D<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#d" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Agentforce Data Library</strong>
+A Salesforce feature that allows agents to search, retrieve, and reason over unstructured content (documents, PDFs, files) stored in Salesforce — without requiring a Data Cloud licence. Files are indexed and made searchable via vector embeddings, enabling RAG-style retrieval directly from native file storage (e.g., Salesforce Files, SharePoint via connector). Distinct from <a href="../data-cloud-agentforce-context" class="internal" target="_blank" data-slug="data-cloud-agentforce-context">data-cloud-agentforce-context</a> grounding: Data Library covers document/file retrieval; Data Cloud covers structured unified profiles and calculated insights.</p>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>CTA angle </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Use Data Library when the grounding requirement is document-based (manuals, SOPs, policy docs) and Data Cloud is not licensed or not warranted. Use Data Cloud when real-time unified customer profile data across source systems is the requirement.</p>
+</div>
+</blockquote>
+<p>→ See <a href="../Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud">data-grounding-and-data-cloud</a>, <a href="../Agentforce/04-Prompts--and--Grounding/manage-your-agents-data" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/manage-your-agents-data">manage-your-agents-data</a>, <a href="../Agentforce/04-Prompts--and--Grounding/ground-your-agent-with-data" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/ground-your-agent-with-data">ground-your-agent-with-data</a></p>
+<p><strong>Data Cloud (Agentforce context)</strong>
+Salesforce’s real-time data platform, used as a grounding source to inject the <a href="../unified-individual" class="internal" target="_blank" data-slug="unified-individual">unified-individual</a> profile into the agent’s context window. Required when the use case demands personalised, 360-degree responses drawing on data from multiple source systems.
+→ See <a href="../Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud">data-grounding-and-data-cloud</a>, <a href="../Agentforce/04-Prompts--and--Grounding/ground-your-agent-with-data" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/ground-your-agent-with-data">ground-your-agent-with-data</a></p>
+<p><strong>Data Processing Agreement (DPA)</strong>
+The contractual instrument through which LLM providers commit to zero data retention of Salesforce customer data. Enforced by the <a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a>; not reliant on provider settings alone.
+→ See <a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a></p>
+<p><strong>Dynamic Data Masking</strong>
+An <a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a> capability: PII and admin-designated sensitive fields are tokenised before being sent to the LLM, then de-tokenised on return — so raw sensitive data never leaves the Salesforce boundary.
+→ See <a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a></p>
+<hr/>
+<h2 id="e">E<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#e" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Einstein Bots</strong>
+Salesforce’s rule-based / NLU-intent chatbot platform, predating Agentforce. Dialogs follow scripted flows; responses are deterministic. Priced on a separate conversation credit entitlement from Agentforce.
+→ See <a href="../Agentforce/02-Agentforce-Platform/agentforce-vs-einstein-bots" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-vs-einstein-bots">agentforce-vs-einstein-bots</a></p>
+<p><strong>Einstein Search</strong>
+Salesforce’s semantic search engine used to retrieve Knowledge Articles (and other content) as a grounding source via <a href="../retrieval-augmented-generation" class="internal" target="_blank" data-slug="retrieval-augmented-generation">retrieval-augmented-generation</a>.
+→ See <a href="../Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud">data-grounding-and-data-cloud</a>, <a href="../Agentforce/01-AI-Foundations/atlas-reasoning-engine" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/atlas-reasoning-engine">atlas-reasoning-engine</a></p>
+<p><strong>Einstein Trust Layer</strong>
+Salesforce’s security and governance framework that sits between the platform and external LLM providers. Core capabilities: zero data retention, dynamic data masking, toxicity detection, audit trail, and secure gateway routing. Applies to all Einstein generative AI features, not only Agentforce.
+→ See <a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a>, <a href="../Agentforce/05-Trust--and--Security/agentforce-security-and-permissions" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/agentforce-security-and-permissions">agentforce-security-and-permissions</a></p>
+<hr/>
+<h2 id="f">F<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#f" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Flow Action</strong>
+The most common Agentforce action type: an autolaunched Salesforce Flow exposed as an invocable action. No-code, reusable, testable, and bulk-safe. Preferred when Flow is capable of meeting the requirement.
+→ See <a href="../Agentforce/10-Developer-Tools/agentforce-actions" class="internal" target="_blank" data-slug="Agentforce/10-Developer-Tools/agentforce-actions">agentforce-actions</a></p>
+<hr/>
+<h2 id="g">G<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#g" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Grounding</strong>
+The process of injecting relevant, real-time data into the agent’s context window before an LLM call, enabling accurate and context-specific responses. Sources include Salesforce records, Knowledge Articles, <a href="../data-cloud-agentforce-context" class="internal" target="_blank" data-slug="data-cloud-agentforce-context">data-cloud-agentforce-context</a>, and external data via MuleSoft.
+→ See <a href="../Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud">data-grounding-and-data-cloud</a>, <a href="../Agentforce/01-AI-Foundations/atlas-reasoning-engine" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/atlas-reasoning-engine">atlas-reasoning-engine</a></p>
+<hr/>
+<h2 id="h">H<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#h" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Hallucination</strong>
+A response generated by an LLM that is plausible-sounding but factually incorrect or invented. Mitigated in Agentforce by: grounding with real data (RAG), constraining the agent to a configured action set, and the <a href="../Agentforce/01-AI-Foundations/atlas-reasoning-engine" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/atlas-reasoning-engine">atlas-reasoning-engine</a>’s guardrails.
+→ See <a href="../Agentforce/01-AI-Foundations/atlas-reasoning-engine" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/atlas-reasoning-engine">atlas-reasoning-engine</a>, <a href="../Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud">data-grounding-and-data-cloud</a></p>
+<p><strong>Handoff</strong>
+The mechanism by which an Agentforce agent transfers a conversation to a human agent in Omni-Channel when confidence is low, the user requests it, or escalation rules are met. Shares the same Omni-Channel routing infrastructure as <a href="../einstein-bots" class="internal" target="_blank" data-slug="einstein-bots">einstein-bots</a>.
+→ See <a href="../Agentforce/02-Agentforce-Platform/agentforce-overview" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-overview">agentforce-overview</a>, <a href="../Agentforce/01-AI-Foundations/atlas-reasoning-engine" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/atlas-reasoning-engine">atlas-reasoning-engine</a></p>
+<hr/>
+<h2 id="i">I<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#i" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Instructions</strong>
+Natural-language guidance written by admins/developers at two levels: (1) agent-level role instructions (system prompt); (2) topic-level instructions that constrain what the agent should and should not do within a topic. Instructions are the primary lever for shaping agent behaviour.
+→ See <a href="../Agentforce/02-Agentforce-Platform/agentforce-overview" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-overview">agentforce-overview</a>, <a href="../Agentforce/03-Agentforce-Builder/programmatic-instructions-in-agentforce" class="internal" target="_blank" data-slug="Agentforce/03-Agentforce-Builder/programmatic-instructions-in-agentforce">programmatic-instructions-in-agentforce</a></p>
+<p><strong>@InvocableMethod</strong>
+The Apex annotation that exposes an Apex class method as an invocable action, callable from Flows and Agentforce. Used when Flow cannot meet the requirement (e.g., complex logic, callouts with custom error handling).
+→ See <a href="../Agentforce/10-Developer-Tools/agentforce-actions" class="internal" target="_blank" data-slug="Agentforce/10-Developer-Tools/agentforce-actions">agentforce-actions</a></p>
+<p><strong>Iteration Cap</strong>
+A configurable limit on the maximum number of reasoning steps the <a href="../Agentforce/01-AI-Foundations/atlas-reasoning-engine" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/atlas-reasoning-engine">atlas-reasoning-engine</a> can execute for a single user message, preventing runaway loops and uncontrolled cost.
+→ See <a href="../Agentforce/01-AI-Foundations/atlas-reasoning-engine" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/atlas-reasoning-engine">atlas-reasoning-engine</a>, <a href="../Agentforce/13-Licensing--and--Limits/agentforce-licensing" class="internal" target="_blank" data-slug="Agentforce/13-Licensing--and--Limits/agentforce-licensing">agentforce-licensing</a></p>
+<hr/>
+<h2 id="l">L<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#l" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Large Language Model (LLM)</strong>
+A deep learning model trained on large text corpora, capable of natural language understanding and generation. Agentforce uses LLMs (via the <a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a> gateway) as the reasoning core. Salesforce partners with providers such as OpenAI, Anthropic, and Azure OpenAI.
+→ See <a href="../Agentforce/01-AI-Foundations/large-language-models" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/large-language-models">large-language-models</a>, <a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a></p>
+<hr/>
+<h2 id="m">M<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#m" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>MuleSoft API Catalog Action</strong>
+An Agentforce action type that invokes a REST API governed and catalogued through MuleSoft Anypoint Platform. Preferred when the external system is already integrated via Anypoint, or when API governance, rate-limiting, and multi-agent reuse are required.
+→ See <a href="../Agentforce/10-Developer-Tools/agentforce-actions" class="internal" target="_blank" data-slug="Agentforce/10-Developer-Tools/agentforce-actions">agentforce-actions</a>, <a href="../CTA-Notes/Integration/50-mulesoft" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/50-mulesoft">MuleSoft &amp; Middleware Positioning</a></p>
+<hr/>
+<h2 id="n">N<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#n" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Natural Language Understanding (NLU)</strong>
+The intent-classification layer used by <a href="../einstein-bots" class="internal" target="_blank" data-slug="einstein-bots">einstein-bots</a> to map user input to scripted dialog flows. NLU intents do not automatically map to Agentforce Topics — topic design requires rethinking, not just migration.
+→ See <a href="../Agentforce/02-Agentforce-Platform/agentforce-vs-einstein-bots" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-vs-einstein-bots">agentforce-vs-einstein-bots</a>, <a href="../Agentforce/01-AI-Foundations/natural-language-processing-basics" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/natural-language-processing-basics">natural-language-processing-basics</a></p>
+<hr/>
+<h2 id="o">O<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#o" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Omni-Channel</strong>
+Salesforce’s routing and queue management framework. Used by Agentforce for escalation/handoff to human agents; shared infrastructure with Einstein Bots transfers. Not part of the reasoning loop itself.
+→ See <a href="../Agentforce/02-Agentforce-Platform/agentforce-overview" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-overview">agentforce-overview</a>, <a href="../Agentforce/02-Agentforce-Platform/agentforce-vs-einstein-bots" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-vs-einstein-bots">agentforce-vs-einstein-bots</a></p>
+<hr/>
+<h2 id="p">P<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#p" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Prompt Builder</strong>
+The Salesforce declarative tool for creating and managing reusable prompt templates with dynamic merge fields. Templates are used as Agentforce actions (Prompt Template action type) for LLM-generated content such as case summaries, draft emails, or field generation.
+→ See <a href="../Agentforce/04-Prompts--and--Grounding/prompt-builder-basics" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/prompt-builder-basics">prompt-builder-basics</a>, <a href="../Agentforce/04-Prompts--and--Grounding/get-hands-on-with-prompt-builder" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/get-hands-on-with-prompt-builder">get-hands-on-with-prompt-builder</a></p>
+<p><strong>Prompt Template</strong>
+A managed, versioned template created in Prompt Builder. Combines static instructions with merge fields (record data, related data) to form a well-structured LLM prompt. When used as an Agentforce action, token consumption counts toward Einstein quotas.
+→ See <a href="../Agentforce/04-Prompts--and--Grounding/prompt-builder-basics" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/prompt-builder-basics">prompt-builder-basics</a>, <a href="../Agentforce/04-Prompts--and--Grounding/prompt-fundamentals" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/prompt-fundamentals">prompt-fundamentals</a></p>
+<hr/>
+<h2 id="r">R<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#r" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Retrieval-Augmented Generation (RAG)</strong>
+The pattern of retrieving relevant documents or records at query time and injecting them into the LLM context window, so the model reasons from real data rather than training knowledge alone. Core grounding mechanism in Agentforce.
+→ See <a href="../Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud">data-grounding-and-data-cloud</a>, <a href="../Agentforce/01-AI-Foundations/atlas-reasoning-engine" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/atlas-reasoning-engine">atlas-reasoning-engine</a></p>
+<p><strong>Role (Agent)</strong>
+The agent-level definition of what persona and purpose the agent has — expressed as a system-level instruction. Sets the agent’s overall behaviour and constraints before any topic or action is considered.
+→ See <a href="../Agentforce/02-Agentforce-Platform/agentforce-overview" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-overview">agentforce-overview</a>, <a href="../Agentforce/03-Agentforce-Builder/introduction-to-agentforce-builder" class="internal" target="_blank" data-slug="Agentforce/03-Agentforce-Builder/introduction-to-agentforce-builder">introduction-to-agentforce-builder</a></p>
+<hr/>
+<h2 id="s">S<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#s" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Secure Gateway</strong>
+The <a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a> component that routes all LLM API calls through a Salesforce-controlled gateway, ensuring no direct client-to-LLM communication and enabling masking/audit on every call.
+→ See <a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a></p>
+<p><strong>System Prompt</strong>
+The full instruction block passed to the LLM at the start of each reasoning step, composed of: agent role instructions + topic instructions + retrieved grounding data. Admins influence this via Instructions; they do not write raw system prompts.
+→ See <a href="../Agentforce/01-AI-Foundations/atlas-reasoning-engine" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/atlas-reasoning-engine">atlas-reasoning-engine</a>, <a href="../Agentforce/02-Agentforce-Platform/agentforce-overview" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-overview">agentforce-overview</a></p>
+<hr/>
+<h2 id="t">T<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#t" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Token</strong>
+The unit of text consumed by an LLM (roughly ¾ of a word). Prompt Template actions and grounding data contribute to token consumption, which is tracked against Einstein quota/limits.
+→ See <a href="../Agentforce/01-AI-Foundations/large-language-models" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/large-language-models">large-language-models</a>, <a href="../Agentforce/13-Licensing--and--Limits/agentforce-licensing" class="internal" target="_blank" data-slug="Agentforce/13-Licensing--and--Limits/agentforce-licensing">agentforce-licensing</a></p>
+<p><strong>Topic</strong>
+A cluster of related intents or tasks the agent can handle, each with its own natural-language instructions and a set of associated Actions. Topics map to a segment of the system prompt. An Action can belong to multiple Topics.
+→ See <a href="../Agentforce/02-Agentforce-Platform/agentforce-overview" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-overview">agentforce-overview</a>, <a href="../Agentforce/10-Developer-Tools/agentforce-actions" class="internal" target="_blank" data-slug="Agentforce/10-Developer-Tools/agentforce-actions">agentforce-actions</a></p>
+<p><strong>Toxicity Detection</strong>
+An <a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a> capability that scans both user inputs and LLM outputs for harmful content, blocking toxic responses before they reach users.
+→ See <a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a></p>
+<hr/>
+<h2 id="u">U<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#u" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Unified Individual</strong>
+Data Cloud’s merged, deduplicated customer profile that consolidates identity and behavioural data from all connected source systems. When used as an Agentforce grounding source, gives the agent a real-time 360-degree view of the customer.
+→ See <a href="../Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud">data-grounding-and-data-cloud</a>, <a href="../Agentforce/01-AI-Foundations/data-fundamentals-for-ai" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/data-fundamentals-for-ai">data-fundamentals-for-ai</a></p>
+<hr/>
+<h2 id="v">V<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#v" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Vector Search</strong>
+A semantic similarity search technique used by <a href="../einstein-search" class="internal" target="_blank" data-slug="einstein-search">einstein-search</a> to retrieve Knowledge Articles relevant to a user query. Complements structured SOQL retrieval for unstructured knowledge content.
+→ See <a href="../Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud">data-grounding-and-data-cloud</a></p>
+<hr/>
+<h2 id="z">Z<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#z" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Zero Data Retention</strong>
+The contractual commitment (enforced via <a href="../dpa" class="internal" target="_blank" data-slug="dpa">dpa</a>) that LLM providers will not store or train on Salesforce customer data submitted through the <a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a> gateway.
+→ See <a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a></p>
+<hr/>
+<h2 id="cross-reference-index">Cross-Reference Index<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#cross-reference-index" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Term</th><th>Primary Note</th><th>Related Notes</th></tr></thead><tbody><tr><td>Action</td><td><a href="../Agentforce/10-Developer-Tools/agentforce-actions" class="internal" target="_blank" data-slug="Agentforce/10-Developer-Tools/agentforce-actions">agentforce-actions</a></td><td><a href="../Agentforce/01-AI-Foundations/atlas-reasoning-engine" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/atlas-reasoning-engine">atlas-reasoning-engine</a>, <a href="../Agentforce/02-Agentforce-Platform/agentforce-overview" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-overview">agentforce-overview</a></td></tr><tr><td>Agent</td><td><a href="../Agentforce/02-Agentforce-Platform/agentforce-overview" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-overview">agentforce-overview</a></td><td><a href="../Agentforce/02-Agentforce-Platform/autonomous-agents" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/autonomous-agents">autonomous-agents</a>, <a href="../Agentforce/02-Agentforce-Platform/introduction-to-agentforce" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/introduction-to-agentforce">introduction-to-agentforce</a></td></tr><tr><td>Agent Builder</td><td><a href="../Agentforce/03-Agentforce-Builder/introduction-to-agentforce-builder" class="internal" target="_blank" data-slug="Agentforce/03-Agentforce-Builder/introduction-to-agentforce-builder">introduction-to-agentforce-builder</a></td><td><a href="../Agentforce/03-Agentforce-Builder/customize-agentforce-and-deploy" class="internal" target="_blank" data-slug="Agentforce/03-Agentforce-Builder/customize-agentforce-and-deploy">customize-agentforce-and-deploy</a>, <a href="../Agentforce/03-Agentforce-Builder/new-agentforce-builder-quick-look" class="internal" target="_blank" data-slug="Agentforce/03-Agentforce-Builder/new-agentforce-builder-quick-look">new-agentforce-builder-quick-look</a></td></tr><tr><td>Agentforce Conversation</td><td><a href="../Agentforce/13-Licensing--and--Limits/agentforce-licensing" class="internal" target="_blank" data-slug="Agentforce/13-Licensing--and--Limits/agentforce-licensing">agentforce-licensing</a></td><td><a href="../Agentforce/02-Agentforce-Platform/agentforce-vs-einstein-bots" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-vs-einstein-bots">agentforce-vs-einstein-bots</a></td></tr><tr><td>Atlas Reasoning Engine</td><td><a href="../Agentforce/01-AI-Foundations/atlas-reasoning-engine" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/atlas-reasoning-engine">atlas-reasoning-engine</a></td><td><a href="../Agentforce/02-Agentforce-Platform/agentforce-overview" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-overview">agentforce-overview</a>, <a href="../Agentforce/10-Developer-Tools/agentforce-actions" class="internal" target="_blank" data-slug="Agentforce/10-Developer-Tools/agentforce-actions">agentforce-actions</a></td></tr><tr><td>Channel</td><td><a href="../Agentforce/02-Agentforce-Platform/agentforce-overview" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-overview">agentforce-overview</a></td><td><a href="../Agentforce/08-Deployment--and--Channels/deploy-agent-to-slack" class="internal" target="_blank" data-slug="Agentforce/08-Deployment--and--Channels/deploy-agent-to-slack">deploy-agent-to-slack</a>, <a href="../Agentforce/08-Deployment--and--Channels/agentforce-on-mobile-quick-look" class="internal" target="_blank" data-slug="Agentforce/08-Deployment--and--Channels/agentforce-on-mobile-quick-look">agentforce-on-mobile-quick-look</a></td></tr><tr><td>Agentforce Data Library</td><td><a href="../Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud">data-grounding-and-data-cloud</a></td><td><a href="../Agentforce/04-Prompts--and--Grounding/manage-your-agents-data" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/manage-your-agents-data">manage-your-agents-data</a>, <a href="../Agentforce/04-Prompts--and--Grounding/ground-your-agent-with-data" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/ground-your-agent-with-data">ground-your-agent-with-data</a></td></tr><tr><td>Data Cloud (grounding)</td><td><a href="../Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud">data-grounding-and-data-cloud</a></td><td><a href="../Agentforce/04-Prompts--and--Grounding/ground-your-agent-with-data" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/ground-your-agent-with-data">ground-your-agent-with-data</a>, <a href="../Agentforce/04-Prompts--and--Grounding/manage-your-agents-data" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/manage-your-agents-data">manage-your-agents-data</a></td></tr><tr><td>Dynamic Data Masking</td><td><a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a></td><td><a href="../Agentforce/05-Trust--and--Security/agentforce-security-and-permissions" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/agentforce-security-and-permissions">agentforce-security-and-permissions</a></td></tr><tr><td>Einstein Bots</td><td><a href="../Agentforce/02-Agentforce-Platform/agentforce-vs-einstein-bots" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-vs-einstein-bots">agentforce-vs-einstein-bots</a></td><td><a href="../Agentforce/13-Licensing--and--Limits/agentforce-licensing" class="internal" target="_blank" data-slug="Agentforce/13-Licensing--and--Limits/agentforce-licensing">agentforce-licensing</a></td></tr><tr><td>Einstein Trust Layer</td><td><a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a></td><td><a href="../Agentforce/05-Trust--and--Security/agentforce-trust-layer-module" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/agentforce-trust-layer-module">agentforce-trust-layer-module</a>, <a href="../Agentforce/05-Trust--and--Security/agentforce-security-and-permissions" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/agentforce-security-and-permissions">agentforce-security-and-permissions</a></td></tr><tr><td>Grounding</td><td><a href="../Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud">data-grounding-and-data-cloud</a></td><td><a href="../Agentforce/01-AI-Foundations/atlas-reasoning-engine" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/atlas-reasoning-engine">atlas-reasoning-engine</a>, <a href="../Agentforce/04-Prompts--and--Grounding/prompt-fundamentals" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/prompt-fundamentals">prompt-fundamentals</a></td></tr><tr><td>Prompt Builder</td><td><a href="../Agentforce/04-Prompts--and--Grounding/prompt-builder-basics" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/prompt-builder-basics">prompt-builder-basics</a></td><td><a href="../Agentforce/04-Prompts--and--Grounding/get-hands-on-with-prompt-builder" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/get-hands-on-with-prompt-builder">get-hands-on-with-prompt-builder</a>, <a href="../Agentforce/04-Prompts--and--Grounding/prompt-fundamentals" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/prompt-fundamentals">prompt-fundamentals</a></td></tr><tr><td>RAG</td><td><a href="../Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud">data-grounding-and-data-cloud</a></td><td><a href="../Agentforce/01-AI-Foundations/atlas-reasoning-engine" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/atlas-reasoning-engine">atlas-reasoning-engine</a></td></tr><tr><td>Topic</td><td><a href="../Agentforce/02-Agentforce-Platform/agentforce-overview" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-overview">agentforce-overview</a></td><td><a href="../Agentforce/10-Developer-Tools/agentforce-actions" class="internal" target="_blank" data-slug="Agentforce/10-Developer-Tools/agentforce-actions">agentforce-actions</a>, <a href="../Agentforce/03-Agentforce-Builder/introduction-to-agentforce-builder" class="internal" target="_blank" data-slug="Agentforce/03-Agentforce-Builder/introduction-to-agentforce-builder">introduction-to-agentforce-builder</a></td></tr><tr><td>Unified Individual</td><td><a href="../Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud">data-grounding-and-data-cloud</a></td><td><a href="../Agentforce/01-AI-Foundations/data-fundamentals-for-ai" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/data-fundamentals-for-ai">data-fundamentals-for-ai</a></td></tr><tr><td>Zero Data Retention</td><td><a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a></td><td>—</td></tr></tbody></table></div></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Graph View</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-56" aria-expanded="true"><h3>Table of Contents</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#a" data-for="a">A</a></li><li class="depth-0"><a href="#c" data-for="c">C</a></li><li class="depth-0"><a href="#d" data-for="d">D</a></li><li class="depth-0"><a href="#e" data-for="e">E</a></li><li class="depth-0"><a href="#f" data-for="f">F</a></li><li class="depth-0"><a href="#g" data-for="g">G</a></li><li class="depth-0"><a href="#h" data-for="h">H</a></li><li class="depth-0"><a href="#i" data-for="i">I</a></li><li class="depth-0"><a href="#l" data-for="l">L</a></li><li class="depth-0"><a href="#m" data-for="m">M</a></li><li class="depth-0"><a href="#n" data-for="n">N</a></li><li class="depth-0"><a href="#o" data-for="o">O</a></li><li class="depth-0"><a href="#p" data-for="p">P</a></li><li class="depth-0"><a href="#r" data-for="r">R</a></li><li class="depth-0"><a href="#s" data-for="s">S</a></li><li class="depth-0"><a href="#t" data-for="t">T</a></li><li class="depth-0"><a href="#u" data-for="u">U</a></li><li class="depth-0"><a href="#v" data-for="v">V</a></li><li class="depth-0"><a href="#z" data-for="z">Z</a></li><li class="depth-0"><a href="#cross-reference-index" data-for="cross-reference-index">Cross-Reference Index</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript" data-persist="true">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module" data-persist="true">function E(a,e){if(!a)return;function t(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function n(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}a?.addEventListener("click",t),window.addCleanup(()=>a?.removeEventListener("click",t)),document.addEventListener("keydown",n),window.addCleanup(()=>document.removeEventListener("keydown",n))}function f(a){for(;a.firstChild;)a.removeChild(a.firstChild)}var m=class{constructor(e,t){this.container=e;this.content=t;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),t=this.onMouseMove.bind(this),n=this.onMouseUp.bind(this),o=this.onTouchStart.bind(this),r=this.onTouchMove.bind(this),i=this.onTouchEnd.bind(this),s=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",t),document.addEventListener("mouseup",n),this.container.addEventListener("touchstart",o,{passive:!1}),document.addEventListener("touchmove",r,{passive:!1}),document.addEventListener("touchend",i),window.addEventListener("resize",s),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",t),()=>document.removeEventListener("mouseup",n),()=>this.container.removeEventListener("touchstart",o),()=>document.removeEventListener("touchmove",r),()=>document.removeEventListener("touchend",i),()=>window.removeEventListener("resize",s))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let t=this.createButton("+",()=>this.zoom(.1)),n=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(n),e.appendChild(o),e.appendChild(t),this.container.appendChild(e)}createButton(e,t){let n=document.createElement("button");return n.textContent=e,n.className="mermaid-control-button",n.addEventListener("click",t),window.addCleanup(()=>n.removeEventListener("click",t)),n}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}onTouchStart(e){if(e.touches.length!==1)return;this.isDragging=!0;let t=e.touches[0];this.startPan={x:t.clientX-this.currentPan.x,y:t.clientY-this.currentPan.y}}onTouchMove(e){if(!this.isDragging||e.touches.length!==1)return;e.preventDefault();let t=e.touches[0];this.currentPan={x:t.clientX-this.startPan.x,y:t.clientY-this.startPan.y},this.updateTransform()}onTouchEnd(){this.isDragging=!1}zoom(e){let t=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),n=this.content.getBoundingClientRect(),o=n.width/2,r=n.height/2,i=t-this.scale;this.currentPan.x-=o*i,this.currentPan.y-=r*i,this.scale=t,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){let t=this.content.querySelector("svg").getBoundingClientRect(),n=t.width/this.scale,o=t.height/this.scale;this.scale=1,this.currentPan={x:(this.container.clientWidth-n)/2,y:(this.container.clientHeight-o)/2},this.updateTransform()}},T=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],y;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;y||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let t=y.default,n=new WeakMap;for(let r of e)n.set(r,r.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let c=n.get(s);c&&(s.innerHTML=c)}let r=T.reduce((s,c)=>(s[c]=window.getComputedStyle(document.documentElement).getPropertyValue(c),s),{}),i=document.documentElement.getAttribute("saved-theme")==="dark";t.initialize({startOnLoad:!1,securityLevel:"loose",theme:i?"dark":"base",themeVariables:{fontFamily:r["--codeFont"],primaryColor:r["--light"],primaryTextColor:r["--darkgray"],primaryBorderColor:r["--tertiary"],lineColor:r["--darkgray"],secondaryColor:r["--secondary"],tertiaryColor:r["--tertiary"],clusterBkg:r["--light"],edgeLabelBackground:r["--highlight"]}}),await t.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let r=0;r<e.length;r++){let v=function(){let g=l.querySelector("#mermaid-space"),h=l.querySelector(".mermaid-content");if(!h)return;f(h);let w=i.querySelector("svg").cloneNode(!0);h.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new m(g,h)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},i=e[r],s=i.parentElement,c=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(c),L=c.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),E(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript" data-persist="true"></script><script src="../postscript.js" type="module" data-persist="true"></script></html>

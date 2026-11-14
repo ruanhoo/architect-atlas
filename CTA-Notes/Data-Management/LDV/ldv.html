@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"><head><title>Large Data Volumes (LDV)</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Alan's Architect Atlas"/><meta property="og:title" content="Large Data Volumes (LDV)"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Large Data Volumes (LDV)"/><meta name="twitter:description" content="Topics What Counts as LDV Why LDV Causes Problems Data Skew — Ownership · Lookup/Account · Junction Indexes — Selectivity · Index-bypass cases Skinny Tables Sharing &amp; LDV Archiving &amp; Data Retention — details in data-archiving-and-backup Batch Processing &amp; LDV Reporting on LDV Design Chec..."/><meta property="og:description" content="Topics What Counts as LDV Why LDV Causes Problems Data Skew — Ownership · Lookup/Account · Junction Indexes — Selectivity · Index-bypass cases Skinny Tables Sharing &amp; LDV Archiving &amp; Data Retention — details in data-archiving-and-backup Batch Processing &amp; LDV Reporting on LDV Design Chec..."/><meta property="og:image:alt" content="Topics What Counts as LDV Why LDV Causes Problems Data Skew — Ownership · Lookup/Account · Junction Indexes — Selectivity · Index-bypass cases Skinny Tables Sharing &amp; LDV Archiving &amp; Data Retention — details in data-archiving-and-backup Batch Processing &amp; LDV Reporting on LDV Design Chec..."/><meta property="og:image" content="https://ruanhoo.github.io/architect-atlas/static/og-image.png"/><meta property="og:image:url" content="https://ruanhoo.github.io/architect-atlas/static/og-image.png"/><meta name="twitter:image" content="https://ruanhoo.github.io/architect-atlas/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="ruanhoo.github.io/architect-atlas"/><meta property="og:url" content="https://ruanhoo.github.io/architect-atlas/CTA-Notes/Data-Management/LDV/ldv"/><meta property="twitter:url" content="https://ruanhoo.github.io/architect-atlas/CTA-Notes/Data-Management/LDV/ldv"/><link rel="icon" href="../../../static/icon.png"/><meta name="description" content="Topics What Counts as LDV Why LDV Causes Problems Data Skew — Ownership · Lookup/Account · Junction Indexes — Selectivity · Index-bypass cases Skinny Tables Sharing &amp; LDV Archiving &amp; Data Retention — details in data-archiving-and-backup Batch Processing &amp; LDV Reporting on LDV Design Chec..."/><meta name="generator" content="Quartz"/><link href="../../../index.css" rel="stylesheet" type="text/css" data-persist="true"/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvYXJjaGl0ZWN0LWF0bGFzLXZhdWx0L2FyY2hpdGVjdC1hdGxhcy12YXVsdC9zaXRlL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBSUo7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTs7QUFFQTtFQUNFOztBQUdGO0VBQ0U7O0FBSUY7RUFDRTtFQUNBO0VBQ0EiLCJzb3VyY2VzQ29udGVudCI6WyIuZXhwYW5kLWJ1dHRvbiB7XG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgZGlzcGxheTogZmxleDtcbiAgZmxvYXQ6IHJpZ2h0O1xuICBwYWRkaW5nOiAwLjRyZW07XG4gIG1hcmdpbjogMC4zcmVtO1xuICByaWdodDogMDsgLy8gTk9URTogcmlnaHQgd2lsbCBiZSBzZXQgaW4gbWVybWFpZC5pbmxpbmUudHNcbiAgY29sb3I6IHZhcigtLWdyYXkpO1xuICBib3JkZXItY29sb3I6IHZhcigtLWRhcmspO1xuICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gIGJvcmRlcjogMXB4IHNvbGlkO1xuICBib3JkZXItcmFkaXVzOiA1cHg7XG4gIG9wYWNpdHk6IDA7XG4gIHRyYW5zaXRpb246IDAuMnM7XG5cbiAgJiA+IHN2ZyB7XG4gICAgZmlsbDogdmFyKC0tbGlnaHQpO1xuICAgIGZpbHRlcjogY29udHJhc3QoMC4zKTtcbiAgfVxuXG4gICY6aG92ZXIge1xuICAgIGN1cnNvcjogcG9pbnRlcjtcbiAgICBib3JkZXItY29sb3I6IHZhcigtLXNlY29uZGFyeSk7XG4gIH1cblxuICAmOmZvY3VzIHtcbiAgICBvdXRsaW5lOiAwO1xuICB9XG59XG5cbnByZSB7XG4gICY6aG92ZXIgPiAuZXhwYW5kLWJ1dHRvbiB7XG4gICAgb3BhY2l0eTogMTtcbiAgICB0cmFuc2l0aW9uOiAwLjJzO1xuICB9XG59XG5cbiNtZXJtYWlkLWNvbnRhaW5lciB7XG4gIHBvc2l0aW9uOiBmaXhlZDtcbiAgY29udGFpbjogbGF5b3V0O1xuICB6LWluZGV4OiA5OTk7XG4gIGxlZnQ6IDA7XG4gIHRvcDogMDtcbiAgd2lkdGg6IDEwMHZ3O1xuICBoZWlnaHQ6IDEwMHZoO1xuICBvdmVyZmxvdzogaGlkZGVuO1xuICBkaXNwbGF5OiBub25lO1xuICBiYWNrZHJvcC1maWx0ZXI6IGJsdXIoNHB4KTtcbiAgYmFja2dyb3VuZDogcmdiYSgwLCAwLCAwLCAwLjUpO1xuXG4gICYuYWN0aXZlIHtcbiAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XG4gIH1cblxuICAmID4gI21lcm1haWQtc3BhY2Uge1xuICAgIGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWxpZ2h0Z3JheSk7XG4gICAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tbGlnaHQpO1xuICAgIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgICBwb3NpdGlvbjogZml4ZWQ7XG4gICAgdG9wOiA1MCU7XG4gICAgbGVmdDogNTAlO1xuICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlKC01MCUsIC01MCUpO1xuICAgIGhlaWdodDogODB2aDtcbiAgICB3aWR0aDogODB2dztcbiAgICBvdmVyZmxvdzogaGlkZGVuO1xuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRlbnQge1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" data-persist="true"/><script src="../../../prescript.js" type="application/javascript" data-persist="true"></script><script type="application/javascript" data-persist="true">const fetchData = fetch("../../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://ruanhoo.github.io/architect-atlas/index.xml"/></head><body data-slug="CTA-Notes/Data-Management/LDV/ldv"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../../..">Alan's Architect Atlas</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Search</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Search for something" placeholder="Search for something"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Dark mode"><title>Dark mode</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Light mode"><title>Light mode</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Reader mode"><title>Reader mode</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>{if(a.isFolder!==b.isFolder)return a.isFolder?-1:1;if(a.isFolder){let order=[\&quot;data management\&quot;,\&quot;data model\&quot;,\&quot;ldv\&quot;,\&quot;data migration\&quot;,\&quot;security\&quot;,\&quot;permissions &amp; sharing\&quot;,\&quot;other security capabilities\&quot;,\&quot;identity &amp; access management\&quot;,\&quot;integration\&quot;,\&quot;system landscape\&quot;,\&quot;sf licensing\&quot;,\&quot;org strategy\&quot;,\&quot;document management strategy\&quot;,\&quot;other key elements\&quot;,\&quot;sf solutioning\&quot;,\&quot;choosing the right capability\&quot;,\&quot;appexchange (buy vs build)\&quot;,\&quot;experience cloud\&quot;,\&quot;deployment &amp; dev lifecycle\&quot;,\&quot;communication\&quot;],last=[\&quot;references\&quot;],r=[a,b].map(n=>{let k=String(n.displayName).trim().toLowerCase();if(last.includes(k))return 2e3;let i=order.indexOf(k);return i===-1?1e3:i}),d=r[0]-r[1];if(d!==0)return d}else{let na=/^(\\d+)-/.exec(a.slugSegment),nb=/^(\\d+)-/.exec(b.slugSegment);if(na&amp;&amp;!nb)return-1;if(!na&amp;&amp;nb)return 1;if(na&amp;&amp;nb&amp;&amp;Number(na[1])!==Number(nb[1]))return Number(na[1])-Number(nb[1])}return a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;})}&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-181"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Explorer</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-181" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div><div class="sidebar-resizer" role="separator" aria-orientation="vertical" aria-label="Resize sidebar (drag, or use arrow keys; double-click to reset)" tabindex="0"></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../../CTA-Notes/">CTA Notes</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../../CTA-Notes/Data-Management/">Data Management</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../../CTA-Notes/Data-Management/LDV/">LDV</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Large Data Volumes (LDV)</a></div></nav><h1 class="article-title">Large Data Volumes (LDV)</h1><p show-comma="true" class="content-meta"><time datetime="2026-11-14T06:01:23.000Z">Nov 14, 2026</time><span>17 min read</span></p><ul class="tags"><li><a href="../../../tags/cta" class="internal tag-link">cta</a></li><li><a href="../../../tags/data-management" class="internal tag-link">data-management</a></li><li><a href="../../../tags/ldv" class="internal tag-link">ldv</a></li><li><a href="../../../tags/performance" class="internal tag-link">performance</a></li></ul></div></div><article class="popover-hint"><h2 id="topics">Topics<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#topics" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ol>
+<li><a href="#what-counts-as-ldv" class="internal alias">What Counts as LDV</a></li>
+<li><a href="#why-ldv-causes-problems" class="internal alias">Why LDV Causes Problems</a></li>
+<li><a href="#data-skew" class="internal alias">Data Skew</a> — <a href="#ownership-skew" class="internal alias">Ownership</a> · <a href="#lookup-skew-parent-skew--account-skew" class="internal alias">Lookup/Account</a> · <a href="#junction-object-skew" class="internal alias">Junction</a></li>
+<li><a href="#indexes" class="internal alias">Indexes</a> — <a href="#selectivity-thresholds" class="internal alias">Selectivity</a> · <a href="#additional-index-bypass-cases" class="internal alias">Index-bypass cases</a></li>
+<li><a href="#skinny-tables" class="internal alias">Skinny Tables</a></li>
+<li><a href="#sharing--ldv" class="internal alias">Sharing &amp; LDV</a></li>
+<li><a href="#archiving--data-retention" class="internal alias">Archiving &amp; Data Retention</a> — details in <a href="../../../CTA-Notes/Data-Management/LDV/data-archiving-and-backup" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/data-archiving-and-backup">data-archiving-and-backup</a></li>
+<li><a href="#batch-processing--ldv" class="internal alias">Batch Processing &amp; LDV</a></li>
+<li><a href="#reporting-on-ldv" class="internal alias">Reporting on LDV</a></li>
+<li><a href="#design-checklist-for-ldv-scenarios" class="internal alias">Design Checklist for LDV Scenarios</a></li>
+<li><a href="#related-notes" class="internal alias">Related Notes</a></li>
+</ol>
+<hr/>
+<h2 id="what-counts-as-ldv">What Counts as LDV<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#what-counts-as-ldv" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>No hard threshold — context-dependent.</p>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Not an official citation </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>The <a href="https://developer.salesforce.com/docs/platform/salesforce-large-data-volumes-bp/guide/ldv-deployments-introduction.html" class="external" target="_blank">LDV Best Practices Guide — Introduction<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> only defines LDV loosely (“tens of thousands of users, tens of millions of records, or hundreds of GB of storage”); it does <strong>not</strong> state the per-object-type thresholds below. Those are practitioner/community guidelines (unverified against an official Salesforce source as of 2026-09-23) — treat them as rules of thumb, not exam-quotable facts.</p>
+</div>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Object type</th><th>Indicative threshold</th></tr></thead><tbody><tr><td>Standard/custom objects</td><td>> 1 million records</td></tr><tr><td>Chatter / Feed items</td><td>> 5 million records</td></tr><tr><td>ContentDocument / Files</td><td>> 500k records</td></tr><tr><td>Sharing table (e.g. AccountShare)</td><td>> 10 million rows</td></tr></tbody></table></div>
+<p>Salesforce recommends staying well under <strong>~50 million records per object</strong>. At or near that scale, you must plan offload/archive.</p>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>CTA framing </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Examiners expect you to proactively raise LDV concerns whenever a scenario involves high-volume transactional data, migrations, or sharing rule proliferation — not just when explicitly stated. Call out any object likely to hit <strong>1M+</strong> records; at <strong>50M+</strong>, archiving/offload is mandatory in the design.</p>
+</div>
+</blockquote>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Experience Cloud + Account/Contact LDV </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>If LDV is on <strong>Account</strong> and/or <strong>Contact</strong> records tied to Experience Cloud users, do <strong>not</strong> casually archive them. Prefer monitoring for account/ownership skew and performance issues, and use <strong>custom indexes</strong> and <strong>skinny tables</strong> if slowdowns appear. Archiving contacts linked to community users is risky unless absolutely required.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="why-ldv-causes-problems">Why LDV Causes Problems<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#why-ldv-causes-problems" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Verification status </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>The intro page cited below only defines LDV loosely — it does <strong>not</strong> itemize these problems. Each bullet’s verification status is noted; treat “not verified”/“inference” items as things to double-check before quoting on the exam, not as confirmed facts.</p>
+</div>
+</blockquote>
+<ul>
+<li>Full table scans when indexes are absent or not selective <span style="color:var(--text-faint);">(plausible — well-established platform behavior, but not confirmed against a specific quoted source)</span></li>
+<li>Sharing recalculation becomes long-running → lock contention <span style="color:var(--text-faint);">(not verified — source page renders client-side only; couldn’t confirm exact claim)</span></li>
+<li>Report timeouts (10-minute limit) <span style="color:var(--text-faint);">(not verified — no specific limits source located)</span></li>
+<li>Batch Apex chunking inefficiency <span style="color:var(--text-faint);">(plausible — batch size/scope trade-offs are real, but “chunking inefficiency” is paraphrased, not a quoted claim)</span></li>
+<li>SOQL governor limits hit faster on unindexed queries <span style="color:var(--text-faint);">(inference — reasonable derived consequence, not something the guide states directly)</span></li>
+<li>Search index lag <span style="color:var(--text-faint);">(confirmed — <a href="https://developer.salesforce.com/docs/platform/salesforce-large-data-volumes-bp/guide/ldv-deployments-concepts-search-architecture.html" class="external" target="_blank">Search Architecture<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>: “it could take about 15 minutes or more for the updated text to become searchable”)</span></li>
+</ul>
+<hr/>
+<h2 id="data-skew">Data Skew<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#data-skew" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Skew is the #1 LDV interview topic. Three types <span style="color:var(--text-faint);">(the “Data Skew” article this cited — <code>sf.performance_data_skew.htm</code> — no longer appears in Salesforce’s current Help sitemap; no live replacement found as of 2026-09-23, likely retired/folded into the <a href="https://developer.salesforce.com/docs/platform/salesforce-large-data-volumes-bp/guide/ldv-deployments-introduction.html" class="external" target="_blank">LDV Best Practices Guide<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>)</span>:</p>
+<h3 id="ownership-skew">Ownership Skew<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ownership-skew" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>One user/queue owns a disproportionate number of records (e.g. integration user owns 500k Accounts). Practical risk often starts around <strong>> ~10k records owned by a single user</strong>.</p>
+<p><strong>Impact:</strong> A skewed-ownership user moving roles or being added to/removed from a public group used by a sharing rule triggers a long-running recalculation of access rights across that user’s owned records. (<a href="https://developer.salesforce.com/docs/atlas.en-us.draes.meta/draes/draes_group_membership_data_skew.htm" class="external" target="_blank">Avoid Ownership Skew / Group Membership Skew<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>)</p>
+<p><strong>Fix:</strong></p>
+<ul>
+<li>Use multiple integration/owner users to distribute ownership <span style="color:var(--text-faint);">(no single user crosses the ~10k-record danger zone, so no one user’s role/group change triggers a large recalculation)</span></li>
+<li>Use a dedicated “data owner” user per business unit <span style="color:var(--text-faint);">(isolates skew to a stable, rarely-moved account rather than a real user who might change roles or teams)</span></li>
+<li>Avoid assigning a role to a skewed-ownership user at all, if possible <span style="color:var(--text-faint);">(no role membership means no role-hierarchy-implied sharing to recalculate in the first place)</span></li>
+<li>If a role is unavoidable, place that user in a separate role at the <strong>top</strong> of the role hierarchy, never move them out of it, and keep them out of public groups used as sharing-rule sources <span style="color:var(--text-faint);">(a top-level role has no parent to cascade into, and never moving the user or changing their groups means the recalculation trigger never fires)</span></li>
+<li>If private OWD is required, prefer <strong>criteria-based sharing rules</strong> over role-hierarchy-implied access — criteria-based rules don’t recalculate when a skewed-ownership user’s role/group membership changes, avoiding that specific trigger <span style="color:var(--text-faint);">(not a general claim that private OWD beats public — Public Read/Write still avoids sharing computation entirely and is the stronger fix when recalculation cost itself, not just the role-move trigger, is the problem; see <a href="../../../CTA-Notes/Data-Management/LDV/ldv-best-practices#loading-data-from-the-api" class="internal alias" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/ldv-best-practices">W during load</a>)</span></li>
+</ul>
+<h3 id="lookup-skew-parent-skew--account-skew">Lookup Skew (Parent Skew) / Account Skew<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#lookup-skew-parent-skew--account-skew" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Many child records point to the same parent (e.g. 100k Cases linked to one Account). <strong>Account skew</strong> is the common CTA case: <strong>> ~10k child records</strong> under a single Account can cause record locking and sharing issues. (<a href="https://developer.salesforce.com/blogs/engineering/2012/04/avoid-account-data-skew-for-peak-performance" class="external" target="_blank">Avoid Account Data Skew<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>)</p>
+<p><strong>Root cause:</strong> This is a general lookup-relationship behavior, not specific to Account as parent or to master-detail relationships. On every insert/update, Salesforce must <strong>lock the target record(s) each lookup field points to</strong>, on any object, to maintain referential integrity — so whichever record has many children looked-up to it becomes a lock bottleneck under heavy concurrent insert/update activity. Account is the common example (and the CTA exam case) simply because it’s the most frequently over-referenced parent object in practice. (<a href="https://developer.salesforce.com/blogs/engineering/2013/04/managing-lookup-skew-to-avoid-record-lock-exceptions" class="external" target="_blank">Managing Lookup Skew to Avoid Record Lock Exceptions<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>)</p>
+<p><strong>Impact:</strong> Lock contention on the parent during concurrent child insert/update → “unable to lock row”; sharing recalculation pain.</p>
+<p><strong>Fix:</strong> Four mitigation categories, per <a href="https://developer.salesforce.com/blogs/engineering/2013/04/managing-lookup-skew-to-avoid-record-lock-exceptions" class="external" target="_blank">Managing Lookup Skew to Avoid Record Lock Exceptions<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>:</p>
+<ol>
+<li><strong>Reducing record save time</strong> — shorten how long the lock is held:
+<ul>
+<li>Avoid locking the parent in triggers on the child (don’t update parent aggregate fields synchronously)</li>
+<li>Use Platform Events or async processing to defer parent updates (<a href="https://developer.salesforce.com/docs/atlas.en-us.platform_events.meta/platform_events/platform_events_intro.htm" class="external" target="_blank">Platform Events Developer Guide<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>)</li>
+<li>Redesign aggregation; use roll-up summaries carefully</li>
+<li>Consolidate to a <strong>single trigger per object</strong> and move non-critical logic off the synchronous path <span style="color:var(--text-faint);">(source: Managing Lookup Skew blog)</span></li>
+</ul>
+</li>
+<li><strong>Distributing the skew</strong> — reduce concentration on any one target record:
+<ul>
+<li>For Account skew: distribute children across multiple parent accounts where the data model allows</li>
+<li>Add more distinct lookup values instead of concentrating records on one target, and prefer leaving a lookup <strong>blank</strong> over pointing everything at a generic “catch-all” record <span style="color:var(--text-faint);">(source: same blog)</span></li>
+</ul>
+</li>
+<li><strong>Using a picklist field</strong> — if the field has a small, fixed set of lookup values, use a <strong>picklist instead of a lookup</strong>; picklists don’t require record locks <span style="color:var(--text-faint);">(source: same blog)</span></li>
+<li><strong>Reducing the load</strong> — run high-volume automated processes <strong>serially, in off-peak windows, or with smaller batch sizes</strong> to reduce lock duration and contention with end users <span style="color:var(--text-faint);">(source: same blog)</span></li>
+</ol>
+<h3 id="junction-object-skew">Junction Object Skew<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#junction-object-skew" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>One record on either side of an M:M junction has too many junction records.</p>
+<p><strong>Impact:</strong> Same lock contention as lookup skew; cascading deletes become extremely slow.</p>
+<p><strong>Fix:</strong> Limit relationship depth; consider soft-delete pattern instead of cascading.</p>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Not independently verified </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>No official Salesforce source could be confirmed for this section specifically — checked the <a href="https://developer.salesforce.com/docs/atlas.en-us.draes.meta/draes/draes_group_membership_data_skew.htm" class="external" target="_blank">DRAES ownership-skew doc<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>, the <a href="https://developer.salesforce.com/blogs/engineering/2013/04/managing-lookup-skew-to-avoid-record-lock-exceptions" class="external" target="_blank">Managing Lookup Skew blog<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>, and both current LDV developer guides (Introduction, Best Practices) — none name “junction object skew” directly, and web search via available tooling did not surface a usable source as of 2026-09-24. <span style="color:var(--text-faint);">Content here is an inference: a junction object’s two lookup/master-detail fields are subject to the same general lookup-locking mechanism described in <a href="#lookup-skew-parent-skew--account-skew" class="internal alias">Lookup Skew</a> — so this section is likely a specific case of that mechanism rather than a separate one, but that framing itself is unconfirmed.</span></p>
+</div>
+</blockquote>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Exam trap </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Ownership skew and lookup/account skew have different root causes and different fixes. Don’t conflate them.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="indexes">Indexes<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#indexes" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>(<a href="https://help.salesforce.com/s/articleView?language=en_US&amp;id=platform.custom_index.htm&amp;type=5" class="external" target="_blank">Indexes for SOQL Query Performance<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> · <a href="https://developer.salesforce.com/docs/platform/salesforce-large-data-volumes-bp/guide/ldv-deployments-infrastructure-indexes.html" class="external" target="_blank">LDV — Standard and Custom Indexes<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>)</p>
+<h3 id="standard-indexes-auto-created--30-tier">Standard Indexes (auto-created) — 30% tier<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#standard-indexes-auto-created--30-tier" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Platform-maintained indexes on most objects:</p>
+<ul>
+<li><strong>Primary key:</strong> the unique Salesforce record <code>Id</code>; plus <code>Name</code>, <code>OwnerId</code></li>
+<li><strong>Foreign keys:</strong> lookup &amp; master-detail relationships (also <code>CreatedById</code>, <code>LastModifiedById</code>)</li>
+<li><strong>Audit / system:</strong> <code>CreatedDate</code>, <code>SystemModstamp</code> (<code>LastModifiedDate</code>), <code>RecordTypeId</code>, <code>Division</code></li>
+<li><strong><code>Email</code></strong> (on Contact and Lead)</li>
+</ul>
+<h3 id="divisions">Divisions<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#divisions" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>A Setup feature (Company Settings → Divisions) that adds a standard <strong><code>Division</code></strong> picklist field to major objects (Account, Contact, Opportunity, Lead, Case, and enabled custom objects), letting users work within one <strong>active division</strong> at a time and scope list views, reports, and search to it.</p>
+<p><strong>How it helps LDV performance:</strong> <code>Division</code> is part of the platform’s <strong>standard, auto-created index</strong> set (same tier as <code>Id</code>, <code>Name</code>, <code>OwnerId</code>, <code>CreatedDate</code> — see <a href="#standard-indexes-auto-created--30-tier" class="internal alias">Standard Indexes (auto-created) — 30% tier</a>). Filtering or reporting by division is therefore a selective, indexed lookup rather than a full scan, so on a very large object split across business units by division, division-scoped queries/reports avoid touching the full row count.</p>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Not independently verified </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p><code>Division</code>’s standard-index status is sourced from the LDV Best Practices developer guide (cited above). The description of what Divisions does and its performance rationale could <strong>not</strong> be confirmed against a live official article as of 2026-09-24 — Salesforce Help (<code>help.salesforce.com</code>) renders client-side only and returns no fetchable content for any article ID, and the current LDV Best Practices / Introduction developer guides don’t mention Divisions at all (it’s a legacy Setup feature, not part of the current LDV guide). Treat this section as a reasonable inference from the indexed-field fact, not a directly quoted source. Also note: Divisions only scopes queries/UI to an active division — it does <strong>not</strong> reduce actual data storage or change sharing computation, so it isn’t a substitute for archiving, skinny tables, or sharing-cost reduction.</p>
+</div>
+</blockquote>
+<h3 id="custom-indexes--10-tier-stricter">Custom Indexes — 10% tier (stricter)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#custom-indexes--10-tier-stricter" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Auto-created</strong> on custom fields marked <strong>External ID</strong> or <strong>Unique</strong>. External IDs are allowed only on <strong>Auto Number, Email, Number, Text</strong> field types</li>
+<li><strong>Created on request</strong> — via <strong>Salesforce Customer Support</strong>, or by deploying a <strong>custom index XML</strong> file through the <strong>Metadata API</strong>. For other/standard field types, go through Support</li>
+<li>Support-created custom indexes in <strong>production are copied to <em>all</em> sandboxes</strong> made from that org (contrast with skinny tables, which only Full sandboxes get automatically)</li>
+<li>These use the <strong>stricter 10% threshold</strong> — being “auto-created” does <strong>not</strong> make External ID / Unique fields <em>standard</em> indexes</li>
+</ul>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Fields that <strong>can't</strong> be custom-indexed</p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Long text areas, rich text areas, <strong>encrypted text</strong>, multi-select picklists, and <strong>non-deterministic formula fields</strong>. Deterministic formulas <em>can</em> be indexed; a formula is <strong>non-deterministic</strong> if it references other entities / cross-object fields, uses dynamic date-time (<code>TODAY</code>, <code>NOW</code>), or references owner / autonumber / division / audit fields (except <code>CreatedDate</code> &amp; <code>CreatedById</code>), currency fields in a multi-currency org, etc. Some special standard fields are also non-indexable (e.g. Opportunity <code>Amount</code> / <code>ExpectedRevenue</code> / <code>IsClosed</code> / <code>IsWon</code>; Case <code>ClosedDate</code> / <code>IsClosed</code>; Product <code>IsActive</code> / <code>IsArchived</code>).</p>
+</div>
+</blockquote>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Index tables &amp; null rows </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Because the multitenant custom-field storage isn’t directly indexable, Salesforce builds a <strong>separate index table</strong> (a copy of the field data + type info) and indexes that. By <strong>default the index table excludes null rows</strong> — which is why <code>WHERE Field__c = null</code> typically <strong>can’t</strong> use the index. You can ask Support to create a custom index that <strong>includes nulls</strong>, but you must explicitly enable and <strong>rebuild</strong> it.</p>
+</div>
+</blockquote>
+<h3 id="selectivity-thresholds">Selectivity Thresholds<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#selectivity-thresholds" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Salesforce’s query optimizer only uses an index when the query is <em>selective</em> — i.e. the filter is expected to return few enough records that an index scan beats a full table scan. The threshold is <strong>tiered and cumulative</strong> (percentages apply to record bands), with exactly <strong>two tiers</strong>: standard and custom. (<a href="https://developer.salesforce.com/docs/platform/salesforce-large-data-volumes-bp/guide/ldv-deployments-infrastructure-indexes.html" class="external" target="_blank">LDV — Standard and Custom Indexes<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>)</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Index tier</th><th>Fields</th><th>Selective when matched rows are <strong>below</strong></th><th>Hard cap</th></tr></thead><tbody><tr><td><strong>Standard</strong></td><td>Id, Name, OwnerId, lookup/master-detail FKs, CreatedDate, SystemModstamp, RecordType, Division</td><td><strong>30%</strong> of first 1M <strong>+ 15%</strong> of rows beyond 1M</td><td><strong>1,000,000</strong></td></tr><tr><td><strong>Custom</strong></td><td>External ID, Unique, Support-created custom indexes</td><td><strong>10%</strong> of first 1M <strong>+ 5%</strong> of rows beyond 1M</td><td><strong>333,333</strong></td></tr></tbody></table></div>
+<p><strong>Worked example (custom index, 2M-row object):</strong> threshold = (10% × 1,000,000) + (5% × 1,000,000) = <strong>150,000</strong>. Match &lt; 150k ⇒ index; ≥ 150k ⇒ table scan. Exceeding the <strong>first-million tier</strong> alone disqualifies the index, regardless of the rows-beyond-1M band.</p>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Two tiers only — common myths </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>There are <strong>only two</strong> threshold tiers: <strong>standard = 30% / 15%</strong>, <strong>custom = 10% / 5%</strong>. Beware incorrect claims that “the primary-key/<code>Id</code> index has a 10% threshold” (it’s a <strong>standard</strong> index → 30%) or that “custom indexes are 15%” (15% is the <em>standard</em> index’s rate for rows <strong>beyond</strong> the first million). External ID / Unique fields are <strong>custom</strong> indexes (10%), even though auto-created.</p>
+</div>
+</blockquote>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>AND (composite) queries — double-threshold rule </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>For filters combined with <strong>AND</strong>, the optimizer treats the overall condition as selective if <strong>either</strong>: (a) <strong>each</strong> individual filter targets <strong>&lt; 2× its own threshold</strong> — the “2×” is fixed and does <strong>not</strong> scale with the number of conditions — <strong>or</strong> (b) the <strong>intersection</strong> of all the AND’d filters targets <strong>&lt; 1× the threshold</strong>. Salesforce calls this a <strong>Composite Index Join</strong>.</p>
+</div>
+</blockquote>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>LDV guide phrasing — AND / OR / LIKE </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>The LDV Best Practices guide summarises the multi-filter rules as:</p>
+<ul>
+<li><strong>AND</strong> — indexes are used <strong>unless one filter returns > 20%</strong> of the object’s records.</li>
+<li><strong>OR</strong> — indexes are used <strong>unless all</strong> filters return > 10%, and <strong>every</strong> field in the <code>OR</code> must be indexed for <em>any</em> index to be used.</li>
+<li><strong>LIKE</strong> — the optimizer ignores its statistics table and instead <strong>samples up to 100,000 actual records</strong> to decide whether to use the custom index.</li>
+</ul>
+<p>If one indexed field’s criteria aren’t met, only <strong>that</strong> index is dropped — other qualifying indexes in the <code>WHERE</code> clause may still be used.</p>
+</div>
+</blockquote>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>When indexes are NOT used </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li><code>CONTAINS</code> operator: requires full index scan; only used if rows to scan &lt; 333,333</li>
+<li>Negative operators: <code>!=</code>, <code>NOT IN</code>, <code>NOT CONTAINS</code>, <code>NOT STARTS WITH</code></li>
+<li>Empty value comparisons: <code>Name != ''</code></li>
+<li>Filter returns > threshold records regardless of index</li>
+</ul>
+</div>
+</blockquote>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>CTA application </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>When designing for LDV, always identify which fields appear in WHERE clauses and verify they are index-eligible <strong>and</strong> selective. A custom index on a low-cardinality field (e.g. Status with 3 values) will rarely be selective enough to be used. The commonly cited rule of thumb is &lt; 200k records on objects with > 2M records total.</p>
+</div>
+</blockquote>
+<h3 id="additional-index-bypass-cases">Additional Index-Bypass Cases<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#additional-index-bypass-cases" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>(<a href="https://developer.salesforce.com/docs/platform/salesforce-large-data-volumes-bp/guide/ldv-deployments-infrastructure-indexes.html" class="external" target="_blank">LDV — Standard and Custom Indexes<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> — unverified against current page text as of 2026-09-23; recheck before quoting)</p>
+<ul>
+<li><code>LIKE '%value'</code> (leading wildcard)</li>
+<li>Functions on indexed fields: <code>WHERE UPPER(Name) = ...</code></li>
+<li>Null comparisons: <code>WHERE Field__c = null</code> (use <code>= ''</code> for text or handle in code)</li>
+<li>OR conditions spanning multiple non-indexed fields</li>
+</ul>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Design principle </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Always design your data model so that the fields used in WHERE and ORDER BY clauses are index-eligible. Flag this explicitly in the CTA presentation.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="skinny-tables">Skinny Tables<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#skinny-tables" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>(Skinny Tables Help article — <code>sf.performance_skinny_table.htm</code> — no longer appears in Salesforce’s current Help sitemap; no live replacement found as of 2026-09-23 · <a href="https://developer.salesforce.com/docs/platform/salesforce-large-data-volumes-bp/guide/ldv-deployments-infrastructure-skinny-tables.html" class="external" target="_blank">LDV Skinny Tables<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> · <a href="https://resources.docs.salesforce.com/latest/latest/en-us/sfdc/pdf/salesforce_large_data_volumes_bp.pdf" class="external" target="_blank">LDV Best Practices PDF<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>)</p>
+<p>Skinny tables speed up <strong>read-only</strong> operations (reports, list views, SOQL) on tables with millions of records by avoiding joins between standard/custom field storage and omitting soft-deleted rows.</p>
+<pre><button class="expand-button" aria-label="Expand mermaid diagram" data-view-component="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M3.72 3.72a.75.75 0 011.06 1.06L2.56 7h10.88l-2.22-2.22a.75.75 0 011.06-1.06l3.5 3.5a.75.75 0 010 1.06l-3.5 3.5a.75.75 0 11-1.06-1.06l2.22-2.22H2.56l2.22 2.22a.75.75 0 11-1.06 1.06l-3.5-3.5a.75.75 0 010-1.06l3.5-3.5z"></path></svg></button><code class="mermaid" data-clipboard="&quot;flowchart LR\n    Q1[\&quot;Query\&quot;] --> J[\&quot;Standard + custom&lt;br/>field tables · JOIN\&quot;] --> SLOW[\&quot;Slow\&quot;]\n    Q2[\&quot;Query\&quot;] --> SKN[\&quot;Skinny table\&quot;] --> FAST[\&quot;Fast\&quot;]&quot;">flowchart LR
+    Q1[&quot;Query&quot;] --> J[&quot;Standard + custom&lt;br/>field tables · JOIN&quot;] --> SLOW[&quot;Slow&quot;]
+    Q2[&quot;Query&quot;] --> SKN[&quot;Skinny table&quot;] --> FAST[&quot;Fast&quot;]
+</code><div id="mermaid-container" role="dialog"><div id="mermaid-space"><div class="mermaid-content"></div></div></div></pre>
+<h3 id="ascii-fallback">ASCII Fallback<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ascii-fallback" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="text" data-theme="github-light github-dark"><code data-language="text" data-theme="github-light github-dark" style="display:grid;"><span data-line><span>Without a skinny table:</span></span>
+<span data-line><span>  Report/List View/SOQL</span></span>
+<span data-line><span>        |</span></span>
+<span data-line><span>        +--> [Standard-field table] --+</span></span>
+<span data-line><span>        |                              |--> JOIN --> slow at scale</span></span>
+<span data-line><span>        +--> [Custom-field table]  ----+</span></span>
+<span data-line><span>        (soft-deleted rows still scanned)</span></span>
+<span data-line> </span>
+<span data-line><span>With a skinny table:</span></span>
+<span data-line><span>  Report/List View/SOQL</span></span>
+<span data-line><span>        |</span></span>
+<span data-line><span>        +--> [Skinny table: subset of columns, single object, no soft-deletes]</span></span>
+<span data-line><span>                    |</span></span>
+<span data-line><span>                    +--> no join, fewer rows scanned --> fast</span></span></code></pre></figure>
+<p><strong>Notes</strong></p>
+<ul>
+<li>
+<p>Skinny tables collapse the standard/custom-field split and the join between them into one narrow, denormalized table for a known query pattern.</p>
+</li>
+<li>
+<p>Soft-deleted rows are excluded, so scans touch only live data.</p>
+</li>
+<li>
+<p>This is a generated illustration of the mechanism described in the cited docs, not a diagram taken from Salesforce’s own documentation (no such diagram could be found on the live pages).</p>
+</li>
+<li>
+<p>Must be requested via <strong>Salesforce Support</strong> (not self-service)</p>
+</li>
+<li>
+<p>Creates a narrow copy with only needed columns for a query pattern</p>
+</li>
+<li>
+<p>Kept in sync when source data changes</p>
+</li>
+<li>
+<p><strong>Not</strong> a substitute for good index design — use when indexes alone aren’t enough</p>
+</li>
+<li>
+<p><strong>Max columns:</strong> up to <strong>200</strong> (current LDV guidance)</p>
+</li>
+<li>
+<p><strong>Can’t contain fields from other objects</strong> — single base object only (no cross-object/related fields)</p>
+</li>
+<li>
+<p>Adding a field used by reports/list views does <strong>not</strong> auto-update the skinny table — contact Support to rebuild/add fields</p>
+</li>
+<li>
+<p>Skinny tables (and <strong>skinny indexes</strong>) can also contain <strong>encrypted data</strong></p>
+</li>
+<li>
+<p><strong>Full sandboxes:</strong> skinny tables are copied automatically</p>
+</li>
+<li>
+<p><strong>Other sandbox types:</strong> skinny tables are <strong>not</strong> copied — contact Salesforce Customer Support to activate production skinny tables for non-Full sandboxes</p>
+</li>
+</ul>
+<p><strong>Supported objects:</strong> Account, Contact, Opportunity, Lead, Case, and custom objects.</p>
+<p><strong>Supported field types:</strong> Checkbox, Date, Date/Time, Email, Number, Percent, Phone, Picklist (multi-select), Text, Text Area, Text Area (Long), URL.</p>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Pre-computed field pattern (avoid repeated computation) </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Instead of filtering on an expensive date <strong>range</strong> like <code>CloseDate >= 01/01/11 AND CloseDate &lt;= 12/31/11</code> — a repeated computation for annual or year-to-date reports — add a <strong><code>Year</code></strong> field to the skinny table and filter on <code>Year = '2011'</code>. Materializing the derived value into a stored, skinny-table-backed field turns a range scan into a cheap equality lookup.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="sharing--ldv">Sharing &amp; LDV<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#sharing--ldv" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Sharing recalculation is the most expensive operation at scale. (<a href="https://help.salesforce.com/s/articleView?language=en_US&amp;id=platform.security_sharing_recalculating.htm&amp;type=5" class="external" target="_blank">Sharing Recalculation and LDV<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>)</p>
+<p>Per-object sharing rule caps (and Support increase maxes): <a href="../../../CTA-Notes/Deployment--and--Dev-Lifecycle/governor-limits-and-best-practices#sharing--relationships" class="internal alias" target="_blank" data-slug="CTA-Notes/Deployment--and--Dev-Lifecycle/governor-limits-and-best-practices">Sharing rule limits</a>.</p>
+<h3 id="strategies-to-reduce-sharing-cost">Strategies to Reduce Sharing Cost<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#strategies-to-reduce-sharing-cost" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Strategy</th><th>When to use</th></tr></thead><tbody><tr><td>Fewer sharing rules</td><td>Simplify role hierarchy; avoid complex criteria-based sharing</td></tr><tr><td>Defer sharing recalculation</td><td>During bulk data loads — re-enable after load completes</td></tr><tr><td>Parallel sharing recalculation</td><td>Available for Accounts; request via Salesforce Support</td></tr><tr><td>Private OWD + Apex managed sharing</td><td>Full control; avoid rule proliferation</td></tr><tr><td>Territory Management</td><td>For Account-heavy orgs needing complex geo/product-based access</td></tr></tbody></table></div>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Warning</p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Criteria-based sharing rules with LDV are dangerous — each rule evaluation touches every record during recalculation. Prefer owner-based sharing rules or Apex sharing for LDV objects. (<a href="https://help.salesforce.com/s/articleView?language=en_US&amp;id=platform.sharing_model_fields.htm&amp;type=5" class="external" target="_blank">Sharing Model Fields<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>)</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="archiving--data-retention">Archiving &amp; Data Retention<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#archiving--data-retention" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>When records can’t be kept in the active working set, move them out on a <strong>governed schedule</strong> (aligned with data stewards on the governance board) rather than letting volume grow unbounded.</p>
+<ul>
+<li><strong>Default CTA answer:</strong> off-platform archive (data lake / warehouse) with on-demand access via OData / Salesforce Connect or an LWC — keep the active working set in Salesforce.</li>
+<li><strong>Big Objects</strong> (<code>__b</code>) are native but read-only, index-fixed, and no sharing — use only when the access pattern is defensible.</li>
+<li><strong>External objects</strong> give a live view without storage cost, at the price of latency and no sharing model.</li>
+<li>Archive <strong>during migration</strong> where possible instead of loading old data in and archiving later.</li>
+</ul>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Full detail </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Options table, access patterns, Big Objects facts, the Data Warehouse pattern, and backup/restore are in <a href="../../../CTA-Notes/Data-Management/LDV/data-archiving-and-backup" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/data-archiving-and-backup">data-archiving-and-backup</a>.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="batch-processing--ldv">Batch Processing &amp; LDV<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#batch-processing--ldv" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>(<a href="https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_batch.htm" class="external" target="_blank">Batch Apex Developer Guide<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>)</p>
+<ul>
+<li>Use <code>Database.QueryLocator</code> (up to 50M records) vs <code>Iterable</code> (50k limit) for large datasets</li>
+<li>Set batch size conservatively (200 default; lower if each record triggers complex logic)</li>
+<li>Avoid SOQL inside loops — all queries must be bulkified</li>
+<li>Chain batches for multi-step processing; use <code>AsyncApexJob</code> to monitor</li>
+<li>Platform Events + triggered flows/batches preferred for near-real-time at scale (<a href="https://developer.salesforce.com/docs/atlas.en-us.platform_events.meta/platform_events/platform_events_intro.htm" class="external" target="_blank">Platform Events Developer Guide<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>)</li>
+</ul>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Tip</p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>For migrations, use <strong>Bulk API 2.0</strong> (parallel jobs). Avoid REST/SOAP for LDV loads. (<a href="https://developer.salesforce.com/docs/platform/api-asynch/guide/asynch-api-intro.html" class="external" target="_blank">Bulk API 2.0 Developer Guide<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>) See also <a href="../../../CTA-Notes/Data-Management/LDV/bulk-api-and-cursors" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/bulk-api-and-cursors">bulk-api-and-cursors</a>.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="reporting-on-ldv">Reporting on LDV<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#reporting-on-ldv" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li>Reports timeout at 10 minutes</li>
+<li>Dashboards refresh async — less of a concern but data can be stale</li>
+<li><strong>Mitigations:</strong>
+<ul>
+<li>Add indexed filters to all LDV reports (<a href="https://help.salesforce.com/s/articleView?language=en_US&amp;id=platform.custom_index.htm&amp;type=5" class="external" target="_blank">Indexes for SOQL Query Performance<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>)</li>
+<li>Use report filters on RecordType, OwnerId, CreatedDate (all indexed)</li>
+<li>Consider CRM Analytics (Tableau CRM) for large-scale reporting — extracts data out of the transactional store</li>
+<li>Async SOQL / Data Pipelines for scheduled aggregation into summary objects</li>
+</ul>
+</li>
+</ul>
+<hr/>
+<h2 id="design-checklist-for-ldv-scenarios">Design Checklist for LDV Scenarios<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#design-checklist-for-ldv-scenarios" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled/> Identify which objects will exceed 1M records (flag 50M+ for mandatory archive/offload)</li>
+<li class="task-list-item"><input type="checkbox" disabled/> If Account/Contact + Experience Cloud users → avoid casual archive; plan monitoring + indexes/skinny tables</li>
+<li class="task-list-item"><input type="checkbox" disabled/> Confirm OWD and sharing model — flag recalculation risk</li>
+<li class="task-list-item"><input type="checkbox" disabled/> Check for ownership skew (integration users, queues; ~10k+ owned by one user)</li>
+<li class="task-list-item"><input type="checkbox" disabled/> Check for lookup/account skew (~10k+ children on one parent)</li>
+<li class="task-list-item"><input type="checkbox" disabled/> Identify query patterns → ensure indexed fields in WHERE/ORDER BY</li>
+<li class="task-list-item"><input type="checkbox" disabled/> Define archiving strategy (Big Objects, warehouse/EDW, external, off-platform) with governance owners</li>
+<li class="task-list-item"><input type="checkbox" disabled/> Plan bulk load approach (Bulk API 2.0, parallel jobs)</li>
+<li class="task-list-item"><input type="checkbox" disabled/> Address reporting needs (indexed filters, CRM Analytics)</li>
+<li class="task-list-item"><input type="checkbox" disabled/> Consider skinny tables for critical read-only query paths (Support-managed)</li>
+</ul>
+<hr/>
+<h2 id="related-notes">Related Notes<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#related-notes" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><a href="../../../CTA-Notes/Data-Management/LDV/ldv-best-practices" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/ldv-best-practices">ldv-best-practices</a> — condensed best-practice tables (reporting, load, extract, SOQL/SOSL, delete) + case studies</li>
+<li><a href="../../../CTA-Notes/Data-Management/LDV/bulk-api-and-cursors" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/bulk-api-and-cursors">bulk-api-and-cursors</a> — Bulk API 1.0 vs 2.0 comparison, REST cursor, Apex Database Cursor, PK chunking</li>
+<li><a href="../../../CTA-Notes/Deployment--and--Dev-Lifecycle/governor-limits-and-best-practices" class="internal" target="_blank" data-slug="CTA-Notes/Deployment--and--Dev-Lifecycle/governor-limits-and-best-practices">governor-limits-and-best-practices</a> — sharing rule caps, Apex/Batch limits</li>
+<li><a href="../../../CTA-Notes/Data-Management/LDV/calculating-data-storage" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/calculating-data-storage">calculating-data-storage</a> — storage sizing</li>
+<li><a href="../../../CTA-Notes/Data-Management/Data-Model/data-model" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Model/data-model">data-model</a> — object relationships and skew risk</li>
+<li><a href="../../../CTA-Notes/Data-Management/Data-Migration/data-migration" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Migration/data-migration">data-migration</a> — loading data into Salesforce at scale</li>
+<li><a href="../../../CTA-Notes/Data-Management/LDV/data-archiving-and-backup" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/data-archiving-and-backup">data-archiving-and-backup</a> — archiving options, Big Objects, backup</li>
+<li><a href="../../../CTA-Notes/Data-Management/Data-Model/data-quality-and-mdm" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Model/data-quality-and-mdm">data-quality-and-mdm</a> — deduplication, master data</li>
+<li><a href="../../../CTA-Notes/System-Landscape/org-strategy" class="internal" target="_blank" data-slug="CTA-Notes/System-Landscape/org-strategy">org-strategy</a> — multi-org implications for LDV</li>
+</ul>
+<blockquote class="callout note is-collapsible is-collapsed" data-callout="note" data-callout-fold>
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Org-validated build </p></div>
+                  <div class="fold-callout-icon"></div>
+                </div>
+<div class="callout-content">
+<p><a href="https://github.com/ruanhoo/architect-atlas-vault/tree/main/CTAPrepScripts/09-performance/selective-queries" class="external" target="_blank">Selective Queries<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></p>
+</div>
+</blockquote></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Graph View</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-70" aria-expanded="true"><h3>Table of Contents</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#topics" data-for="topics">Topics</a></li><li class="depth-0"><a href="#what-counts-as-ldv" data-for="what-counts-as-ldv">What Counts as LDV</a></li><li class="depth-0"><a href="#why-ldv-causes-problems" data-for="why-ldv-causes-problems">Why LDV Causes Problems</a></li><li class="depth-0"><a href="#data-skew" data-for="data-skew">Data Skew</a></li><li class="depth-1"><a href="#ownership-skew" data-for="ownership-skew">Ownership Skew</a></li><li class="depth-1"><a href="#lookup-skew-parent-skew--account-skew" data-for="lookup-skew-parent-skew--account-skew">Lookup Skew (Parent Skew) / Account Skew</a></li><li class="depth-1"><a href="#junction-object-skew" data-for="junction-object-skew">Junction Object Skew</a></li><li class="depth-0"><a href="#indexes" data-for="indexes">Indexes</a></li><li class="depth-1"><a href="#standard-indexes-auto-created--30-tier" data-for="standard-indexes-auto-created--30-tier">Standard Indexes (auto-created) — 30% tier</a></li><li class="depth-1"><a href="#divisions" data-for="divisions">Divisions</a></li><li class="depth-1"><a href="#custom-indexes--10-tier-stricter" data-for="custom-indexes--10-tier-stricter">Custom Indexes — 10% tier (stricter)</a></li><li class="depth-1"><a href="#selectivity-thresholds" data-for="selectivity-thresholds">Selectivity Thresholds</a></li><li class="depth-1"><a href="#additional-index-bypass-cases" data-for="additional-index-bypass-cases">Additional Index-Bypass Cases</a></li><li class="depth-0"><a href="#skinny-tables" data-for="skinny-tables">Skinny Tables</a></li><li class="depth-1"><a href="#ascii-fallback" data-for="ascii-fallback">ASCII Fallback</a></li><li class="depth-0"><a href="#sharing--ldv" data-for="sharing--ldv">Sharing &amp; LDV</a></li><li class="depth-1"><a href="#strategies-to-reduce-sharing-cost" data-for="strategies-to-reduce-sharing-cost">Strategies to Reduce Sharing Cost</a></li><li class="depth-0"><a href="#archiving--data-retention" data-for="archiving--data-retention">Archiving &amp; Data Retention</a></li><li class="depth-0"><a href="#batch-processing--ldv" data-for="batch-processing--ldv">Batch Processing &amp; LDV</a></li><li class="depth-0"><a href="#reporting-on-ldv" data-for="reporting-on-ldv">Reporting on LDV</a></li><li class="depth-0"><a href="#design-checklist-for-ldv-scenarios" data-for="design-checklist-for-ldv-scenarios">Design Checklist for LDV Scenarios</a></li><li class="depth-0"><a href="#related-notes" data-for="related-notes">Related Notes</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Backlinks</h3><ul id="list-2" class="overflow"><li><a href="../../../CTA-Notes/Data-Management/Data-Migration/data-migration" class="internal">Data Migration</a></li><li><a href="../../../CTA-Notes/Data-Management/Data-Model/data-model-constraints-and-limits" class="internal">Data Model Constraints &amp; Limits</a></li><li><a href="../../../CTA-Notes/Data-Management/Data-Model/data-model" class="internal">Data Model</a></li><li><a href="../../../CTA-Notes/Data-Management/LDV/bulk-api-and-cursors" class="internal">Bulk API &amp; Cursors</a></li><li><a href="../../../CTA-Notes/Data-Management/LDV/data-archiving-and-backup" class="internal">Data Archiving, Retention &amp; Backup</a></li><li><a href="../../../CTA-Notes/Data-Management/LDV/ldv-best-practices" class="internal">LDV Best Practices</a></li><li><a href="../../../CTA-Notes/cta-study-guide-overview" class="internal">CTA Study Guide — Overview (Harvested)</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript" data-persist="true">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module" data-persist="true">function E(a,e){if(!a)return;function t(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function n(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}a?.addEventListener("click",t),window.addCleanup(()=>a?.removeEventListener("click",t)),document.addEventListener("keydown",n),window.addCleanup(()=>document.removeEventListener("keydown",n))}function f(a){for(;a.firstChild;)a.removeChild(a.firstChild)}var m=class{constructor(e,t){this.container=e;this.content=t;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),t=this.onMouseMove.bind(this),n=this.onMouseUp.bind(this),o=this.onTouchStart.bind(this),r=this.onTouchMove.bind(this),i=this.onTouchEnd.bind(this),s=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",t),document.addEventListener("mouseup",n),this.container.addEventListener("touchstart",o,{passive:!1}),document.addEventListener("touchmove",r,{passive:!1}),document.addEventListener("touchend",i),window.addEventListener("resize",s),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",t),()=>document.removeEventListener("mouseup",n),()=>this.container.removeEventListener("touchstart",o),()=>document.removeEventListener("touchmove",r),()=>document.removeEventListener("touchend",i),()=>window.removeEventListener("resize",s))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let t=this.createButton("+",()=>this.zoom(.1)),n=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(n),e.appendChild(o),e.appendChild(t),this.container.appendChild(e)}createButton(e,t){let n=document.createElement("button");return n.textContent=e,n.className="mermaid-control-button",n.addEventListener("click",t),window.addCleanup(()=>n.removeEventListener("click",t)),n}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}onTouchStart(e){if(e.touches.length!==1)return;this.isDragging=!0;let t=e.touches[0];this.startPan={x:t.clientX-this.currentPan.x,y:t.clientY-this.currentPan.y}}onTouchMove(e){if(!this.isDragging||e.touches.length!==1)return;e.preventDefault();let t=e.touches[0];this.currentPan={x:t.clientX-this.startPan.x,y:t.clientY-this.startPan.y},this.updateTransform()}onTouchEnd(){this.isDragging=!1}zoom(e){let t=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),n=this.content.getBoundingClientRect(),o=n.width/2,r=n.height/2,i=t-this.scale;this.currentPan.x-=o*i,this.currentPan.y-=r*i,this.scale=t,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){let t=this.content.querySelector("svg").getBoundingClientRect(),n=t.width/this.scale,o=t.height/this.scale;this.scale=1,this.currentPan={x:(this.container.clientWidth-n)/2,y:(this.container.clientHeight-o)/2},this.updateTransform()}},T=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],y;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;y||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let t=y.default,n=new WeakMap;for(let r of e)n.set(r,r.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let c=n.get(s);c&&(s.innerHTML=c)}let r=T.reduce((s,c)=>(s[c]=window.getComputedStyle(document.documentElement).getPropertyValue(c),s),{}),i=document.documentElement.getAttribute("saved-theme")==="dark";t.initialize({startOnLoad:!1,securityLevel:"loose",theme:i?"dark":"base",themeVariables:{fontFamily:r["--codeFont"],primaryColor:r["--light"],primaryTextColor:r["--darkgray"],primaryBorderColor:r["--tertiary"],lineColor:r["--darkgray"],secondaryColor:r["--secondary"],tertiaryColor:r["--tertiary"],clusterBkg:r["--light"],edgeLabelBackground:r["--highlight"]}}),await t.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let r=0;r<e.length;r++){let v=function(){let g=l.querySelector("#mermaid-space"),h=l.querySelector(".mermaid-content");if(!h)return;f(h);let w=i.querySelector("svg").cloneNode(!0);h.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new m(g,h)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},i=e[r],s=i.parentElement,c=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(c),L=c.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),E(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript" data-persist="true"></script><script src="../../../postscript.js" type="module" data-persist="true"></script></html>

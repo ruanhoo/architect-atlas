@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"><head><title>Data Model</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Alan's Architect Atlas"/><meta property="og:title" content="Data Model"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Data Model"/><meta name="twitter:description" content="Hub for data-model design."/><meta property="og:description" content="Hub for data-model design."/><meta property="og:image:alt" content="Hub for data-model design."/><meta property="og:image" content="https://ruanhoo.github.io/architect-atlas/static/og-image.png"/><meta property="og:image:url" content="https://ruanhoo.github.io/architect-atlas/static/og-image.png"/><meta name="twitter:image" content="https://ruanhoo.github.io/architect-atlas/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="ruanhoo.github.io/architect-atlas"/><meta property="og:url" content="https://ruanhoo.github.io/architect-atlas/CTA-Notes/Data-Management/Data-Model/data-model"/><meta property="twitter:url" content="https://ruanhoo.github.io/architect-atlas/CTA-Notes/Data-Management/Data-Model/data-model"/><link rel="icon" href="../../../static/icon.png"/><meta name="description" content="Hub for data-model design."/><meta name="generator" content="Quartz"/><link href="../../../index.css" rel="stylesheet" type="text/css" data-persist="true"/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvYXJjaGl0ZWN0LWF0bGFzLXZhdWx0L2FyY2hpdGVjdC1hdGxhcy12YXVsdC9zaXRlL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBSUo7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTs7QUFFQTtFQUNFOztBQUdGO0VBQ0U7O0FBSUY7RUFDRTtFQUNBO0VBQ0EiLCJzb3VyY2VzQ29udGVudCI6WyIuZXhwYW5kLWJ1dHRvbiB7XG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgZGlzcGxheTogZmxleDtcbiAgZmxvYXQ6IHJpZ2h0O1xuICBwYWRkaW5nOiAwLjRyZW07XG4gIG1hcmdpbjogMC4zcmVtO1xuICByaWdodDogMDsgLy8gTk9URTogcmlnaHQgd2lsbCBiZSBzZXQgaW4gbWVybWFpZC5pbmxpbmUudHNcbiAgY29sb3I6IHZhcigtLWdyYXkpO1xuICBib3JkZXItY29sb3I6IHZhcigtLWRhcmspO1xuICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gIGJvcmRlcjogMXB4IHNvbGlkO1xuICBib3JkZXItcmFkaXVzOiA1cHg7XG4gIG9wYWNpdHk6IDA7XG4gIHRyYW5zaXRpb246IDAuMnM7XG5cbiAgJiA+IHN2ZyB7XG4gICAgZmlsbDogdmFyKC0tbGlnaHQpO1xuICAgIGZpbHRlcjogY29udHJhc3QoMC4zKTtcbiAgfVxuXG4gICY6aG92ZXIge1xuICAgIGN1cnNvcjogcG9pbnRlcjtcbiAgICBib3JkZXItY29sb3I6IHZhcigtLXNlY29uZGFyeSk7XG4gIH1cblxuICAmOmZvY3VzIHtcbiAgICBvdXRsaW5lOiAwO1xuICB9XG59XG5cbnByZSB7XG4gICY6aG92ZXIgPiAuZXhwYW5kLWJ1dHRvbiB7XG4gICAgb3BhY2l0eTogMTtcbiAgICB0cmFuc2l0aW9uOiAwLjJzO1xuICB9XG59XG5cbiNtZXJtYWlkLWNvbnRhaW5lciB7XG4gIHBvc2l0aW9uOiBmaXhlZDtcbiAgY29udGFpbjogbGF5b3V0O1xuICB6LWluZGV4OiA5OTk7XG4gIGxlZnQ6IDA7XG4gIHRvcDogMDtcbiAgd2lkdGg6IDEwMHZ3O1xuICBoZWlnaHQ6IDEwMHZoO1xuICBvdmVyZmxvdzogaGlkZGVuO1xuICBkaXNwbGF5OiBub25lO1xuICBiYWNrZHJvcC1maWx0ZXI6IGJsdXIoNHB4KTtcbiAgYmFja2dyb3VuZDogcmdiYSgwLCAwLCAwLCAwLjUpO1xuXG4gICYuYWN0aXZlIHtcbiAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XG4gIH1cblxuICAmID4gI21lcm1haWQtc3BhY2Uge1xuICAgIGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWxpZ2h0Z3JheSk7XG4gICAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tbGlnaHQpO1xuICAgIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgICBwb3NpdGlvbjogZml4ZWQ7XG4gICAgdG9wOiA1MCU7XG4gICAgbGVmdDogNTAlO1xuICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlKC01MCUsIC01MCUpO1xuICAgIGhlaWdodDogODB2aDtcbiAgICB3aWR0aDogODB2dztcbiAgICBvdmVyZmxvdzogaGlkZGVuO1xuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRlbnQge1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" data-persist="true"/><script src="../../../prescript.js" type="application/javascript" data-persist="true"></script><script type="application/javascript" data-persist="true">const fetchData = fetch("../../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://ruanhoo.github.io/architect-atlas/index.xml"/></head><body data-slug="CTA-Notes/Data-Management/Data-Model/data-model"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../../..">Alan's Architect Atlas</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Search</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Search for something" placeholder="Search for something"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Dark mode"><title>Dark mode</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Light mode"><title>Light mode</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Reader mode"><title>Reader mode</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>{if(a.isFolder!==b.isFolder)return a.isFolder?-1:1;if(a.isFolder){let order=[\&quot;data management\&quot;,\&quot;data model\&quot;,\&quot;ldv\&quot;,\&quot;data migration\&quot;,\&quot;security\&quot;,\&quot;permissions &amp; sharing\&quot;,\&quot;other security capabilities\&quot;,\&quot;identity &amp; access management\&quot;,\&quot;integration\&quot;,\&quot;system landscape\&quot;,\&quot;sf licensing\&quot;,\&quot;org strategy\&quot;,\&quot;document management strategy\&quot;,\&quot;other key elements\&quot;,\&quot;sf solutioning\&quot;,\&quot;choosing the right capability\&quot;,\&quot;appexchange (buy vs build)\&quot;,\&quot;experience cloud\&quot;,\&quot;deployment &amp; dev lifecycle\&quot;,\&quot;communication\&quot;],last=[\&quot;references\&quot;],r=[a,b].map(n=>{let k=String(n.displayName).trim().toLowerCase();if(last.includes(k))return 2e3;let i=order.indexOf(k);return i===-1?1e3:i}),d=r[0]-r[1];if(d!==0)return d}else{let na=/^(\\d+)-/.exec(a.slugSegment),nb=/^(\\d+)-/.exec(b.slugSegment);if(na&amp;&amp;!nb)return-1;if(!na&amp;&amp;nb)return 1;if(na&amp;&amp;nb&amp;&amp;Number(na[1])!==Number(nb[1]))return Number(na[1])-Number(nb[1])}return a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;})}&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-166"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Explorer</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-166" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div><div class="sidebar-resizer" role="separator" aria-orientation="vertical" aria-label="Resize sidebar (drag, or use arrow keys; double-click to reset)" tabindex="0"></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../../CTA-Notes/">CTA Notes</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../../CTA-Notes/Data-Management/">Data Management</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../../CTA-Notes/Data-Management/Data-Model/">Data Model</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Data Model</a></div></nav><h1 class="article-title">Data Model</h1><p show-comma="true" class="content-meta"><time datetime="2026-11-14T15:17:07.000Z">Nov 14, 2026</time><span>12 min read</span></p><ul class="tags"><li><a href="../../../tags/cta" class="internal tag-link">cta</a></li><li><a href="../../../tags/data-management" class="internal tag-link">data-management</a></li><li><a href="../../../tags/data-model" class="internal tag-link">data-model</a></li><li><a href="../../../tags/erd" class="internal tag-link">erd</a></li><li><a href="../../../tags/relationships" class="internal tag-link">relationships</a></li></ul></div></div><article class="popover-hint"><p>Hub for data-model design. In a CTA scenario you draw a <strong>data model diagram</strong> (key objects, relationships, cardinality, volumes) and justify each choice against <strong>sharing, volume (LDV), reporting, and licensing</strong>. The fastest way to get fluent is to know Salesforce’s <strong>official ERDs</strong> for the core clouds — this note walks through each one and pulls out what matters for a board answer.</p>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Exam framing </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Every relationship and record-type decision has a side effect on security or performance. State the decision, then the consequence: <em>“Master-detail → child inherits sharing from parent”</em>, or <em>“Lookup → child needs its own OWD.”</em></p>
+</div>
+</blockquote>
+<h2 id="topics">Topics<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#topics" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ol>
+<li><a href="#reading-the-official-erds" class="internal alias">Reading the Official ERDs</a></li>
+<li><a href="#sales-cloud" class="internal alias">Sales Cloud</a></li>
+<li><a href="#service-cloud" class="internal alias">Service Cloud</a></li>
+<li><a href="#activities-tasks--events" class="internal alias">Activities (Tasks &amp; Events)</a></li>
+<li><a href="#knowledge" class="internal alias">Knowledge</a></li>
+<li><a href="#field-service--work-orders" class="internal alias">Field Service &amp; Work Orders</a></li>
+<li><a href="#sharing--team-selling" class="internal alias">Sharing &amp; Team Selling</a></li>
+<li><a href="#notes-attachments--documents" class="internal alias">Notes, Attachments &amp; Documents</a></li>
+<li><a href="#consent--privacy" class="internal alias">Consent &amp; Privacy</a></li>
+<li><a href="#design-decisions" class="internal alias">Design Decisions</a></li>
+<li><a href="#external-data" class="internal alias">External Data</a></li>
+<li><a href="#design-checklist" class="internal alias">Design Checklist</a></li>
+</ol>
+<hr/>
+<h2 id="reading-the-official-erds">Reading the Official ERDs<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#reading-the-official-erds" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Salesforce publishes product ERDs with a common notation. Each diagram’s legend points to the full notation guide at <strong>sfdc.co/erdnotation</strong>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Legend element</th><th>Meaning</th></tr></thead><tbody><tr><td><strong>Cloud entity</strong> (tinted box, API name in italics)</td><td>An object owned by that product’s data model</td></tr><tr><td><strong>Related entity</strong> (white/black border)</td><td>Object from another area shown for context (e.g. Account, Contact on the Service ERD)</td></tr><tr><td><strong>Extended related entity</strong></td><td>Related object with additional attributes shown</td></tr><tr><td><strong>External entity</strong></td><td>Object outside Salesforce</td></tr><tr><td><strong>Record type entity</strong> (dashed border)</td><td>A record type of an object, not a separate object</td></tr><tr><td><strong>Conceptual entity</strong> (dotted)</td><td>A grouping idea, not a real object</td></tr><tr><td><strong>Supertype / subtype</strong></td><td>Abstract group with concrete members (e.g. Activity → Task, Event)</td></tr><tr><td><strong>Relationship lines</strong></td><td>Parent-child, required, optional, many-to-many, extension, mutually exclusive (“OR”)</td></tr></tbody></table></div>
+<p>Official ERDs are published in the <a href="https://developer.salesforce.com/docs/platform/data-models/guide/get-started.html" class="external" target="_blank">Data Model Gallery<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>; the notation is explained in <a href="https://developer.salesforce.com/docs/platform/data-models/guide/salesforce-data-model-notation.html" class="external" target="_blank">Salesforce Data Model Notation<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>.</p>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>ERDs are dated </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>The ERDs below carry “subject to change without notice” and last-modified stamps of <strong>2021–2022</strong>. Use them to learn structure; confirm object and field names in the Object Reference before putting them on a board diagram.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="sales-cloud">Sales Cloud<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#sales-cloud" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><img src="../../../CTA-Notes/attachments/sales-cloud-overview-data-model.png" width="auto" height="auto" alt/></p>
+<p>Source: <a href="https://developer.salesforce.com/docs/platform/data-models/guide/sales-cloud-overview.html" class="external" target="_blank">Sales Overview Data Model<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> (Salesforce Data Model Gallery).</p>
+<p><strong>What to take from it:</strong></p>
+<ul>
+<li><strong>Account is the hub.</strong> Contacts, Opportunities, Cases, Assets, Contracts, Quotes, and Orders all hang off it.</li>
+<li><strong>Account hierarchy:</strong> Account has a self-relationship (parent / child) — use for corporate hierarchies; watch hierarchy depth and <a href="../../../CTA-Notes/Data-Management/LDV/ldv#lookup-skew-parent-skew--account-skew" class="internal alias" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/ldv">account skew</a>.</li>
+<li><strong>Contact ↔ Account many-to-many:</strong> <strong>Account Contact Relation</strong> (<code>AccountContactRelation</code>) lets one Contact relate to several Accounts, in addition to the Contact’s primary Account.</li>
+<li><strong>Contact roles are junction objects:</strong> Opportunity Contact Role, Contract Contact Role — and <strong>Campaign Member</strong>, which targets a Contact <strong>or</strong> a Lead (mutually exclusive).</li>
+<li><strong>Lead conversion:</strong> a Lead is <em>promoted to</em> Account, Contact, and Opportunity — it’s not a long-lived parent.</li>
+<li><strong>Opportunity detail:</strong> Opportunity → Opportunity Product (<code>OpportunityLineItem</code>) → Price Book Entry → Product (<code>Product2</code>). Quote and Order are priced from the same price book entries.</li>
+<li><strong>Teams:</strong> Account Team Member and Opportunity Team Member link the record to Users (see <a href="#sharing--team-selling" class="internal alias">Sharing &amp; Team Selling</a>).</li>
+<li><strong>Territory management:</strong> <code>Territory2</code> with <code>ObjectTerritory2Association</code> (Account ↔ Territory) and <code>UserTerritory2Association</code> (User ↔ Territory).</li>
+<li><strong>Partners:</strong> Partner and Partner Role relate Accounts to Opportunities.</li>
+<li><strong>Forecasting:</strong> Forecast Item / Opportunity Forecast Item hang off Opportunity.</li>
+</ul>
+<p>Deeper diagrams for pricing, forecasting, and territories are embedded in <a href="../../../CTA-Notes/SF-Solutioning/Choosing-the-Right-Capability/sales-cloud" class="internal" target="_blank" data-slug="CTA-Notes/SF-Solutioning/Choosing-the-Right-Capability/sales-cloud">sales-cloud</a>:</p>
+<ul>
+<li><a href="../../../CTA-Notes/attachments/sales-cloud-product-price-book-data-model.png" class="internal alias" target="_blank" data-slug="CTA-Notes/attachments/sales-cloud-product-price-book-data-model.png">Product &amp; price book</a></li>
+<li><a href="../../../CTA-Notes/attachments/sales-cloud-opportunity-forecasting-data-model.png" class="internal alias" target="_blank" data-slug="CTA-Notes/attachments/sales-cloud-opportunity-forecasting-data-model.png">Opportunity forecasting</a></li>
+<li><a href="../../../CTA-Notes/attachments/sales-cloud-territory-management-data-model.png" class="internal alias" target="_blank" data-slug="CTA-Notes/attachments/sales-cloud-territory-management-data-model.png">Territory management</a></li>
+</ul>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Board takeaway </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>If a scenario needs many-to-many between customers and contacts (e.g. shared contacts across subsidiaries), name <strong>Account Contact Relation</strong> rather than a custom junction. Pair with <a href="../../../CTA-Notes/Data-Management/Data-Model/standard-object-oddities" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Model/standard-object-oddities">standard-object-oddities</a>: Account Contact Relation cannot be used in a lookup field and is part of community sharing-set design.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="service-cloud">Service Cloud<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#service-cloud" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><img src="../../../CTA-Notes/attachments/service-cloud-support-overview-data-model.png" width="auto" height="auto" alt/></p>
+<p>Source: <a href="https://developer.salesforce.com/docs/platform/data-models/guide/service-cloud-support-overview.html" class="external" target="_blank">Support Overview Data Model<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> (Salesforce Data Model Gallery).</p>
+<p><strong>What to take from it:</strong></p>
+<ul>
+<li><strong>Case is the hub.</strong> It is reported by a Contact (and the Account via the Contact), and is the <em>subject of</em> many child objects.</li>
+<li><strong>Child objects of Case:</strong> Case Comment, Email Message, Case History, Case Milestone, Case Team Member (with Case Team Role), Case Article, Case Solution, Case Related Issue, Swarm / Swarm Member, Contact Request.</li>
+<li><strong>Entitlements and SLAs:</strong> Service Contract → Contract Line Item → Entitlement → (Entitlement Contact) → Case. Entitlements belong to an Account; Milestones attach to Cases through <strong>Case Milestone</strong>.</li>
+<li><strong>Incident / Problem:</strong> a Case relates to an Incident <strong>or</strong> a Problem through Case Related Issue (mutually exclusive in the diagram).</li>
+<li><strong>Knowledge links:</strong> Case Article joins a Case to a Knowledge Article; Case Solution links to the legacy Solution object. Both Solution and Knowledge use <strong>Category Data / Category Node</strong> (data categories).</li>
+<li><strong>Account Contact Relation</strong> appears here too — it’s the same junction as on the Sales ERD.</li>
+</ul>
+<p><strong>Design consequences:</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Observation</th><th>Consequence</th></tr></thead><tbody><tr><td>Case has many high-volume children (Email Message, Case Comment, Case History)</td><td>Plan for storage and LDV — Email Messages count toward data storage (<a href="../../../CTA-Notes/Data-Management/LDV/calculating-data-storage" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/calculating-data-storage">calculating-data-storage</a>)</td></tr><tr><td>Case Team Member / Case Team Role</td><td>Team-based sharing for Cases — see <a href="../../../CTA-Notes/Security/Permissions--and--Sharing/04-sharing-rules" class="internal" target="_blank" data-slug="CTA-Notes/Security/Permissions--and--Sharing/04-sharing-rules">04-sharing-rules</a></td></tr><tr><td>Entitlement → Case</td><td>Entitlement objects don’t support quick actions (<a href="../../../CTA-Notes/Data-Management/Data-Model/standard-object-oddities" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Model/standard-object-oddities">standard-object-oddities</a>)</td></tr><tr><td>Cases can be queue-owned</td><td>Standard queue-ownable object (<a href="../../../CTA-Notes/Data-Management/Data-Model/standard-object-oddities" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Model/standard-object-oddities">standard-object-oddities</a>)</td></tr></tbody></table></div>
+<p>Capability context: <a href="../../../CTA-Notes/SF-Solutioning/Choosing-the-Right-Capability/service-cloud" class="internal" target="_blank" data-slug="CTA-Notes/SF-Solutioning/Choosing-the-Right-Capability/service-cloud">service-cloud</a>.</p>
+<hr/>
+<h2 id="activities-tasks--events">Activities (Tasks &amp; Events)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#activities-tasks--events" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><img src="../../../CTA-Notes/attachments/platform-tasks-events-data-model.png" width="auto" height="auto" alt/></p>
+<p>Source: <a href="https://developer.salesforce.com/docs/platform/data-models/guide/tasks-events.html" class="external" target="_blank">Tasks &amp; Events Data Model<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> (Salesforce Data Model Gallery).</p>
+<p><strong>What to take from it:</strong></p>
+<ul>
+<li><strong>Activity</strong> is an abstract supertype with two concrete members: <strong>Task</strong> and <strong>Event</strong>.</li>
+<li>Activities use <strong>polymorphic</strong> relationships:
+<ul>
+<li><strong>“Who”</strong> (Activity Participant): Contact or Lead.</li>
+<li><strong>“What”</strong> (Activity Object): Account, Campaign, Case, Asset, Contract, Opportunity, Product, Solution, Order, or any <strong>custom object with the activity flag enabled</strong>.</li>
+</ul>
+</li>
+<li><strong>Shared Activities:</strong> <code>TaskRelation</code> and <code>EventRelation</code> (many “Who” per activity, invitees). The diagram notes <strong>TaskRelation is only available with Shared Activities enabled</strong>.</li>
+<li>Events can be invited to Users and Leads, and relate to Public or Resource <strong>Calendars</strong>.</li>
+<li>Activities have a <strong>recurrence</strong> self-relationship (recurring series).</li>
+</ul>
+<p><strong>Design consequences:</strong></p>
+<ul>
+<li>Polymorphic <code>WhoId</code> / <code>WhatId</code> make reporting and SOQL harder — joins need type filters.</li>
+<li>Activities are the classic <strong>LDV</strong> table (Task/Event volume grows fast) and a frequent <a href="../../../CTA-Notes/Data-Management/LDV/ldv#data-skew" class="internal alias" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/ldv">skew</a> source: millions of tasks under one Account.</li>
+<li>Controlled-by-parent behaviour for Activity: see <a href="../../../CTA-Notes/Data-Management/Data-Model/standard-object-oddities" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Model/standard-object-oddities">standard-object-oddities</a>.</li>
+</ul>
+<hr/>
+<h2 id="knowledge">Knowledge<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#knowledge" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><img src="../../../CTA-Notes/attachments/Knowledge_Objects.png" width="auto" height="auto" alt/></p>
+<p><strong>What to take from it:</strong></p>
+<ul>
+<li><strong>Abstract vs concrete objects:</strong> <code>KnowledgeArticle</code> / <code>KnowledgeArticleVersion</code> are the abstract objects; the org’s actual objects are <strong><code>Knowledge__ka</code></strong> (article) and <strong><code>Knowledge__kav</code></strong> (version), derived from them. The same pattern applies to ViewStat, VoteStat, and VersionHistory.</li>
+<li><strong>Article types in Lightning Knowledge are record types</strong> — <code>Knowledge__kav</code> carries <code>RecordTypeId</code> “for article type”.</li>
+<li><strong>Data categories:</strong> <code>Knowledge__DataCategorySelection</code> links versions to category group/name (drives visibility).</li>
+<li><strong>Linking to work:</strong> <code>CaseArticle</code> links a Case to an article; <code>LinkedArticle</code> links Work Orders / Work Order Line Items to an article (plus LinkedArticleFeed / History).</li>
+<li><strong>Engagement:</strong> <code>Knowledge__ViewStat</code>, <code>Knowledge__VoteStat</code>, <code>Vote</code>, and <code>Knowledge__Feed</code> / <code>FeedComment</code>.</li>
+</ul>
+<p>Capability context: <a href="../../../CTA-Notes/SF-Solutioning/Choosing-the-Right-Capability/knowledge-articles" class="internal" target="_blank" data-slug="CTA-Notes/SF-Solutioning/Choosing-the-Right-Capability/knowledge-articles">knowledge-articles</a>.</p>
+<hr/>
+<h2 id="field-service--work-orders">Field Service &amp; Work Orders<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#field-service--work-orders" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><img src="../../../CTA-Notes/attachments/WorkOrderERD.png" width="auto" height="auto" alt/></p>
+<p>Current official version: <a href="https://developer.salesforce.com/docs/platform/data-models/guide/field-service-core-data-model.html" class="external" target="_blank">Field Service Core Data Model<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> (Salesforce Data Model Gallery); the image above is an older diagram.</p>
+<p>The diagram groups objects by colour: standard sales/service objects, <strong>workforce</strong> objects, <strong>territory &amp; scheduling</strong> objects, and <strong>Service Appointment</strong> (the central object).</p>
+<p><strong>What to take from it:</strong></p>
+<ul>
+<li><strong>Work Order</strong> relates to Case, Account, Entitlement, Contact, Asset, Work Type, and Price Book. It has a self-relationship (parent work order).</li>
+<li><strong>Work Order Line Item</strong> is a child of Work Order (also self-related), carrying Asset, Work Type, and price book entry details.</li>
+<li><strong>Service Appointment</strong> is the central scheduling object. Its <em>parent record</em> can be a Work Order, Work Order Line Item, Account, Asset, Lead, or Opportunity.</li>
+<li><strong>Service Territory</strong> (with parent territory) groups resources; <strong>Service Territory Member</strong> joins Territory ↔ Service Resource and carries Operating Hours.</li>
+<li><strong>Service Resource</strong> ↔ User; resources have <strong>Skills</strong> (Service Resource Skill ↔ Skill), <strong>Capacity</strong>, <strong>Absences</strong>, and <strong>Preferences</strong>.</li>
+<li><strong>Skill Requirement</strong> can be set on Work Type, Work Order, or Work Order Line Item — scheduling matches requirements to resource skills.</li>
+<li><strong>Assigned Resource</strong> is the junction between Service Appointment and Service Resource (or Service Crew); <strong>Service Crew / Crew Member</strong> model teams.</li>
+<li><strong>Operating Hours</strong> → Time Slots; <strong>Shift</strong> ties resources to territories.</li>
+</ul>
+<p><strong>Design consequences:</strong></p>
+<ul>
+<li>Work Orders and Line Items are on the standard-object CRUD exception list (<a href="../../../CTA-Notes/Data-Management/Data-Model/standard-object-oddities" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Model/standard-object-oddities">standard-object-oddities</a>).</li>
+<li>A scenario asking for dispatch/scheduling is a justification point for <strong>Field Service</strong> vs custom — see <a href="../../../CTA-Notes/SF-Solutioning/Choosing-the-Right-Capability/work-orders-without-fsl" class="internal" target="_blank" data-slug="CTA-Notes/SF-Solutioning/Choosing-the-Right-Capability/work-orders-without-fsl">work-orders-without-fsl</a>.</li>
+</ul>
+<hr/>
+<h2 id="sharing--team-selling">Sharing &amp; Team Selling<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#sharing--team-selling" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><img src="../../../CTA-Notes/attachments/sharing-and-team-selling-data-model.png" width="auto" height="auto" alt/></p>
+<p><strong>What to take from it:</strong></p>
+<ul>
+<li>Every sharing-enabled object has a <strong><code>&lt;Object>Share</code></strong> table (CaseShare, LeadShare, ContactShare, AccountShare, CampaignShare, OpportunityShare). Each share row grants access to a <code>UserOrGroupId</code> — either a <strong>User</strong> or a <strong>Group</strong>.</li>
+<li><strong>Group</strong> has <code>RelatedId</code> pointing to <strong>UserRole</strong> — this is how role and role-and-subordinates groups exist as groups.</li>
+<li><strong>GroupMember</strong> joins Groups to Users or other Groups (nested groups).</li>
+<li>Team tables: <strong>AccountTeamMember</strong>, <strong>OpportunityTeamMember</strong>, and <strong>UserTeamMember</strong> (default team: <code>OwnerId</code> has <code>UserId</code> members).</li>
+</ul>
+<p><strong>Design consequences:</strong></p>
+<ul>
+<li>Share tables grow with sharing complexity — a large driver of <strong>sharing-recalculation cost</strong> and LDV problems (<a href="../../../CTA-Notes/Data-Management/LDV/ldv#sharing--ldv" class="internal alias" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/ldv">Sharing &amp; LDV</a>, <a href="../../../CTA-Notes/Security/Permissions--and--Sharing/22-sharing-recalculation" class="internal" target="_blank" data-slug="CTA-Notes/Security/Permissions--and--Sharing/22-sharing-recalculation">22-sharing-recalculation</a>).</li>
+<li>Objects without a share table (e.g. Price Book, Product) can’t use sharing rules — see <a href="../../../CTA-Notes/Data-Management/Data-Model/standard-object-oddities" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Model/standard-object-oddities">standard-object-oddities</a>.</li>
+<li>Implicit and team sharing behaviours: <a href="../../../CTA-Notes/Security/Permissions--and--Sharing/09-implicit-sharing" class="internal" target="_blank" data-slug="CTA-Notes/Security/Permissions--and--Sharing/09-implicit-sharing">09-implicit-sharing</a>, <a href="../../../CTA-Notes/Security/Permissions--and--Sharing/04-sharing-rules" class="internal" target="_blank" data-slug="CTA-Notes/Security/Permissions--and--Sharing/04-sharing-rules">04-sharing-rules</a>.</li>
+</ul>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>About this diagram </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>It is a simplified, plain-notation ERD (not the standard Salesforce ERD style). Treat it as a mental model of the sharing tables, not a complete schema.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="notes-attachments--documents">Notes, Attachments &amp; Documents<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#notes-attachments--documents" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><img src="../../../CTA-Notes/attachments/Notes_And_Attachment_Objects.png" width="auto" height="auto" alt/></p>
+<p><strong>What to take from it:</strong></p>
+<ul>
+<li><strong>Note</strong> and <strong>Attachment</strong> both use a polymorphic <strong><code>ParentId</code></strong> to point at Account, Contact, Opportunity, Case, Campaign, Solution, Product, and others.</li>
+<li><strong>Document</strong> sits in a <strong>Folder</strong> and has an <code>AuthId</code> to a User (legacy Documents tab).</li>
+</ul>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Legacy objects </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>This ERD shows the <strong>legacy</strong> Notes/Attachments/Documents objects. New designs use <strong>Files</strong> (ContentDocument / ContentVersion / ContentDocumentLink) and Enhanced Notes. File storage and external storage options: <a href="../../../CTA-Notes/System-Landscape/Document-Management-Strategy/document-management-systems" class="internal" target="_blank" data-slug="CTA-Notes/System-Landscape/Document-Management-Strategy/document-management-systems">document-management-systems</a>, <a href="../../../CTA-Notes/System-Landscape/file-solution" class="internal" target="_blank" data-slug="CTA-Notes/System-Landscape/file-solution">file-solution</a>. Migrating legacy attachments to Files: see <a href="../../../CTA-Notes/Data-Management/Data-Migration/data-migration" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Migration/data-migration">data-migration</a>.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="consent--privacy">Consent &amp; Privacy<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#consent--privacy" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><img src="../../../CTA-Notes/attachments/ConsentManagementDataModel.png" width="auto" height="auto" alt/></p>
+<p>Current official version: <a href="https://developer.salesforce.com/docs/platform/data-models/guide/privacy-consent.html" class="external" target="_blank">Privacy Consent Data Model<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> (Salesforce Data Model Gallery); it is broader than the simplified diagram above.</p>
+<p><strong>What to take from it:</strong></p>
+<ul>
+<li><strong>Individual</strong> is the hub. <strong>Lead, User, Person Account, and Contact</strong> each relate to an Individual record (the privacy profile for that person).</li>
+<li><strong>Contact Point Consent</strong> and <strong>Contact Point Type Consent</strong> record consent by channel/type, linked to the Individual and a <strong>Contact Point</strong>.</li>
+<li><strong>Data Use Purpose</strong> and <strong>Data Use Legal Basis</strong> capture <em>why</em> data is processed and the legal basis.</li>
+<li><strong>Brand</strong> relates to the consent objects so consent can be tracked per brand. The diagram numbers five objects (Individual, Contact Point Type Consent, Contact Point Consent, Data Use Purpose, Brand) 1–5.</li>
+<li>Privacy and consent objects take <strong>zero storage</strong> — see <a href="../../../CTA-Notes/Data-Management/Data-Model/standard-object-oddities" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Model/standard-object-oddities">standard-object-oddities</a>.</li>
+</ul>
+<p>Capability context: <a href="../../../CTA-Notes/Security/Other-Security-Capabilities/privacy-and-consent-management" class="internal" target="_blank" data-slug="CTA-Notes/Security/Other-Security-Capabilities/privacy-and-consent-management">privacy-and-consent-management</a>.</p>
+<hr/>
+<h2 id="design-decisions">Design Decisions<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#design-decisions" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="relationship-types">Relationship Types<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#relationship-types" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Option</th><th>Pros</th><th>Cons</th><th>When to use</th></tr></thead><tbody><tr><td><strong>Lookup</strong></td><td>Loose coupling; child keeps its own owner, OWD, and sharing; parent optional</td><td>No native roll-ups; no cascade delete by default</td><td>Independent entities that reference each other</td></tr><tr><td><strong>Master-detail</strong></td><td>Child inherits sharing and owner from parent; cascade delete; native roll-up summary</td><td>Child has no owner or own OWD; parent required; max 2 per object</td><td>Tight parent-child (line items); when you need roll-ups</td></tr><tr><td><strong>Junction object</strong> (two master-details)</td><td>Many-to-many; roll-ups on both parents</td><td>Inherits sharing from both parents; junction skew at volume</td><td>Many-to-many (see Campaign Member, Opportunity Contact Role in the Sales ERD)</td></tr><tr><td><strong>Self-lookup / hierarchy</strong></td><td>Parent-child within one object</td><td>Depth and reporting limits</td><td>Account hierarchy, Service Territory hierarchy</td></tr><tr><td><strong>Polymorphic lookup</strong></td><td>One field → several object types (<code>WhoId</code>, <code>WhatId</code>, <code>ParentId</code>)</td><td>Harder to report and query</td><td>Activities, notes, attachments</td></tr></tbody></table></div>
+<ul>
+<li><strong>Lookup → master-detail</strong> requires every child to already have a parent; <strong>master-detail → lookup</strong> requires removing roll-up summary fields first.</li>
+<li>Standard objects can’t be the detail side of a custom parent; custom objects can be the detail side of a standard parent.</li>
+<li>Hard limits that change designs — max 2 master-detail / 40 relationships per custom object, 3 custom detail levels, no master-detail on a populated custom object, cascade delete bypassing sharing, the 100,000-record lookup delete restriction, report-join limits: see <a href="../../../CTA-Notes/Data-Management/Data-Model/data-model-constraints-and-limits" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Model/data-model-constraints-and-limits">data-model-constraints-and-limits</a>.</li>
+<li>Junctions and huge fan-out are <a href="../../../CTA-Notes/Security/Permissions--and--Sharing/23-data-skew" class="internal alias" target="_blank" data-slug="CTA-Notes/Security/Permissions--and--Sharing/23-data-skew">data skew</a> candidates — <a href="../../../CTA-Notes/Data-Management/LDV/ldv#junction-object-skew" class="internal alias" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/ldv">Junction Object Skew</a>, <a href="../../../CTA-Notes/Data-Management/LDV/ldv#lookup-skew-parent-skew--account-skew" class="internal alias" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/ldv">account skew</a>.</li>
+</ul>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Rule of thumb </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Start with lookup. Choose master-detail only for <strong>sharing inheritance, cascade delete, or roll-ups</strong> when the child never exists without the parent.</p>
+</div>
+</blockquote>
+<h3 id="record-types">Record Types<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#record-types" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>Control which <strong>page layouts, picklist values, and business processes</strong> (Opportunity sales process, Case support process, Lead process) a user sees; assigned via profiles / permission sets.</li>
+<li>They <strong>do not affect record access.</strong></li>
+<li>On the Knowledge ERD they also define <strong>article types</strong> (<code>Knowledge__kav.RecordTypeId</code>).</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Option</th><th>Pros</th><th>Cons</th><th>When to use</th></tr></thead><tbody><tr><td><strong>Record types on one object</strong></td><td>One object, shared reporting and sharing model</td><td>Admin overhead per type; same OWD and field set for all</td><td>Variations of one entity (B2B vs B2C Account)</td></tr><tr><td><strong>Separate objects</strong></td><td>Different fields, sharing, lifecycle; clean security boundary</td><td>Duplicate config; cross-object reporting is harder</td><td>Genuinely different entities or very different volumes/sharing</td></tr><tr><td><strong>Dynamic Forms</strong></td><td>Show/hide fields without extra record types</td><td>Not available on every object (<a href="../../../CTA-Notes/Data-Management/Data-Model/standard-object-oddities" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Model/standard-object-oddities">standard-object-oddities</a>)</td><td>Layout variation only</td></tr></tbody></table></div>
+<h3 id="ownership--owd">Ownership &amp; OWD<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ownership--owd" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>Every record has <strong>one owner</strong> (except master-detail children); only certain standard objects can be queue-owned — <strong>Asset, Account, Contact, Campaign, and Contract can’t</strong>; Case, Lead, Order, Task, and Work Order can (<a href="../../../CTA-Notes/Data-Management/Data-Model/data-model-constraints-and-limits#ownership--queues" class="internal alias" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Model/data-model-constraints-and-limits">Ownership &amp; Queues</a>, <a href="../../../CTA-Notes/Data-Management/Data-Model/standard-object-oddities" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Model/standard-object-oddities">standard-object-oddities</a>).</li>
+<li>OWD is set per object; special cases and “Controlled by Parent” are in <a href="https://help.salesforce.com/s/articleView?id=sf.sharing_model_fields.htm&amp;type=5" class="external" target="_blank">Sharing Model Fields<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>.</li>
+<li>Many records under one owner or parent → <a href="../../../CTA-Notes/Data-Management/LDV/ldv#data-skew" class="internal alias" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/ldv">skew</a> and <a href="../../../CTA-Notes/Security/Permissions--and--Sharing/23-data-skew" class="internal" target="_blank" data-slug="CTA-Notes/Security/Permissions--and--Sharing/23-data-skew">23-data-skew</a>. Design so sharing is expressible with <strong>roles + OWD</strong>, not thousands of criteria-based rules (<a href="../../../CTA-Notes/Data-Management/LDV/ldv#sharing--ldv" class="internal alias" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/ldv">Sharing &amp; LDV</a>).</li>
+</ul>
+<h3 id="standard-vs-custom-objects">Standard vs Custom Objects<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#standard-vs-custom-objects" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>Prefer <strong>standard objects</strong> when they fit — features, reporting, and integrations come free.</li>
+<li>Standard-object quirks (no quick actions, no CRUD toggles, zero storage, no lookups, special team sharing): <a href="../../../CTA-Notes/Data-Management/Data-Model/standard-object-oddities" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Model/standard-object-oddities">standard-object-oddities</a>.</li>
+<li>Storage: <a href="../../../CTA-Notes/Data-Management/LDV/calculating-data-storage" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/calculating-data-storage">calculating-data-storage</a>. Licensing: <a href="../../../CTA-Notes/System-Landscape/SF-Licensing/licenses-guide" class="internal" target="_blank" data-slug="CTA-Notes/System-Landscape/SF-Licensing/licenses-guide">licenses-guide</a>.</li>
+</ul>
+<h3 id="person-accounts">Person Accounts<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#person-accounts" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>Combine Account and Contact into one record for <strong>B2C</strong>.</li>
+<li>Enabling is <strong>permanent</strong> — decide deliberately.</li>
+<li>Affects storage (a person account is both an Account and a Contact record), sharing, and Experience Cloud design; check ISV package compatibility first.</li>
+<li>The Consent ERD shows Person Account as an Individual-linked entity. Related: <a href="../../../CTA-Notes/Security/Identity--and--Access-Management/customer-identity-and-headless-identity" class="internal" target="_blank" data-slug="CTA-Notes/Security/Identity--and--Access-Management/customer-identity-and-headless-identity">customer-identity-and-headless-identity</a>.</li>
+</ul>
+<h3 id="packages--industry-solutions-to-consider">Packages &amp; Industry Solutions to Consider<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#packages--industry-solutions-to-consider" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Justify each choice in the Q&amp;A, even if you don’t pick it:</p>
+<ol>
+<li><strong>CPQ</strong> — products, quotes, pricing rules</li>
+<li><strong>Lightning Scheduler</strong> — appointment scheduling</li>
+<li><strong>Field Service</strong> (formerly Field Service Lightning) — dispatch, work orders, mobile (see ERD above)</li>
+<li><strong>Financial Services Cloud</strong> (optional)</li>
+</ol>
+<hr/>
+<h2 id="external-data">External Data<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#external-data" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>When data shouldn’t be copied into Salesforce (volume, cost, system of record elsewhere), use <strong>external objects</strong> via Salesforce Connect.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Topic</th><th>Summary</th></tr></thead><tbody><tr><td>External objects (<code>__x</code>)</td><td>Map external tables to Salesforce objects; no Salesforce storage</td></tr><tr><td>External lookup</td><td>Child standard/custom → parent <strong>external</strong> object</td></tr><tr><td>Indirect lookup</td><td>Child <strong>external</strong> → parent standard/custom, matched via External ID</td></tr><tr><td>OData adapter / Custom Apex adapter</td><td>OData when the source exposes it; Apex adapter otherwise</td></tr></tbody></table></div>
+<p>Detail: <a href="../../../CTA-Notes/Integration/32-salesforce-connect" class="internal" target="_blank" data-slug="CTA-Notes/Integration/32-salesforce-connect">32-salesforce-connect</a>. For archived data exposed this way: <a href="../../../CTA-Notes/Data-Management/LDV/data-archiving-and-backup" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/data-archiving-and-backup">data-archiving-and-backup</a>.</p>
+<hr/>
+<h2 id="design-checklist">Design Checklist<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#design-checklist" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled/> Key objects, relationships, and cardinalities on one diagram (start from the relevant official ERD)</li>
+<li class="task-list-item"><input type="checkbox" disabled/> Master-detail vs lookup justified per relationship (sharing, roll-ups, deletion)</li>
+<li class="task-list-item"><input type="checkbox" disabled/> Polymorphic and junction objects flagged for reporting and skew risk</li>
+<li class="task-list-item"><input type="checkbox" disabled/> Record types vs separate objects decided</li>
+<li class="task-list-item"><input type="checkbox" disabled/> OWD and ownership model per object</li>
+<li class="task-list-item"><input type="checkbox" disabled/> Record volumes per object; LDV and skew risks flagged</li>
+<li class="task-list-item"><input type="checkbox" disabled/> External data / archive objects marked</li>
+<li class="task-list-item"><input type="checkbox" disabled/> System of record identified for shared entities (<a href="../../../CTA-Notes/Data-Management/Data-Model/data-quality-and-mdm" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Model/data-quality-and-mdm">data-quality-and-mdm</a>)</li>
+<li class="task-list-item"><input type="checkbox" disabled/> Person Accounts decision explicit</li>
+</ul>
+<hr/>
+<h2 id="related-notes">Related Notes<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#related-notes" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><a href="../../../CTA-Notes/Data-Management/Data-Model/data-model-constraints-and-limits" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Model/data-model-constraints-and-limits">data-model-constraints-and-limits</a> — ownership/queue support, relationship, delete, and reporting limits that affect solution choice</li>
+<li><a href="../../../CTA-Notes/Data-Management/Data-Model/standard-object-oddities" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Model/standard-object-oddities">standard-object-oddities</a> — standard-object exceptions</li>
+<li><a href="../../../CTA-Notes/SF-Solutioning/Choosing-the-Right-Capability/sales-cloud" class="internal" target="_blank" data-slug="CTA-Notes/SF-Solutioning/Choosing-the-Right-Capability/sales-cloud">sales-cloud</a>, <a href="../../../CTA-Notes/SF-Solutioning/Choosing-the-Right-Capability/service-cloud" class="internal" target="_blank" data-slug="CTA-Notes/SF-Solutioning/Choosing-the-Right-Capability/service-cloud">service-cloud</a>, <a href="../../../CTA-Notes/SF-Solutioning/Choosing-the-Right-Capability/knowledge-articles" class="internal" target="_blank" data-slug="CTA-Notes/SF-Solutioning/Choosing-the-Right-Capability/knowledge-articles">knowledge-articles</a>, <a href="../../../CTA-Notes/SF-Solutioning/Choosing-the-Right-Capability/work-orders-without-fsl" class="internal" target="_blank" data-slug="CTA-Notes/SF-Solutioning/Choosing-the-Right-Capability/work-orders-without-fsl">work-orders-without-fsl</a> — capability notes for each ERD</li>
+<li><a href="../../../CTA-Notes/Data-Management/Data-Model/data-quality-and-mdm" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Model/data-quality-and-mdm">data-quality-and-mdm</a> — duplicates, system of record</li>
+<li><a href="../../../CTA-Notes/Data-Management/LDV/ldv" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/ldv">ldv</a> — skew, indexes, volume</li>
+<li><a href="../../../CTA-Notes/Data-Management/LDV/calculating-data-storage" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/calculating-data-storage">calculating-data-storage</a> — storage sizing</li>
+<li><a href="../../../CTA-Notes/Integration/32-salesforce-connect" class="internal" target="_blank" data-slug="CTA-Notes/Integration/32-salesforce-connect">32-salesforce-connect</a> — external objects</li>
+<li><a href="../../../CTA-Notes/Data-Management/Data-Migration/data-migration" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/Data-Migration/data-migration">data-migration</a> — loading the target schema</li>
+</ul>
+<blockquote class="callout note is-collapsible is-collapsed" data-callout="note" data-callout-fold>
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Org-validated build </p></div>
+                  <div class="fold-callout-icon"></div>
+                </div>
+<div class="callout-content">
+<p><a href="https://github.com/ruanhoo/architect-atlas-vault/tree/main/CTAPrepScripts/01-data-architecture/person-accounts" class="external" target="_blank">Person Accounts<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> — validated 2026-09-30, API v66.0</p>
+</div>
+</blockquote></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Graph View</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-63" aria-expanded="true"><h3>Table of Contents</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#topics" data-for="topics">Topics</a></li><li class="depth-0"><a href="#reading-the-official-erds" data-for="reading-the-official-erds">Reading the Official ERDs</a></li><li class="depth-0"><a href="#sales-cloud" data-for="sales-cloud">Sales Cloud</a></li><li class="depth-0"><a href="#service-cloud" data-for="service-cloud">Service Cloud</a></li><li class="depth-0"><a href="#activities-tasks--events" data-for="activities-tasks--events">Activities (Tasks &amp; Events)</a></li><li class="depth-0"><a href="#knowledge" data-for="knowledge">Knowledge</a></li><li class="depth-0"><a href="#field-service--work-orders" data-for="field-service--work-orders">Field Service &amp; Work Orders</a></li><li class="depth-0"><a href="#sharing--team-selling" data-for="sharing--team-selling">Sharing &amp; Team Selling</a></li><li class="depth-0"><a href="#notes-attachments--documents" data-for="notes-attachments--documents">Notes, Attachments &amp; Documents</a></li><li class="depth-0"><a href="#consent--privacy" data-for="consent--privacy">Consent &amp; Privacy</a></li><li class="depth-0"><a href="#design-decisions" data-for="design-decisions">Design Decisions</a></li><li class="depth-1"><a href="#relationship-types" data-for="relationship-types">Relationship Types</a></li><li class="depth-1"><a href="#record-types" data-for="record-types">Record Types</a></li><li class="depth-1"><a href="#ownership--owd" data-for="ownership--owd">Ownership &amp; OWD</a></li><li class="depth-1"><a href="#standard-vs-custom-objects" data-for="standard-vs-custom-objects">Standard vs Custom Objects</a></li><li class="depth-1"><a href="#person-accounts" data-for="person-accounts">Person Accounts</a></li><li class="depth-1"><a href="#packages--industry-solutions-to-consider" data-for="packages--industry-solutions-to-consider">Packages &amp; Industry Solutions to Consider</a></li><li class="depth-0"><a href="#external-data" data-for="external-data">External Data</a></li><li class="depth-0"><a href="#design-checklist" data-for="design-checklist">Design Checklist</a></li><li class="depth-0"><a href="#related-notes" data-for="related-notes">Related Notes</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Backlinks</h3><ul id="list-2" class="overflow"><li><a href="../../../CTA-Notes/Data-Management/Data-Migration/data-migration" class="internal">Data Migration</a></li><li><a href="../../../CTA-Notes/Data-Management/Data-Model/data-model-constraints-and-limits" class="internal">Data Model Constraints &amp; Limits</a></li><li><a href="../../../CTA-Notes/Data-Management/Data-Model/data-quality-and-mdm" class="internal">Data Quality &amp; Master Data Management</a></li><li><a href="../../../CTA-Notes/Data-Management/LDV/ldv" class="internal">Large Data Volumes (LDV)</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript" data-persist="true">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module" data-persist="true">function E(a,e){if(!a)return;function t(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function n(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}a?.addEventListener("click",t),window.addCleanup(()=>a?.removeEventListener("click",t)),document.addEventListener("keydown",n),window.addCleanup(()=>document.removeEventListener("keydown",n))}function f(a){for(;a.firstChild;)a.removeChild(a.firstChild)}var m=class{constructor(e,t){this.container=e;this.content=t;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),t=this.onMouseMove.bind(this),n=this.onMouseUp.bind(this),o=this.onTouchStart.bind(this),r=this.onTouchMove.bind(this),i=this.onTouchEnd.bind(this),s=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",t),document.addEventListener("mouseup",n),this.container.addEventListener("touchstart",o,{passive:!1}),document.addEventListener("touchmove",r,{passive:!1}),document.addEventListener("touchend",i),window.addEventListener("resize",s),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",t),()=>document.removeEventListener("mouseup",n),()=>this.container.removeEventListener("touchstart",o),()=>document.removeEventListener("touchmove",r),()=>document.removeEventListener("touchend",i),()=>window.removeEventListener("resize",s))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let t=this.createButton("+",()=>this.zoom(.1)),n=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(n),e.appendChild(o),e.appendChild(t),this.container.appendChild(e)}createButton(e,t){let n=document.createElement("button");return n.textContent=e,n.className="mermaid-control-button",n.addEventListener("click",t),window.addCleanup(()=>n.removeEventListener("click",t)),n}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}onTouchStart(e){if(e.touches.length!==1)return;this.isDragging=!0;let t=e.touches[0];this.startPan={x:t.clientX-this.currentPan.x,y:t.clientY-this.currentPan.y}}onTouchMove(e){if(!this.isDragging||e.touches.length!==1)return;e.preventDefault();let t=e.touches[0];this.currentPan={x:t.clientX-this.startPan.x,y:t.clientY-this.startPan.y},this.updateTransform()}onTouchEnd(){this.isDragging=!1}zoom(e){let t=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),n=this.content.getBoundingClientRect(),o=n.width/2,r=n.height/2,i=t-this.scale;this.currentPan.x-=o*i,this.currentPan.y-=r*i,this.scale=t,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){let t=this.content.querySelector("svg").getBoundingClientRect(),n=t.width/this.scale,o=t.height/this.scale;this.scale=1,this.currentPan={x:(this.container.clientWidth-n)/2,y:(this.container.clientHeight-o)/2},this.updateTransform()}},T=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],y;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;y||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let t=y.default,n=new WeakMap;for(let r of e)n.set(r,r.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let c=n.get(s);c&&(s.innerHTML=c)}let r=T.reduce((s,c)=>(s[c]=window.getComputedStyle(document.documentElement).getPropertyValue(c),s),{}),i=document.documentElement.getAttribute("saved-theme")==="dark";t.initialize({startOnLoad:!1,securityLevel:"loose",theme:i?"dark":"base",themeVariables:{fontFamily:r["--codeFont"],primaryColor:r["--light"],primaryTextColor:r["--darkgray"],primaryBorderColor:r["--tertiary"],lineColor:r["--darkgray"],secondaryColor:r["--secondary"],tertiaryColor:r["--tertiary"],clusterBkg:r["--light"],edgeLabelBackground:r["--highlight"]}}),await t.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let r=0;r<e.length;r++){let v=function(){let g=l.querySelector("#mermaid-space"),h=l.querySelector(".mermaid-content");if(!h)return;f(h);let w=i.querySelector("svg").cloneNode(!0);h.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new m(g,h)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},i=e[r],s=i.parentElement,c=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(c),L=c.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),E(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript" data-persist="true"></script><script src="../../../postscript.js" type="module" data-persist="true"></script></html>

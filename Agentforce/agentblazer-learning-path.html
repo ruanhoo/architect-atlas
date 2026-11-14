@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"><head><title>Agentblazer Status — Learning Path</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Alan's Architect Atlas"/><meta property="og:title" content="Agentblazer Status — Learning Path"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Agentblazer Status — Learning Path"/><meta name="twitter:description" content="Trailhead’s structured certification program for Agentforce skills. Three progressive levels, each building on the prior."/><meta property="og:description" content="Trailhead’s structured certification program for Agentforce skills. Three progressive levels, each building on the prior."/><meta property="og:image:alt" content="Trailhead’s structured certification program for Agentforce skills. Three progressive levels, each building on the prior."/><meta property="og:image" content="https://ruanhoo.github.io/architect-atlas/static/og-image.png"/><meta property="og:image:url" content="https://ruanhoo.github.io/architect-atlas/static/og-image.png"/><meta name="twitter:image" content="https://ruanhoo.github.io/architect-atlas/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="ruanhoo.github.io/architect-atlas"/><meta property="og:url" content="https://ruanhoo.github.io/architect-atlas/Agentforce/agentblazer-learning-path"/><meta property="twitter:url" content="https://ruanhoo.github.io/architect-atlas/Agentforce/agentblazer-learning-path"/><link rel="icon" href="../static/icon.png"/><meta name="description" content="Trailhead’s structured certification program for Agentforce skills. Three progressive levels, each building on the prior."/><meta name="generator" content="Quartz"/><link href="../index.css" rel="stylesheet" type="text/css" data-persist="true"/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvYXJjaGl0ZWN0LWF0bGFzLXZhdWx0L2FyY2hpdGVjdC1hdGxhcy12YXVsdC9zaXRlL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBSUo7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTs7QUFFQTtFQUNFOztBQUdGO0VBQ0U7O0FBSUY7RUFDRTtFQUNBO0VBQ0EiLCJzb3VyY2VzQ29udGVudCI6WyIuZXhwYW5kLWJ1dHRvbiB7XG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgZGlzcGxheTogZmxleDtcbiAgZmxvYXQ6IHJpZ2h0O1xuICBwYWRkaW5nOiAwLjRyZW07XG4gIG1hcmdpbjogMC4zcmVtO1xuICByaWdodDogMDsgLy8gTk9URTogcmlnaHQgd2lsbCBiZSBzZXQgaW4gbWVybWFpZC5pbmxpbmUudHNcbiAgY29sb3I6IHZhcigtLWdyYXkpO1xuICBib3JkZXItY29sb3I6IHZhcigtLWRhcmspO1xuICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gIGJvcmRlcjogMXB4IHNvbGlkO1xuICBib3JkZXItcmFkaXVzOiA1cHg7XG4gIG9wYWNpdHk6IDA7XG4gIHRyYW5zaXRpb246IDAuMnM7XG5cbiAgJiA+IHN2ZyB7XG4gICAgZmlsbDogdmFyKC0tbGlnaHQpO1xuICAgIGZpbHRlcjogY29udHJhc3QoMC4zKTtcbiAgfVxuXG4gICY6aG92ZXIge1xuICAgIGN1cnNvcjogcG9pbnRlcjtcbiAgICBib3JkZXItY29sb3I6IHZhcigtLXNlY29uZGFyeSk7XG4gIH1cblxuICAmOmZvY3VzIHtcbiAgICBvdXRsaW5lOiAwO1xuICB9XG59XG5cbnByZSB7XG4gICY6aG92ZXIgPiAuZXhwYW5kLWJ1dHRvbiB7XG4gICAgb3BhY2l0eTogMTtcbiAgICB0cmFuc2l0aW9uOiAwLjJzO1xuICB9XG59XG5cbiNtZXJtYWlkLWNvbnRhaW5lciB7XG4gIHBvc2l0aW9uOiBmaXhlZDtcbiAgY29udGFpbjogbGF5b3V0O1xuICB6LWluZGV4OiA5OTk7XG4gIGxlZnQ6IDA7XG4gIHRvcDogMDtcbiAgd2lkdGg6IDEwMHZ3O1xuICBoZWlnaHQ6IDEwMHZoO1xuICBvdmVyZmxvdzogaGlkZGVuO1xuICBkaXNwbGF5OiBub25lO1xuICBiYWNrZHJvcC1maWx0ZXI6IGJsdXIoNHB4KTtcbiAgYmFja2dyb3VuZDogcmdiYSgwLCAwLCAwLCAwLjUpO1xuXG4gICYuYWN0aXZlIHtcbiAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XG4gIH1cblxuICAmID4gI21lcm1haWQtc3BhY2Uge1xuICAgIGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWxpZ2h0Z3JheSk7XG4gICAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tbGlnaHQpO1xuICAgIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgICBwb3NpdGlvbjogZml4ZWQ7XG4gICAgdG9wOiA1MCU7XG4gICAgbGVmdDogNTAlO1xuICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlKC01MCUsIC01MCUpO1xuICAgIGhlaWdodDogODB2aDtcbiAgICB3aWR0aDogODB2dztcbiAgICBvdmVyZmxvdzogaGlkZGVuO1xuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRlbnQge1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" data-persist="true"/><script src="../prescript.js" type="application/javascript" data-persist="true"></script><script type="application/javascript" data-persist="true">const fetchData = fetch("../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://ruanhoo.github.io/architect-atlas/index.xml"/></head><body data-slug="Agentforce/agentblazer-learning-path"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="..">Alan's Architect Atlas</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Search</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Search for something" placeholder="Search for something"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Dark mode"><title>Dark mode</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Light mode"><title>Light mode</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Reader mode"><title>Reader mode</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>{if(a.isFolder!==b.isFolder)return a.isFolder?-1:1;if(a.isFolder){let order=[\&quot;data management\&quot;,\&quot;data model\&quot;,\&quot;ldv\&quot;,\&quot;data migration\&quot;,\&quot;security\&quot;,\&quot;permissions &amp; sharing\&quot;,\&quot;other security capabilities\&quot;,\&quot;identity &amp; access management\&quot;,\&quot;integration\&quot;,\&quot;system landscape\&quot;,\&quot;sf licensing\&quot;,\&quot;org strategy\&quot;,\&quot;document management strategy\&quot;,\&quot;other key elements\&quot;,\&quot;sf solutioning\&quot;,\&quot;choosing the right capability\&quot;,\&quot;appexchange (buy vs build)\&quot;,\&quot;experience cloud\&quot;,\&quot;deployment &amp; dev lifecycle\&quot;,\&quot;communication\&quot;],last=[\&quot;references\&quot;],r=[a,b].map(n=>{let k=String(n.displayName).trim().toLowerCase();if(last.includes(k))return 2e3;let i=order.indexOf(k);return i===-1?1e3:i}),d=r[0]-r[1];if(d!==0)return d}else{let na=/^(\\d+)-/.exec(a.slugSegment),nb=/^(\\d+)-/.exec(b.slugSegment);if(na&amp;&amp;!nb)return-1;if(!na&amp;&amp;nb)return 1;if(na&amp;&amp;nb&amp;&amp;Number(na[1])!==Number(nb[1]))return Number(na[1])-Number(nb[1])}return a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;})}&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-146"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Explorer</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-146" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div><div class="sidebar-resizer" role="separator" aria-orientation="vertical" aria-label="Resize sidebar (drag, or use arrow keys; double-click to reset)" tabindex="0"></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../Agentforce/">Agentforce</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Agentblazer Status — Learning Path</a></div></nav><h1 class="article-title">Agentblazer Status — Learning Path</h1><p show-comma="true" class="content-meta"><time datetime="2026-11-08T15:04:04.000Z">Nov 08, 2026</time><span>6 min read</span></p><ul class="tags"><li><a href="../tags/agentforce" class="internal tag-link">agentforce</a></li><li><a href="../tags/agentblazer" class="internal tag-link">agentblazer</a></li><li><a href="../tags/trailhead" class="internal tag-link">trailhead</a></li><li><a href="../tags/learning-path" class="internal tag-link">learning-path</a></li><li><a href="../tags/certification" class="internal tag-link">certification</a></li></ul></div></div><article class="popover-hint"><p>Trailhead’s structured certification program for Agentforce skills. Three progressive levels, each building on the prior. Annual renewal model (content refreshed yearly — currently 2026 cohort).</p>
+<p><strong>Source:</strong> <a href="https://trailhead.salesforce.com/agentblazer" class="external" target="_blank">https://trailhead.salesforce.com/agentblazer<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></p>
+<hr/>
+<h2 id="level-1-champion-2026">Level 1: Champion 2026<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#level-1-champion-2026" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Total:</strong> 7,500 pts | ~7 hrs 53 mins | Intermediate | End User</p>
+<blockquote>
+<p>Goal: Confidently explain Agentforce concepts and their business impact. Build basic agents and identify use cases.</p>
+</blockquote>
+<h3 id="section-1--get-started-with-artificial-intelligence-basics">Section 1 — Get Started with Artificial Intelligence Basics<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#section-1--get-started-with-artificial-intelligence-basics" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>+800 pts | ~1 hr 20 mins | 6 steps</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Module</th><th>Points</th><th>Duration</th><th>Description</th></tr></thead><tbody><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/becoming-an-agentblazer-quick-look" class="external" target="_blank">Becoming an Agentblazer<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+100</td><td>~10 min</td><td>Why Agentblazer Status matters and how to earn it</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/artificial-intelligence-fundamentals" class="external" target="_blank">Artificial Intelligence Fundamentals<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+100</td><td>~10 min</td><td>Basics of AI and the tech behind it</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/generative-ai-basics" class="external" target="_blank">Generative AI Basics<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+200</td><td>~20 min</td><td>Capabilities of generative AI and the technology powering it</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/natural-language-processing-basics" class="external" target="_blank">Natural Language Processing Basics<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+200</td><td>~20 min</td><td>How AI enables computers to interpret and generate natural language</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/large-language-models" class="external" target="_blank">Large Language Models<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+200</td><td>~15 min</td><td>LLMs and how Salesforce uses them</td></tr><tr><td><em>Link:</em> How Salesforce Shapes Ethical AI Standards in the Agent Era</td><td>—</td><td>~5 min</td><td>Responsible AI principles for design, development, and use of agents</td></tr></tbody></table></div>
+<h3 id="section-2--explore-salesforce-ai">Section 2 — Explore Salesforce AI<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#section-2--explore-salesforce-ai" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>+2,000 pts | ~3 hrs 5 mins | 7 steps</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Module</th><th>Points</th><th>Duration</th><th>Description</th></tr></thead><tbody><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/data-fundamentals-for-ai" class="external" target="_blank">Data Fundamentals for AI<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+400</td><td>~35 min</td><td>Importance of data and ethics for AI innovations</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/ai-data-crm-quick-look" class="external" target="_blank">Data + AI + CRM: Quick Look<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+100</td><td>~15 min</td><td>How Data + AI + CRM work together</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/prompt-fundamentals" class="external" target="_blank">Prompt Fundamentals<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+300</td><td>~25 min</td><td>Writing prompts effectively for generative AI</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/prompt-builder-basics" class="external" target="_blank">Prompt Builder Basics<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+400</td><td>~45 min</td><td>Creating and using prompt templates in orgs</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/the-einstein-trust-layer" class="external" target="_blank">The Agentforce Trust Layer<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+300</td><td>~30 min</td><td>How the Einstein Trust Layer protects generative AI data</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/autonomous-agents" class="external" target="_blank">Autonomous Agents<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+300</td><td>~25 min</td><td>Business impact and transformative power of autonomous agents</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/reasoning-in-artificial-intelligence" class="external" target="_blank">Reasoning in Artificial Intelligence<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+200</td><td>~10 min</td><td>How AI uses reasoning to solve problems and simulate human planning</td></tr></tbody></table></div>
+<h3 id="section-3--meet-agentforce-and-the-new-agentforce-builder">Section 3 — Meet Agentforce and the New Agentforce Builder<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#section-3--meet-agentforce-and-the-new-agentforce-builder" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>+700 pts | ~1 hr 5 mins | 5 steps</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Module</th><th>Points</th><th>Duration</th><th>Description</th></tr></thead><tbody><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/introduction-to-agentforce" class="external" target="_blank">Introduction to Agentforce<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+100</td><td>~10 min</td><td>How Agentforce works and what jobs it can perform</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/einstein-copilot-basics" class="external" target="_blank">Agentforce Basics<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+300</td><td>~30 min</td><td>Setting up and using AI agents</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/new-agentforce-builder-quick-look" class="external" target="_blank">New Agentforce Builder: Quick Look<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+100</td><td>~10 min</td><td>Tour of the new builder for creating and testing agents</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/introduction-to-agent-builder" class="external" target="_blank">Introduction to Agentforce Builder<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+100</td><td>~10 min</td><td>Agentforce Builder features for creating and customising agents</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/agentforce-for-setup-quick-look" class="external" target="_blank">Setup with Agentforce: Quick Look<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+100</td><td>~5 min</td><td>Speeding up admin tasks with Setup with Agentforce</td></tr></tbody></table></div>
+<h3 id="section-4--run-your-business-with-agentforce">Section 4 — Run Your Business with Agentforce<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#section-4--run-your-business-with-agentforce" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>+700 pts | ~40 mins | 4 steps</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Module</th><th>Points</th><th>Duration</th><th>Description</th></tr></thead><tbody><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/agentforce-service-agent-quick-look" class="external" target="_blank">Agentforce for Service<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+400</td><td>~25 min</td><td>AI agents helping customers via autonomous, data-grounded responses</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/agentforce-sales-agents-quick-look" class="external" target="_blank">Agentforce for Sales: Quick Look<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+100</td><td>~5 min</td><td>How Agentforce helps sales reps nurture leads and close deals</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/agentforce-on-the-salesforce-mobile-app-quick-look" class="external" target="_blank">Agentforce on the Salesforce Mobile App: Quick Look<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+100</td><td>~5 min</td><td>Setting up Agentforce on mobile</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/agentexchange-quick-look" class="external" target="_blank">AgentExchange: Quick Look<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+100</td><td>~5 min</td><td>AgentExchange — unified marketplace for Salesforce and Slack</td></tr></tbody></table></div>
+<h3 id="section-5--get-hands-on-with-agentforce">Section 5 — Get Hands On with Agentforce<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#section-5--get-hands-on-with-agentforce" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>+3,300 pts | ~1 hr 43 mins | 4 steps</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Module</th><th>Points</th><th>Duration</th><th>Description</th></tr></thead><tbody><tr><td><em>Community:</em> Join the Agentblazer Community</td><td>—</td><td>~3 min</td><td>Skills, best practices, product experts, career showcasing</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/quick-start-assemble-a-service-agent-with-agentforce-builder" class="external" target="_blank">Quick Start: Assemble a Service Agent with Agentforce Builder<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+1,000</td><td>~40 min</td><td>Create a service agent for bookings and recommendations</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/programmatic-instructions-in-agentforce" class="external" target="_blank">Programmatic Instructions in Agentforce<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+300</td><td>~25 min</td><td>Variables, conditional instructions, and filters to enforce business rules</td></tr><tr><td><a href="https://trailhead.salesforce.com/content/learn/modules/use-employee-agents-to-get-work-done" class="external" target="_blank">Use Employee Agents to Get Work Done<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>+2,000</td><td>~35 min</td><td>Employee agents — Coral Cloud Resorts Concierge scenario</td></tr></tbody></table></div>
+<h3 id="champion-skills-gained">Champion Skills Gained<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#champion-skills-gained" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>AI Development, Artificial Intelligence, AI Agents, AI Analytics, AI Ethics and Trust, Applications of AI, Configuration Management, General Sales Practices, Sales Management, Prospecting and Qualification, Productivity, Automation, Collaboration, App and Web Design, Agile Software Development, App Development and Engineering Practices, Business Solutions, Business Intelligence, Data Governance and Ethics, Data Management, Computer Science, Identity and Access Management, Customer Service</p>
+<hr/>
+<h2 id="level-2-innovator-2026">Level 2: Innovator 2026<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#level-2-innovator-2026" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Total:</strong> 10,900 pts | ~12 hrs 55 mins | Intermediate | Administrator
+<strong>Prerequisite:</strong> Champion trail</p>
+<blockquote>
+<p>Goal: Implement Agentforce solutions to drive measurable business outcomes. Hands-on agent builds for sales and service.</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Section</th><th>Points</th><th>Duration</th><th>Steps</th></tr></thead><tbody><tr><td>Drive AI Within Your Organization</td><td>+2,000</td><td>~3 hrs 10 min</td><td>7</td></tr><tr><td>Get Hands On With Prompt Builder</td><td>+2,400</td><td>~2 hrs 10 min</td><td>4</td></tr><tr><td>Customize Agentforce and Deploy Your Agents</td><td>+3,200</td><td>~3 hrs 10 min</td><td>5</td></tr><tr><td>Sell Smarter with Agentforce</td><td>+2,100</td><td>~3 hrs</td><td>6</td></tr><tr><td>Close Cases Faster with Service Assistant</td><td>+800</td><td>~1 hr</td><td>2</td></tr><tr><td>Discover Agentforce for Industries</td><td>+400</td><td>~25 min</td><td>2</td></tr></tbody></table></div>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Module detail </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Individual module names within each section require a logged-in Trailhead session to view. Section names and totals are public.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="level-3-legend-2026">Level 3: Legend 2026<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#level-3-legend-2026" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Total:</strong> 16,900 pts | ~19 hrs 23 mins | Advanced | Administrator
+<strong>Prerequisite:</strong> Champion trail</p>
+<blockquote>
+<p>Goal: Design complex AI strategies, advanced agent customisations, full agent lifecycle management, and lead organisational AI adoption. Eligible for Agentforce Specialist certification.</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Section</th><th>Points</th><th>Duration</th><th>Steps</th></tr></thead><tbody><tr><td>Become a Salesforce Certified Agentforce Specialist</td><td>—</td><td>—</td><td>1</td></tr><tr><td>Create Advanced Agent Customizations</td><td>+10,100</td><td>~7 hrs 45 min</td><td>8</td></tr><tr><td>Ground Your Agent with Data</td><td>+500</td><td>~55 min</td><td>4</td></tr><tr><td>Manage Your Agent’s Data</td><td>+1,200</td><td>~2 hrs 55 min</td><td>5</td></tr><tr><td>Test and Monitor Your Agent</td><td>+1,800</td><td>~1 hr 53 min</td><td>4</td></tr><tr><td>Deploy Your Agent to Slack</td><td>+1,800</td><td>~2 hrs 20 min</td><td>4</td></tr><tr><td>Develop with Agentforce Tools</td><td>+1,400</td><td>~1 hr 45 min</td><td>4</td></tr><tr><td>Lead the Way with AI</td><td>+100</td><td>~10 min</td><td>1</td></tr></tbody></table></div>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Module detail </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Individual module names within each section require a logged-in Trailhead session to view.</p>
+</div>
+</blockquote>
+<h3 id="legend-skills-covered-summary">Legend Skills Covered (summary)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#legend-skills-covered-summary" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Artificial Intelligence, APIs, AI Agents, Productivity, Data Integration, AI Development, and 18+ additional skills across data, business, and technical domains.</p>
+<hr/>
+<h2 id="key-observations-for-cta-study">Key Observations for CTA Study<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#key-observations-for-cta-study" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>What Champion covers that matters for CTA </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>Einstein Trust Layer (dedicated module) — know data masking, zero retention, secure gateway</li>
+<li>Prompt Builder — merge fields, prompt templates, grounding</li>
+<li>Programmatic Instructions — variables, conditionals, filters in agent config</li>
+<li>Agentforce for Service — grounded autonomous responses, Omni-Channel handoff</li>
+</ul>
+</div>
+</blockquote>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>What Legend signals matters for advanced solutioning </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>“Ground Your Agent with Data” — Data Cloud + RAG integration</li>
+<li>“Manage Your Agent’s Data” — data lifecycle, governance</li>
+<li>“Test and Monitor Your Agent” — testing methodology, analytics</li>
+<li>“Deploy Your Agent to Slack” — multi-channel deployment</li>
+<li>“Develop with Agentforce Tools” — Apex/API extensibility</li>
+<li>“Create Advanced Agent Customizations” — largest section (~8 hrs), bulk of advanced knowledge</li>
+</ul>
+</div>
+</blockquote>
+<h2 id="folder-structure-mirrors-trailhead-feature-taxonomy">Folder Structure (mirrors Trailhead feature taxonomy)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#folder-structure-mirrors-trailhead-feature-taxonomy" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Folder</th><th>What lives here</th></tr></thead><tbody><tr><td><code>01 AI Foundations/</code></td><td>AI/ML/LLM fundamentals — prerequisites to Agentforce</td></tr><tr><td><code>02 Agentforce Platform/</code></td><td>Core platform concepts, agent types, ecosystem overview</td></tr><tr><td><code>03 Agentforce Builder/</code></td><td>Builder UI, configuration, instructions, hands-on labs</td></tr><tr><td><code>04 Prompts &amp; Grounding/</code></td><td>Prompt engineering, Prompt Builder, data grounding, RAG</td></tr><tr><td><code>05 Trust &amp; Security/</code></td><td>Einstein Trust Layer, permissions, running user, compliance</td></tr><tr><td><code>06 Agentforce for Service/</code></td><td>Service agent, employee agent, case deflection</td></tr><tr><td><code>07 Agentforce for Sales/</code></td><td>SDR agent, Sales Coach, pipeline integration</td></tr><tr><td><code>08 Deployment &amp; Channels/</code></td><td>Mobile, Slack, Experience Cloud, channel configuration</td></tr><tr><td><code>09 Testing &amp; Monitoring/</code></td><td>Agent testing, analytics, audit, production monitoring</td></tr><tr><td><code>10 Developer Tools/</code></td><td>Apex actions, APIs, CLI tooling, advanced customizations</td></tr><tr><td><code>11 Industries/</code></td><td>Industry-cloud-specific agents and templates</td></tr><tr><td><code>12 AI Strategy &amp; Leadership/</code></td><td>Business case, adoption, governance, change management</td></tr><tr><td><code>13 Licensing &amp; Limits/</code></td><td>Conversation pricing, entitlements, limits</td></tr></tbody></table></div>
+<h2 id="module--note-cross-reference">Module → Note Cross-Reference<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#module--note-cross-reference" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="champion-modules">Champion modules<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#champion-modules" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><a href="../Agentforce/01-AI-Foundations/artificial-intelligence-fundamentals" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/artificial-intelligence-fundamentals">artificial-intelligence-fundamentals</a> — AI Foundations</li>
+<li><a href="../Agentforce/01-AI-Foundations/generative-ai-basics" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/generative-ai-basics">generative-ai-basics</a> — AI Foundations</li>
+<li><a href="../Agentforce/01-AI-Foundations/natural-language-processing-basics" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/natural-language-processing-basics">natural-language-processing-basics</a> — AI Foundations</li>
+<li><a href="../Agentforce/01-AI-Foundations/large-language-models" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/large-language-models">large-language-models</a> — AI Foundations</li>
+<li><a href="../Agentforce/01-AI-Foundations/data-fundamentals-for-ai" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/data-fundamentals-for-ai">data-fundamentals-for-ai</a> — AI Foundations</li>
+<li><a href="../Agentforce/01-AI-Foundations/reasoning-in-artificial-intelligence" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/reasoning-in-artificial-intelligence">reasoning-in-artificial-intelligence</a> — AI Foundations</li>
+<li><a href="../Agentforce/02-Agentforce-Platform/autonomous-agents" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/autonomous-agents">autonomous-agents</a> — Agentforce Platform</li>
+<li><a href="../Agentforce/02-Agentforce-Platform/introduction-to-agentforce" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/introduction-to-agentforce">introduction-to-agentforce</a> — Agentforce Platform</li>
+<li><a href="../Agentforce/02-Agentforce-Platform/agentforce-basics" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-basics">agentforce-basics</a> — Agentforce Platform</li>
+<li><a href="../Agentforce/02-Agentforce-Platform/data-ai-crm-quick-look" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/data-ai-crm-quick-look">data-ai-crm-quick-look</a> — Agentforce Platform</li>
+<li><a href="../Agentforce/02-Agentforce-Platform/agentexchange-quick-look" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentexchange-quick-look">agentexchange-quick-look</a> — Agentforce Platform</li>
+<li><a href="../Agentforce/03-Agentforce-Builder/new-agentforce-builder-quick-look" class="internal" target="_blank" data-slug="Agentforce/03-Agentforce-Builder/new-agentforce-builder-quick-look">new-agentforce-builder-quick-look</a> — Agentforce Builder</li>
+<li><a href="../Agentforce/03-Agentforce-Builder/introduction-to-agentforce-builder" class="internal" target="_blank" data-slug="Agentforce/03-Agentforce-Builder/introduction-to-agentforce-builder">introduction-to-agentforce-builder</a> — Agentforce Builder</li>
+<li><a href="../Agentforce/03-Agentforce-Builder/quick-start-assemble-service-agent" class="internal" target="_blank" data-slug="Agentforce/03-Agentforce-Builder/quick-start-assemble-service-agent">quick-start-assemble-service-agent</a> — Agentforce Builder</li>
+<li><a href="../Agentforce/03-Agentforce-Builder/programmatic-instructions-in-agentforce" class="internal" target="_blank" data-slug="Agentforce/03-Agentforce-Builder/programmatic-instructions-in-agentforce">programmatic-instructions-in-agentforce</a> — Agentforce Builder</li>
+<li><a href="../Agentforce/03-Agentforce-Builder/setup-with-agentforce-quick-look" class="internal" target="_blank" data-slug="Agentforce/03-Agentforce-Builder/setup-with-agentforce-quick-look">setup-with-agentforce-quick-look</a> — Agentforce Builder</li>
+<li><a href="../Agentforce/04-Prompts--and--Grounding/prompt-fundamentals" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/prompt-fundamentals">prompt-fundamentals</a> — Prompts &amp; Grounding</li>
+<li><a href="../Agentforce/04-Prompts--and--Grounding/prompt-builder-basics" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/prompt-builder-basics">prompt-builder-basics</a> — Prompts &amp; Grounding</li>
+<li><a href="../Agentforce/05-Trust--and--Security/agentforce-trust-layer-module" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/agentforce-trust-layer-module">agentforce-trust-layer-module</a> — Trust &amp; Security</li>
+<li><a href="../Agentforce/06-Agentforce-for-Service/agentforce-for-service-module" class="internal" target="_blank" data-slug="Agentforce/06-Agentforce-for-Service/agentforce-for-service-module">agentforce-for-service-module</a> — Agentforce for Service</li>
+<li><a href="../Agentforce/06-Agentforce-for-Service/use-employee-agents" class="internal" target="_blank" data-slug="Agentforce/06-Agentforce-for-Service/use-employee-agents">use-employee-agents</a> — Agentforce for Service</li>
+<li><a href="../Agentforce/07-Agentforce-for-Sales/agentforce-for-sales-quick-look" class="internal" target="_blank" data-slug="Agentforce/07-Agentforce-for-Sales/agentforce-for-sales-quick-look">agentforce-for-sales-quick-look</a> — Agentforce for Sales</li>
+<li><a href="../Agentforce/08-Deployment--and--Channels/agentforce-on-mobile-quick-look" class="internal" target="_blank" data-slug="Agentforce/08-Deployment--and--Channels/agentforce-on-mobile-quick-look">agentforce-on-mobile-quick-look</a> — Deployment &amp; Channels</li>
+</ul>
+<h3 id="innovator-sections">Innovator sections<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#innovator-sections" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><a href="../Agentforce/12-AI-Strategy--and--Leadership/drive-ai-within-your-organisation" class="internal" target="_blank" data-slug="Agentforce/12-AI-Strategy--and--Leadership/drive-ai-within-your-organisation">drive-ai-within-your-organisation</a> — AI Strategy &amp; Leadership</li>
+<li><a href="../Agentforce/04-Prompts--and--Grounding/get-hands-on-with-prompt-builder" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/get-hands-on-with-prompt-builder">get-hands-on-with-prompt-builder</a> — Prompts &amp; Grounding</li>
+<li><a href="../Agentforce/03-Agentforce-Builder/customize-agentforce-and-deploy" class="internal" target="_blank" data-slug="Agentforce/03-Agentforce-Builder/customize-agentforce-and-deploy">customize-agentforce-and-deploy</a> — Agentforce Builder</li>
+<li><a href="../Agentforce/07-Agentforce-for-Sales/sell-smarter-with-agentforce" class="internal" target="_blank" data-slug="Agentforce/07-Agentforce-for-Sales/sell-smarter-with-agentforce">sell-smarter-with-agentforce</a> — Agentforce for Sales</li>
+<li><a href="../Agentforce/06-Agentforce-for-Service/close-cases-faster-service-assistant" class="internal" target="_blank" data-slug="Agentforce/06-Agentforce-for-Service/close-cases-faster-service-assistant">close-cases-faster-service-assistant</a> — Agentforce for Service</li>
+<li><a href="../Agentforce/11-Industries/agentforce-for-industries" class="internal" target="_blank" data-slug="Agentforce/11-Industries/agentforce-for-industries">agentforce-for-industries</a> — Industries</li>
+</ul>
+<h3 id="legend-sections">Legend sections<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#legend-sections" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><a href="../Agentforce/10-Developer-Tools/advanced-agent-customizations" class="internal" target="_blank" data-slug="Agentforce/10-Developer-Tools/advanced-agent-customizations">advanced-agent-customizations</a> — Developer Tools</li>
+<li><a href="../Agentforce/04-Prompts--and--Grounding/ground-your-agent-with-data" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/ground-your-agent-with-data">ground-your-agent-with-data</a> — Prompts &amp; Grounding</li>
+<li><a href="../Agentforce/04-Prompts--and--Grounding/manage-your-agents-data" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/manage-your-agents-data">manage-your-agents-data</a> — Prompts &amp; Grounding</li>
+<li><a href="../Agentforce/09-Testing--and--Monitoring/test-and-monitor-your-agent" class="internal" target="_blank" data-slug="Agentforce/09-Testing--and--Monitoring/test-and-monitor-your-agent">test-and-monitor-your-agent</a> — Testing &amp; Monitoring</li>
+<li><a href="../Agentforce/08-Deployment--and--Channels/deploy-agent-to-slack" class="internal" target="_blank" data-slug="Agentforce/08-Deployment--and--Channels/deploy-agent-to-slack">deploy-agent-to-slack</a> — Deployment &amp; Channels</li>
+<li><a href="../Agentforce/10-Developer-Tools/develop-with-agentforce-tools" class="internal" target="_blank" data-slug="Agentforce/10-Developer-Tools/develop-with-agentforce-tools">develop-with-agentforce-tools</a> — Developer Tools</li>
+<li><a href="../Agentforce/12-AI-Strategy--and--Leadership/lead-the-way-with-ai" class="internal" target="_blank" data-slug="Agentforce/12-AI-Strategy--and--Leadership/lead-the-way-with-ai">lead-the-way-with-ai</a> — AI Strategy &amp; Leadership</li>
+</ul>
+<h2 id="related-notes">Related Notes<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#related-notes" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><a href="../Agentforce/02-Agentforce-Platform/agentforce-overview" class="internal" target="_blank" data-slug="Agentforce/02-Agentforce-Platform/agentforce-overview">agentforce-overview</a></li>
+<li><a href="../Agentforce/01-AI-Foundations/atlas-reasoning-engine" class="internal" target="_blank" data-slug="Agentforce/01-AI-Foundations/atlas-reasoning-engine">atlas-reasoning-engine</a></li>
+<li><a href="../Agentforce/05-Trust--and--Security/einstein-trust-layer" class="internal" target="_blank" data-slug="Agentforce/05-Trust--and--Security/einstein-trust-layer">einstein-trust-layer</a></li>
+<li><a href="../Agentforce/10-Developer-Tools/agentforce-actions" class="internal" target="_blank" data-slug="Agentforce/10-Developer-Tools/agentforce-actions">agentforce-actions</a></li>
+<li><a href="../Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud" class="internal" target="_blank" data-slug="Agentforce/04-Prompts--and--Grounding/data-grounding-and-data-cloud">data-grounding-and-data-cloud</a></li>
+<li><a href="../Agentforce/13-Licensing--and--Limits/agentforce-licensing" class="internal" target="_blank" data-slug="Agentforce/13-Licensing--and--Limits/agentforce-licensing">agentforce-licensing</a></li>
+</ul></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Graph View</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-55" aria-expanded="true"><h3>Table of Contents</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#level-1-champion-2026" data-for="level-1-champion-2026">Level 1: Champion 2026</a></li><li class="depth-1"><a href="#section-1--get-started-with-artificial-intelligence-basics" data-for="section-1--get-started-with-artificial-intelligence-basics">Section 1 — Get Started with Artificial Intelligence Basics</a></li><li class="depth-1"><a href="#section-2--explore-salesforce-ai" data-for="section-2--explore-salesforce-ai">Section 2 — Explore Salesforce AI</a></li><li class="depth-1"><a href="#section-3--meet-agentforce-and-the-new-agentforce-builder" data-for="section-3--meet-agentforce-and-the-new-agentforce-builder">Section 3 — Meet Agentforce and the New Agentforce Builder</a></li><li class="depth-1"><a href="#section-4--run-your-business-with-agentforce" data-for="section-4--run-your-business-with-agentforce">Section 4 — Run Your Business with Agentforce</a></li><li class="depth-1"><a href="#section-5--get-hands-on-with-agentforce" data-for="section-5--get-hands-on-with-agentforce">Section 5 — Get Hands On with Agentforce</a></li><li class="depth-1"><a href="#champion-skills-gained" data-for="champion-skills-gained">Champion Skills Gained</a></li><li class="depth-0"><a href="#level-2-innovator-2026" data-for="level-2-innovator-2026">Level 2: Innovator 2026</a></li><li class="depth-0"><a href="#level-3-legend-2026" data-for="level-3-legend-2026">Level 3: Legend 2026</a></li><li class="depth-1"><a href="#legend-skills-covered-summary" data-for="legend-skills-covered-summary">Legend Skills Covered (summary)</a></li><li class="depth-0"><a href="#key-observations-for-cta-study" data-for="key-observations-for-cta-study">Key Observations for CTA Study</a></li><li class="depth-0"><a href="#folder-structure-mirrors-trailhead-feature-taxonomy" data-for="folder-structure-mirrors-trailhead-feature-taxonomy">Folder Structure (mirrors Trailhead feature taxonomy)</a></li><li class="depth-0"><a href="#module--note-cross-reference" data-for="module--note-cross-reference">Module → Note Cross-Reference</a></li><li class="depth-1"><a href="#champion-modules" data-for="champion-modules">Champion modules</a></li><li class="depth-1"><a href="#innovator-sections" data-for="innovator-sections">Innovator sections</a></li><li class="depth-1"><a href="#legend-sections" data-for="legend-sections">Legend sections</a></li><li class="depth-0"><a href="#related-notes" data-for="related-notes">Related Notes</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Backlinks</h3><ul id="list-2" class="overflow"><li><a href="../Agentforce/12-AI-Strategy--and--Leadership/ai-strategy" class="internal">AI Strategy</a></li><li><a href="../Agentforce/12-AI-Strategy--and--Leadership/lead-the-way-with-ai" class="internal">Lead the Way with AI</a></li><li><a href="../Agentforce/agentforce-practitioner-resources" class="internal">Agentforce Practitioner Resources</a></li><li><a href="../Agentforce/agentforce-setup-sequence" class="internal">Agentforce Setup Sequence</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript" data-persist="true">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module" data-persist="true">function E(a,e){if(!a)return;function t(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function n(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}a?.addEventListener("click",t),window.addCleanup(()=>a?.removeEventListener("click",t)),document.addEventListener("keydown",n),window.addCleanup(()=>document.removeEventListener("keydown",n))}function f(a){for(;a.firstChild;)a.removeChild(a.firstChild)}var m=class{constructor(e,t){this.container=e;this.content=t;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),t=this.onMouseMove.bind(this),n=this.onMouseUp.bind(this),o=this.onTouchStart.bind(this),r=this.onTouchMove.bind(this),i=this.onTouchEnd.bind(this),s=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",t),document.addEventListener("mouseup",n),this.container.addEventListener("touchstart",o,{passive:!1}),document.addEventListener("touchmove",r,{passive:!1}),document.addEventListener("touchend",i),window.addEventListener("resize",s),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",t),()=>document.removeEventListener("mouseup",n),()=>this.container.removeEventListener("touchstart",o),()=>document.removeEventListener("touchmove",r),()=>document.removeEventListener("touchend",i),()=>window.removeEventListener("resize",s))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let t=this.createButton("+",()=>this.zoom(.1)),n=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(n),e.appendChild(o),e.appendChild(t),this.container.appendChild(e)}createButton(e,t){let n=document.createElement("button");return n.textContent=e,n.className="mermaid-control-button",n.addEventListener("click",t),window.addCleanup(()=>n.removeEventListener("click",t)),n}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}onTouchStart(e){if(e.touches.length!==1)return;this.isDragging=!0;let t=e.touches[0];this.startPan={x:t.clientX-this.currentPan.x,y:t.clientY-this.currentPan.y}}onTouchMove(e){if(!this.isDragging||e.touches.length!==1)return;e.preventDefault();let t=e.touches[0];this.currentPan={x:t.clientX-this.startPan.x,y:t.clientY-this.startPan.y},this.updateTransform()}onTouchEnd(){this.isDragging=!1}zoom(e){let t=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),n=this.content.getBoundingClientRect(),o=n.width/2,r=n.height/2,i=t-this.scale;this.currentPan.x-=o*i,this.currentPan.y-=r*i,this.scale=t,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){let t=this.content.querySelector("svg").getBoundingClientRect(),n=t.width/this.scale,o=t.height/this.scale;this.scale=1,this.currentPan={x:(this.container.clientWidth-n)/2,y:(this.container.clientHeight-o)/2},this.updateTransform()}},T=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],y;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;y||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let t=y.default,n=new WeakMap;for(let r of e)n.set(r,r.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let c=n.get(s);c&&(s.innerHTML=c)}let r=T.reduce((s,c)=>(s[c]=window.getComputedStyle(document.documentElement).getPropertyValue(c),s),{}),i=document.documentElement.getAttribute("saved-theme")==="dark";t.initialize({startOnLoad:!1,securityLevel:"loose",theme:i?"dark":"base",themeVariables:{fontFamily:r["--codeFont"],primaryColor:r["--light"],primaryTextColor:r["--darkgray"],primaryBorderColor:r["--tertiary"],lineColor:r["--darkgray"],secondaryColor:r["--secondary"],tertiaryColor:r["--tertiary"],clusterBkg:r["--light"],edgeLabelBackground:r["--highlight"]}}),await t.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let r=0;r<e.length;r++){let v=function(){let g=l.querySelector("#mermaid-space"),h=l.querySelector(".mermaid-content");if(!h)return;f(h);let w=i.querySelector("svg").cloneNode(!0);h.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new m(g,h)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},i=e[r],s=i.parentElement,c=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(c),L=c.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),E(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript" data-persist="true"></script><script src="../postscript.js" type="module" data-persist="true"></script></html>

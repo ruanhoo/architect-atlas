@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+    <channel>
+      <title>Alan&#039;s Architect Atlas</title>
+      <link>https://ruanhoo.github.io/architect-atlas</link>
+      <description>Last 10 notes on Alan&#039;s Architect Atlas</description>
+      <generator>Quartz -- quartz.jzhao.xyz</generator>
+      <item>
+    <title>Data Model Constraints &amp; Limits</title>
+    <link>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Data-Management/Data-Model/data-model-constraints-and-limits</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Data-Management/Data-Model/data-model-constraints-and-limits</guid>
+    <description><![CDATA[ Exceptions and hard limits in the Salesforce data model that change a solution decision — things that look possible on a whiteboard but aren’t (e.g. ]]></description>
+    <pubDate>Sat, 14 Nov 2026 15:17:07 GMT</pubDate>
+  </item><item>
+    <title>Data Model</title>
+    <link>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Data-Management/Data-Model/data-model</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Data-Management/Data-Model/data-model</guid>
+    <description><![CDATA[ Hub for data-model design. ]]></description>
+    <pubDate>Sat, 14 Nov 2026 15:17:07 GMT</pubDate>
+  </item><item>
+    <title>Standard Object Oddities</title>
+    <link>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Data-Management/Data-Model/standard-object-oddities</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Data-Management/Data-Model/standard-object-oddities</guid>
+    <description><![CDATA[  See also Ownership/queue support by object, relationship limits, and delete behaviour: data-model-constraints-and-limits. ]]></description>
+    <pubDate>Sat, 14 Nov 2026 15:17:07 GMT</pubDate>
+  </item><item>
+    <title>Work Orders Without FSL</title>
+    <link>https://ruanhoo.github.io/architect-atlas/CTA-Notes/SF-Solutioning/Choosing-the-Right-Capability/work-orders-without-fsl</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/CTA-Notes/SF-Solutioning/Choosing-the-Right-Capability/work-orders-without-fsl</guid>
+    <description><![CDATA[ What are Work Orders &amp; Work Order Line Items? Work orders represent field service work that needs to be performed for a customer. ]]></description>
+    <pubDate>Sat, 14 Nov 2026 15:17:07 GMT</pubDate>
+  </item><item>
+    <title>Bulk API &amp; Cursors</title>
+    <link>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Data-Management/LDV/bulk-api-and-cursors</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Data-Management/LDV/bulk-api-and-cursors</guid>
+    <description><![CDATA[ Sample Build Scenario — “Meridian Retail” Used throughout this note to make each feature concrete. ]]></description>
+    <pubDate>Sat, 14 Nov 2026 06:01:23 GMT</pubDate>
+  </item><item>
+    <title>Large Data Volumes (LDV)</title>
+    <link>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Data-Management/LDV/ldv</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Data-Management/LDV/ldv</guid>
+    <description><![CDATA[ Topics What Counts as LDV Why LDV Causes Problems Data Skew — Ownership · Lookup/Account · Junction Indexes — Selectivity · Index-bypass cases Skinny Tables Sharing &amp; LDV Archiving &amp; Data Retention — details in data-archiving-and-backup Batch Processing &amp; LDV Reporting on LDV Design Chec... ]]></description>
+    <pubDate>Sat, 14 Nov 2026 06:01:23 GMT</pubDate>
+  </item><item>
+    <title>Salesforce Connect &amp; External Objects</title>
+    <link>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Integration/32-salesforce-connect</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Integration/32-salesforce-connect</guid>
+    <description><![CDATA[ (Salesforce Connect) (External Objects) What It Is Platform feature that maps external system data to External Objects in Salesforce — without copying the data Data is fetched in real time from the external system on demand External Objects appear in the UI like standard/custom objects (related list... ]]></description>
+    <pubDate>Sat, 14 Nov 2026 06:01:23 GMT</pubDate>
+  </item><item>
+    <title>13. Profiles &amp; Permission Sets</title>
+    <link>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Security/Permissions--and--Sharing/13-profiles-and-permission-sets</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Security/Permissions--and--Sharing/13-profiles-and-permission-sets</guid>
+    <description><![CDATA[ Profiles &amp; Permission Sets Profiles + permission sets control object-level and field-level security (CRUD, FLS) View All / Modify All on an object bypass sharing rules entirely — grants access to all records regardless of OWD View All Data / Modify All Data admin-level: bypasses everything acros... ]]></description>
+    <pubDate>Sat, 14 Nov 2026 06:01:23 GMT</pubDate>
+  </item><item>
+    <title>14. Permission Set Groups</title>
+    <link>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Security/Permissions--and--Sharing/14-permission-set-groups</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Security/Permissions--and--Sharing/14-permission-set-groups</guid>
+    <description><![CDATA[ Permission Set Groups Bundle multiple permission sets into a single group assigned to a user Muting permission set — removes individual permissions from the group without touching the underlying permission sets Muting Delete automatically mutes Modify All Muting Read automatically mutes Create, Edit... ]]></description>
+    <pubDate>Sat, 14 Nov 2026 06:01:23 GMT</pubDate>
+  </item><item>
+    <title>Experience Cloud — Related Topics</title>
+    <link>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Experience-Cloud/exp-cloud-related-topics</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Experience-Cloud/exp-cloud-related-topics</guid>
+    <description><![CDATA[ User Types &amp; Licenses LicenseAudienceSharing ModelCustomer CommunityB2C customersHigh-volume (HVCP); sharing setsCustomer Community PlusB2C customers needing role hierarchyRole-based; Account/ContactShare NOT availablePartner CommunityPartners / PRMRole hierarchy per partner account; teams suppo... ]]></description>
+    <pubDate>Sat, 14 Nov 2026 05:28:11 GMT</pubDate>
+  </item>
+    </channel>
+  </rss>

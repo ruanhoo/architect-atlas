@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"><head><title>Integration Patterns (Official Reference)</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Alan's Architect Atlas"/><meta property="og:title" content="Integration Patterns (Official Reference)"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Integration Patterns (Official Reference)"/><meta name="twitter:description" content="Canonical deep-dive on the six Salesforce integration patterns, rebuilt against the current Salesforce Architects guide."/><meta property="og:description" content="Canonical deep-dive on the six Salesforce integration patterns, rebuilt against the current Salesforce Architects guide."/><meta property="og:image:alt" content="Canonical deep-dive on the six Salesforce integration patterns, rebuilt against the current Salesforce Architects guide."/><meta property="og:image" content="https://ruanhoo.github.io/architect-atlas/static/og-image.png"/><meta property="og:image:url" content="https://ruanhoo.github.io/architect-atlas/static/og-image.png"/><meta name="twitter:image" content="https://ruanhoo.github.io/architect-atlas/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="ruanhoo.github.io/architect-atlas"/><meta property="og:url" content="https://ruanhoo.github.io/architect-atlas/CTA-Notes/Integration/02-integration-patterns-official-reference"/><meta property="twitter:url" content="https://ruanhoo.github.io/architect-atlas/CTA-Notes/Integration/02-integration-patterns-official-reference"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="Canonical deep-dive on the six Salesforce integration patterns, rebuilt against the current Salesforce Architects guide."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" data-persist="true"/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvYXJjaGl0ZWN0LWF0bGFzLXZhdWx0L2FyY2hpdGVjdC1hdGxhcy12YXVsdC9zaXRlL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBSUo7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTs7QUFFQTtFQUNFOztBQUdGO0VBQ0U7O0FBSUY7RUFDRTtFQUNBO0VBQ0EiLCJzb3VyY2VzQ29udGVudCI6WyIuZXhwYW5kLWJ1dHRvbiB7XG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgZGlzcGxheTogZmxleDtcbiAgZmxvYXQ6IHJpZ2h0O1xuICBwYWRkaW5nOiAwLjRyZW07XG4gIG1hcmdpbjogMC4zcmVtO1xuICByaWdodDogMDsgLy8gTk9URTogcmlnaHQgd2lsbCBiZSBzZXQgaW4gbWVybWFpZC5pbmxpbmUudHNcbiAgY29sb3I6IHZhcigtLWdyYXkpO1xuICBib3JkZXItY29sb3I6IHZhcigtLWRhcmspO1xuICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gIGJvcmRlcjogMXB4IHNvbGlkO1xuICBib3JkZXItcmFkaXVzOiA1cHg7XG4gIG9wYWNpdHk6IDA7XG4gIHRyYW5zaXRpb246IDAuMnM7XG5cbiAgJiA+IHN2ZyB7XG4gICAgZmlsbDogdmFyKC0tbGlnaHQpO1xuICAgIGZpbHRlcjogY29udHJhc3QoMC4zKTtcbiAgfVxuXG4gICY6aG92ZXIge1xuICAgIGN1cnNvcjogcG9pbnRlcjtcbiAgICBib3JkZXItY29sb3I6IHZhcigtLXNlY29uZGFyeSk7XG4gIH1cblxuICAmOmZvY3VzIHtcbiAgICBvdXRsaW5lOiAwO1xuICB9XG59XG5cbnByZSB7XG4gICY6aG92ZXIgPiAuZXhwYW5kLWJ1dHRvbiB7XG4gICAgb3BhY2l0eTogMTtcbiAgICB0cmFuc2l0aW9uOiAwLjJzO1xuICB9XG59XG5cbiNtZXJtYWlkLWNvbnRhaW5lciB7XG4gIHBvc2l0aW9uOiBmaXhlZDtcbiAgY29udGFpbjogbGF5b3V0O1xuICB6LWluZGV4OiA5OTk7XG4gIGxlZnQ6IDA7XG4gIHRvcDogMDtcbiAgd2lkdGg6IDEwMHZ3O1xuICBoZWlnaHQ6IDEwMHZoO1xuICBvdmVyZmxvdzogaGlkZGVuO1xuICBkaXNwbGF5OiBub25lO1xuICBiYWNrZHJvcC1maWx0ZXI6IGJsdXIoNHB4KTtcbiAgYmFja2dyb3VuZDogcmdiYSgwLCAwLCAwLCAwLjUpO1xuXG4gICYuYWN0aXZlIHtcbiAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XG4gIH1cblxuICAmID4gI21lcm1haWQtc3BhY2Uge1xuICAgIGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWxpZ2h0Z3JheSk7XG4gICAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tbGlnaHQpO1xuICAgIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgICBwb3NpdGlvbjogZml4ZWQ7XG4gICAgdG9wOiA1MCU7XG4gICAgbGVmdDogNTAlO1xuICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlKC01MCUsIC01MCUpO1xuICAgIGhlaWdodDogODB2aDtcbiAgICB3aWR0aDogODB2dztcbiAgICBvdmVyZmxvdzogaGlkZGVuO1xuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRlbnQge1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" data-persist="true"/><script src="../../prescript.js" type="application/javascript" data-persist="true"></script><script type="application/javascript" data-persist="true">const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://ruanhoo.github.io/architect-atlas/index.xml"/></head><body data-slug="CTA-Notes/Integration/02-integration-patterns-official-reference"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Alan's Architect Atlas</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Search</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Search for something" placeholder="Search for something"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Dark mode"><title>Dark mode</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Light mode"><title>Light mode</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Reader mode"><title>Reader mode</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>{if(a.isFolder!==b.isFolder)return a.isFolder?-1:1;if(a.isFolder){let order=[\&quot;data management\&quot;,\&quot;data model\&quot;,\&quot;ldv\&quot;,\&quot;data migration\&quot;,\&quot;security\&quot;,\&quot;permissions &amp; sharing\&quot;,\&quot;other security capabilities\&quot;,\&quot;identity &amp; access management\&quot;,\&quot;integration\&quot;,\&quot;system landscape\&quot;,\&quot;sf licensing\&quot;,\&quot;org strategy\&quot;,\&quot;document management strategy\&quot;,\&quot;other key elements\&quot;,\&quot;sf solutioning\&quot;,\&quot;choosing the right capability\&quot;,\&quot;appexchange (buy vs build)\&quot;,\&quot;experience cloud\&quot;,\&quot;deployment &amp; dev lifecycle\&quot;,\&quot;communication\&quot;],last=[\&quot;references\&quot;],r=[a,b].map(n=>{let k=String(n.displayName).trim().toLowerCase();if(last.includes(k))return 2e3;let i=order.indexOf(k);return i===-1?1e3:i}),d=r[0]-r[1];if(d!==0)return d}else{let na=/^(\\d+)-/.exec(a.slugSegment),nb=/^(\\d+)-/.exec(b.slugSegment);if(na&amp;&amp;!nb)return-1;if(!na&amp;&amp;nb)return 1;if(na&amp;&amp;nb&amp;&amp;Number(na[1])!==Number(nb[1]))return Number(na[1])-Number(nb[1])}return a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;})}&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-209"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Explorer</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-209" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div><div class="sidebar-resizer" role="separator" aria-orientation="vertical" aria-label="Resize sidebar (drag, or use arrow keys; double-click to reset)" tabindex="0"></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../CTA-Notes/">CTA Notes</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../CTA-Notes/Integration/">Integration</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Integration Patterns (Official Reference)</a></div></nav><h1 class="article-title">Integration Patterns (Official Reference)</h1><p show-comma="true" class="content-meta"><time datetime="2026-11-08T13:16:36.000Z">Nov 08, 2026</time><span>18 min read</span></p><ul class="tags"><li><a href="../../tags/cta" class="internal tag-link">cta</a></li><li><a href="../../tags/integration" class="internal tag-link">integration</a></li><li><a href="../../tags/patterns" class="internal tag-link">patterns</a></li><li><a href="../../tags/event-driven" class="internal tag-link">event-driven</a></li></ul></div></div><article class="popover-hint"><p>Canonical deep-dive on the <strong>six Salesforce integration patterns</strong>, rebuilt against the
+current Salesforce Architects guide. This is the vocabulary the board expects — use these
+exact pattern names when presenting, and be ready to defend the <strong>fit ranking</strong> (Best /
+Good / Suboptimal) of the mechanism you picked.</p>
+<ul>
+<li>Quick-reference version: <a href="../../CTA-Notes/Integration/01-patterns" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/01-patterns">Integration Patterns</a></li>
+<li>Five-dimension framing (nature, direction, timing, pattern, security): <a href="../../CTA-Notes/Integration/00-integration-overview" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/00-integration-overview">Integration Overview</a></li>
+<li>Blank answer template: <a href="../../CTA-Notes/Integration/03-integration-solution-template" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/03-integration-solution-template">Integration Solution Template</a></li>
+<li>Middleware terms + capability matrix: <a href="../../middleware-capabilities" class="internal" target="_blank" data-slug="middleware-capabilities">middleware-capabilities</a></li>
+<li>Security/networking layer: <a href="../../integration-security-considerations" class="internal" target="_blank" data-slug="integration-security-considerations">integration-security-considerations</a></li>
+<li>What’s being retired: <a href="../../legacy-integration-retirements" class="internal" target="_blank" data-slug="legacy-integration-retirements">legacy-integration-retirements</a></li>
+</ul>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>How the official doc is structured </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Every pattern follows the same template: <strong>Name → Context → Problem → Forces →
+Solution → Sketch → Results → Sidebars → Example</strong>. In a board, the <em>Forces</em> are your
+clarifying questions and the <em>Solution fit table</em> is your justification. Reciting
+Context and Sketch wins no points; naming the force that drove your choice does.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="1-three-integration-categories">1. Three integration categories<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-three-integration-categories" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Classify before you choose a mechanism. Examiners probe whether you understand <em>why</em>
+the data is moving, not just <em>how</em>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Category</th><th>The requirement</th><th>Patterns</th></tr></thead><tbody><tr><td><strong>Process Integration</strong></td><td>A business process spans two or more applications. Usually long-running, stateful, needs orchestration and compensating/rollback logic on failure.</td><td>Remote Process Invocation (Request &amp; Reply, Fire &amp; Forget), Remote Call-In</td></tr><tr><td><strong>Data Integration</strong></td><td>Two or more systems must hold timely, meaningful, consistent data. No business logic invoked — this is synchronisation.</td><td>Batch Data Synchronisation, Remote Call-In, UI Update Based on Data Changes</td></tr><tr><td><strong>Virtual Integration</strong></td><td>A user must view, search, or modify data that stays in the external system. No copy, no reconciliation.</td><td>Data Virtualisation</td></tr></tbody></table></div>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>The most common mis-classification </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>“Sync the ERP order into Salesforce so reps can see it” is often <em>not</em> Data
+Integration — if reps only <strong>read</strong> it and it must be real-time, it’s <strong>Virtual
+Integration</strong> and you should not be storing it at all. Ask about reporting,
+sharing, and offline needs to decide: those three requirements are what push you
+from Data Virtualisation back to replication.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="2-pattern-selection-matrices">2. Pattern selection matrices<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-pattern-selection-matrices" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="salesforce--another-system">Salesforce → another system<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#salesforce--another-system" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Type</th><th>Timing</th><th>Pattern</th></tr></thead><tbody><tr><td>Process</td><td>Synchronous</td><td><strong>Remote Process Invocation — Request and Reply</strong></td></tr><tr><td>Process</td><td>Asynchronous</td><td><strong>Remote Process Invocation — Fire and Forget</strong></td></tr><tr><td>Data</td><td>Synchronous</td><td><strong>Remote Process Invocation — Request and Reply</strong></td></tr><tr><td>Data</td><td>Asynchronous</td><td><strong>UI Update Based on Data Changes</strong> / <strong>Batch Data Synchronisation</strong></td></tr><tr><td>Virtual</td><td>Synchronous</td><td><strong>Data Virtualisation</strong></td></tr></tbody></table></div>
+<h3 id="another-system--salesforce">Another system → Salesforce<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#another-system--salesforce" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Type</th><th>Timing</th><th>Pattern</th></tr></thead><tbody><tr><td>Process</td><td>Synchronous</td><td><strong>Remote Call-In</strong></td></tr><tr><td>Process</td><td>Asynchronous</td><td><strong>Remote Call-In</strong> (publish a platform event, then discard the response)</td></tr><tr><td>Data</td><td>Synchronous</td><td><strong>Remote Call-In</strong></td></tr><tr><td>Data</td><td>Asynchronous</td><td><strong>Batch Data Synchronisation</strong></td></tr></tbody></table></div>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Key CTA exam point </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p><strong>Inbound calls to Salesforce are <em>always</em> synchronous request-reply at the transport
+level.</strong> There is no inbound async API. “Asynchronous inbound” is simulated either by
+the caller discarding the response, or by the caller publishing a <strong>platform event</strong>
+so Salesforce-side processing is decoupled. Bulk API 2.0 is the exception in spirit:
+the <em>job</em> is processed asynchronously, but the submission call itself is synchronous.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="3-remote-process-invocation--request-and-reply">3. Remote Process Invocation — Request and Reply<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-remote-process-invocation--request-and-reply" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type / Timing</strong></td><td>Process (or Data) / <strong>Synchronous</strong></td></tr><tr><td><strong>Direction</strong></td><td>Salesforce → remote</td></tr><tr><td><strong>Problem</strong></td><td>An event in Salesforce must start a remote process, pass data, <strong>receive a response</strong>, and track state from it — all in one transaction.</td></tr><tr><td><strong>Volume profile</strong></td><td>Small, real-time, single-record (a few hundred at most).</td></tr></tbody></table></div>
+<p><strong>Forces to ask about:</strong> Must Salesforce wait before continuing? Must the response be
+processed in the <em>same</em> transaction? Message size? Is the trigger a UI action or a DML
+event? Can the endpoint respond with <strong>low latency</strong>, and how many users will do this at
+peak?</p>
+<h3 id="solution-fit">Solution fit<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#solution-fit" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Solution</th><th>Fit</th><th>Why</th></tr></thead><tbody><tr><td><strong>External Services</strong> invokes a REST API declaratively</td><td><strong>Best</strong></td><td>No code. Requires an <strong>OpenAPI 2.0/3.0 (or YAML)</strong> schema; primitive types plus nested objects and header params supported. Invocable from Flow. See <a href="../../CTA-Notes/Integration/30-external-services" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/30-external-services">External Services</a>.</td></tr><tr><td><strong>LWC/Aura/page → Apex REST or SOAP callout</strong> (use a <strong>Continuation</strong> if latency risk)</td><td><strong>Best</strong></td><td>Full control; WSDL2Apex generates a proxy class for SOAP. Continuations avoid burning synchronous Apex governor limits on slow endpoints.</td></tr><tr><td><strong>HTTP Callout action in Flow</strong></td><td><strong>Good</strong></td><td>Declarative sync REST from Flow with <strong>no Apex and no OpenAPI spec</strong> required. The pragmatic middle ground when External Services doesn’t fit.</td></tr><tr><td>Trigger → <strong>async</strong> Apex callout</td><td><em>Suboptimal</em></td><td>All callouts from trigger context must be async, so you can’t reply into the same transaction. This is really the Fire-and-Forget pattern.</td></tr><tr><td><strong>Batch Apex</strong> → sync callout</td><td><em>Suboptimal</em></td><td>Works, but callout limits apply per execution context (~200-record chunks). Not a real-time pattern.</td></tr></tbody></table></div>
+<h3 id="sidebars-that-get-challenged">Sidebars that get challenged<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#sidebars-that-get-challenged" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Timeliness:</strong> Apex callout timeout is configurable up to <strong>120 seconds</strong>; the doc
+recommends setting it to <strong>5 seconds</strong>. Mitigate the org limit of <strong>50 concurrent
+long-running (>5s) synchronous transactions</strong> — blow through it and unrelated users
+start failing. This is the number to quote when someone proposes a chatty sync callout
+on a high-traffic page.</li>
+<li><strong>Error handling:</strong> the <strong>caller</strong> owns it. Show the user an actionable message.</li>
+<li><strong>Recovery:</strong> nothing commits in Salesforce until a successful response is received,
+so the retry is naturally safe <em>on the Salesforce side</em>.</li>
+<li><strong>Idempotency:</strong> the remote procedure <strong>must be idempotent</strong>. Standard mechanism —
+the consumer sends a <strong>unique message/correlation ID</strong> and the receiver tracks
+duplicates. Creates in the remote system must <strong>check for duplicates first</strong>, keyed on
+a unique Salesforce ID. If the call originates from the UI, handle idempotency at the
+<strong>integration layer (middleware)</strong>, not in the browser.</li>
+<li><strong>State management:</strong> either Salesforce stores the remote surrogate key (use an
+<strong>External ID</strong> field — available in the same transaction because this is synchronous),
+or the remote system stores the Salesforce record ID.</li>
+<li><strong>Security:</strong> one-way SSL by default; <strong>two-way SSL/mTLS</strong> supported with self-signed
+or CA-signed certs (<a href="../../CTA-Notes/Integration/42-mutual-tls-2way-ssl" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/42-mutual-tls-2way-ssl">Mutual TLS (2-Way SSL)</a>); use <strong>Named Credentials</strong>
+(<a href="../../CTA-Notes/Integration/40-named-credentials" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/40-named-credentials">Named Credentials</a>) and <strong>OAuth 2.0</strong> (<a href="../../CTA-Notes/Integration/41-oauth-flows" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/41-oauth-flows">OAuth 2.0 Flows</a>); Apex <code>Crypto</code> for hashes
+and digital signatures (<a href="../../CTA-Notes/Security/Other-Security-Capabilities/cryptography" class="internal" target="_blank" data-slug="CTA-Notes/Security/Other-Security-Capabilities/cryptography">cryptography</a>).</li>
+<li><strong>WS-Security is not natively supported</strong> — inject headers via a security/XML gateway
+(preferred) or hand-code them via WSDL2Apex (not recommended).</li>
+</ul>
+<p><strong>Official example:</strong> a utility company creates a billing account in an external system
+during ordering. Consume the billing HTTP API via <strong>External Services or Flow HTTP
+Callout</strong> (use an Apex proxy only for SOAP), store the returned account number on the
+Salesforce account to track state.</p>
+<hr/>
+<h2 id="4-remote-process-invocation--fire-and-forget">4. Remote Process Invocation — Fire and Forget<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-remote-process-invocation--fire-and-forget" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type / Timing</strong></td><td>Process / <strong>Asynchronous</strong></td></tr><tr><td><strong>Direction</strong></td><td>Salesforce → remote</td></tr><tr><td><strong>Problem</strong></td><td>Start a remote process and pass data <strong>without waiting</strong>; the remote side acknowledges receipt and hands control straight back.</td></tr></tbody></table></div>
+<p><strong>Forces to ask about:</strong> Is <strong>guaranteed delivery</strong> required? Is the message small? Can
+the remote system participate in <strong>contract-first</strong> integration where Salesforce owns the
+contract? Does the endpoint/ESB support <strong>long polling</strong> (CometD) or <strong>gRPC</strong> (Pub/Sub)?
+Are declarative methods preferred over Apex?</p>
+<h3 id="solution-fit-1">Solution fit<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#solution-fit-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Solution</th><th>Fit</th><th>Why</th></tr></thead><tbody><tr><td><strong>Flow-driven platform events</strong></td><td><strong>Best</strong></td><td>Declarative publish on insert/update. Many subscribers, zero coupling. <strong>Platform Event-Triggered Flows</strong> let you build the listener declaratively too. See <a href="../../CTA-Notes/Integration/20-platform-event" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/20-platform-event">Platform Events &amp; Change Data Capture</a>.</td></tr><tr><td><strong>Pub/Sub API</strong></td><td><strong>Best</strong></td><td>The recommended way for <em>external</em> consumers to subscribe (and publish). gRPC + HTTP/2, OAuth/JWT/session auth. See <a href="../../CTA-Notes/Integration/21-pubsub-api" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/21-pubsub-api">Sub API</a>.</td></tr><tr><td><strong>Change Data Capture</strong></td><td><strong>Best</strong></td><td>Fully declarative, publishes create/update/delete/<strong>undelete</strong> change events. Right choice when the trigger really is “any record change”.</td></tr><tr><td><strong>Event Relay</strong></td><td><strong>Best (AWS)</strong></td><td>Serverless, low-code streaming of platform events and CDC straight to <strong>Amazon EventBridge</strong> — no integration app to write, and events can flow back.</td></tr><tr><td><strong>OmniStudio Integration Procedures</strong></td><td><strong>Good</strong></td><td>Declarative server-side orchestration: multiple actions in one server call, transformations, caching. No user interaction.</td></tr><tr><td><strong>Apex-driven platform events</strong></td><td><strong>Good</strong></td><td>Same bus, but published from Apex when you need logic the Flow can’t express.</td></tr><tr><td><strong>Flow-driven outbound messaging</strong></td><td><em>Suboptimal</em></td><td><strong>Legacy.</strong> SOAP, contract-first, retries until positive ack (a form of guaranteed delivery). New builds must use Flow + platform events.</td></tr><tr><td>LWC → async Apex callout</td><td><em>Suboptimal</em></td><td>Customisation, and <em>you</em> must code guaranteed delivery.</td></tr><tr><td>Apex trigger / batch → async callout</td><td><em>Suboptimal</em></td><td>Works, but limits per execution context and no built-in durability.</td></tr></tbody></table></div>
+<h3 id="sidebars-that-get-challenged-1">Sidebars that get challenged<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#sidebars-that-get-challenged-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Publishing behaviour — the classic gotcha.</strong></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Setting</th><th>Behaviour</th><th>Choose when</th></tr></thead><tbody><tr><td><strong>Publish After Commit</strong></td><td>Event published <strong>only if the transaction commits</strong></td><td>Subscribers will read records the publishing transaction created/changed</td></tr><tr><td><strong>Publish Immediately</strong></td><td>Published when the publish call runs, <strong>ignoring rollback</strong></td><td>You want the event regardless of outcome (e.g. logging, audit, error signalling)</td></tr></tbody></table></div>
+<ul>
+<li><strong>Idempotency / reliable messaging:</strong> platform events are published to the bus
+<strong>once — Salesforce does not retry</strong>. It is the subscriber/ESB’s job to request replay
+via <strong>Replay ID</strong>. Messages are retained for <strong>72 hours</strong>. Design the subscriber to be
+an <strong>idempotent receiver</strong> (dedupe on a correlation ID).</li>
+<li><strong>CDC gap events:</strong> when Salesforce cannot generate a change event it sends a <strong>gap
+event</strong> instead (header carries the change type, e.g. <code>GAP_CREATE</code>). Overflow events
+signal that more than the allowed number of changes happened in one transaction. A
+robust subscriber must handle both — this is a favourite QA question.</li>
+<li><strong>Error handling:</strong> with events, the <strong>subscriber owns error handling</strong> — the event is
+handed off. Failed flows email the admin (and <code>Flow_Interviews</code> / paused interviews);
+events are <em>not</em> retried by the platform on the publish side.</li>
+<li><strong>State management:</strong> because the process is async, storing the remote key requires a
+<strong>callback into Salesforce</strong> (that callback is the Remote Call-In pattern).</li>
+<li><strong>Limits:</strong> <strong>100,000 events/hour</strong> standard-volume, <strong>250,000/hour</strong> high-volume
+(usage-based), <strong>1 MB</strong> max message size. See <a href="../../CTA-Notes/Deployment--and--Dev-Lifecycle/governor-limits-and-best-practices" class="internal" target="_blank" data-slug="CTA-Notes/Deployment--and--Dev-Lifecycle/governor-limits-and-best-practices">governor-limits-and-best-practices</a>.</li>
+</ul>
+<p><strong>Official example:</strong> telco converts a Close-Won opportunity to an order. Flow publishes
+a platform event; the ESB subscribes via <strong>Pub/Sub API</strong>, forwards to the ERP, then
+<strong>calls back with OAuth 2.0 + a connected app</strong> to write the order number onto the
+opportunity. Demonstrates async invocation, end-to-end guaranteed delivery, and a
+callback for state.</p>
+<hr/>
+<h2 id="5-batch-data-synchronisation">5. Batch Data Synchronisation<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-batch-data-synchronisation" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type / Timing</strong></td><td>Data / <strong>Asynchronous</strong>, scheduled</td></tr><tr><td><strong>Direction</strong></td><td>Both</td></tr><tr><td><strong>Problem</strong></td><td>Import into and export out of Salesforce in bulk <strong>without interfering with end users</strong>.</td></tr></tbody></table></div>
+<p><strong>Forces to ask about:</strong> Should the data even be <strong>stored</strong> in Salesforce (if not →
+Data Virtualisation)? Event-driven refresh or scheduled? Does it support a <strong>primary
+business process</strong>? Are there <strong>reporting</strong> requirements that depend on it being local?</p>
+<h3 id="solution-fit-2">Solution fit<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#solution-fit-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Solution</th><th>Fit</th><th>Data master</th><th>Why</th></tr></thead><tbody><tr><td><strong>Third-party ETL</strong> (MuleSoft, Informatica) with CDC on the source</td><td><strong>Best</strong></td><td>Remote</td><td>Tool detects source changes, transforms, calls <strong>Bulk API 2.0</strong>. Use REST if volumes are small.</td></tr><tr><td><strong>Third-party ETL</strong> driving off Salesforce timestamps</td><td><strong>Good</strong></td><td>Salesforce</td><td>Query by <code>SystemModstamp</code>/status to filter the target set; extract via Bulk API 2.0 or REST.</td></tr><tr><td><strong>Data 360 actions &amp; activations</strong></td><td><strong>Best</strong></td><td>Data 360</td><td>Sync between orgs after ingestion — especially strong for Marketing Cloud.</td></tr><tr><td><strong>Data 360 + Data Graphs + Connect API</strong></td><td><strong>Best</strong></td><td>Data 360</td><td>MuleSoft Anypoint extracts via Connect/Data Graph API and moves to another org.</td></tr><tr><td><strong>Composite Graph API</strong></td><td><strong>Best</strong></td><td>Salesforce</td><td>Up to <strong>75 graphs per payload, 500 nodes per graph</strong> (REST v50+). Great for related multi-object writes. See <a href="../../CTA-Notes/Integration/11-composite-api" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/11-composite-api">Composite API</a>.</td></tr><tr><td>Data Import Wizard / Data Loader</td><td><em>Fit</em></td><td>Either</td><td>Fine for stewardship and one-offs; <strong>not</strong> an integration strategy.</td></tr><tr><td>Remote call-in <em>as</em> the sync</td><td><em>Suboptimal</em></td><td>Remote</td><td>Continuous chatter, heavy error handling and locking, user-facing performance risk.</td></tr><tr><td>Remote process invocation <em>as</em> the sync</td><td><em>Suboptimal</em></td><td>Salesforce</td><td>Same objection in reverse.</td></tr></tbody></table></div>
+<h3 id="the-etl-control-table-watermark-design--say-this-out-loud-in-a-board">The ETL control-table (watermark) design — say this out loud in a board<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#the-etl-control-table-watermark-design--say-this-out-loud-in-a-board" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>The official pattern is explicit, and it is what separates a real answer from “we’ll use
+MuleSoft”:</p>
+<ol>
+<li>Implement change data capture <strong>on the source data set</strong>.</li>
+<li>Keep <strong>control tables</strong> in an intermediate database the ETL tool owns.</li>
+<li>Each run: read the control table for the <strong>last successful run timestamp</strong>, use it as
+the extract filter, apply validation/enrichment, write to Salesforce, then <strong>update
+the watermark</strong> on success — or write restart values and exit on failure.</li>
+</ol>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Salesforce is the spoke, not the hub </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Put the control tables somewhere the ETL tool can reach <strong>even when Salesforce is
+unavailable</strong>. The ETL infrastructure is the hub.</p>
+</div>
+</blockquote>
+<p><strong>Other must-mention practices:</strong> chain/sequence jobs; <strong>match on primary keys from both
+systems</strong> (External IDs); extract <strong>only changed data</strong>; <strong>group child records by parent
+key</strong> before loading to avoid <code>UNABLE_TO_LOCK_ROW</code>; make post-import triggers process
+<strong>selectively</strong>; and for volume, follow <a href="../../CTA-Notes/Data-Management/LDV/ldv-best-practices" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/ldv-best-practices">ldv-best-practices</a> and
+<a href="../../CTA-Notes/Data-Management/LDV/calculating-data-storage" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/calculating-data-storage">calculating-data-storage</a>.</p>
+<h3 id="sidebars-that-get-challenged-2">Sidebars that get challenged<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#sidebars-that-get-challenged-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Timeliness:</strong> design to a <strong>batch window</strong>. Loading during business hours causes
+contention — a user update fails, or worse a partial batch fails. For <strong>24/7 global</strong>
+orgs a window may not exist: use <strong>data segmentation</strong> (record types, filter criteria)
+to avoid contention.</li>
+<li><strong>State management:</strong> surrogate keys both ways. If you need <strong>transactional integrity
+across objects</strong>, don’t use batch — use <strong>Remote Call-In with Apex</strong>.</li>
+<li><strong>Optimistic locking:</strong> Salesforce holds no edit state. It records the read time; on
+save it checks whether someone else updated the row and forces the user to re-read.</li>
+<li><strong>Middleware must support Bulk API</strong> and must persist the <strong>last successfully processed
+timestamp</strong> (watermarking) internally or externally.</li>
+<li><strong>Error handling:</strong> on read, retry non-infrastructure errors and log/terminate/notify
+via control+error tables. On write, use the <strong>per-record result set</strong> (record ID,
+success/failure, error collection) to drive selective retries.</li>
+</ul>
+<p><strong>Official example:</strong> a mainframe nightly job assigns prospects to reps; an ETL tool
+detects the source changes and loads them into Salesforce via the REST API.</p>
+<hr/>
+<h2 id="6-remote-call-in">6. Remote Call-In<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-remote-call-in" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type / Timing</strong></td><td>Process or Data / <strong>Synchronous</strong> (always, at transport level)</td></tr><tr><td><strong>Direction</strong></td><td>Remote → Salesforce</td></tr><tr><td><strong>Problem</strong></td><td>How does a remote system <strong>connect, authenticate</strong>, notify Salesforce of external events, and create/update records?</td></tr></tbody></table></div>
+<p><strong>Forces to ask about:</strong> Is this an <strong>event notification</strong> (EDA — publisher decoupled from
+consumer) or <strong>CRUD on specific records</strong>? One object per transaction or several related
+ones? SOAP or REST? Message size? Can the remote system do <strong>contract-first</strong> (Salesforce
+supplies the WSDL)? Is <strong>transaction processing</strong> required? How much <strong>customisation</strong> in
+Salesforce are you willing to tolerate?</p>
+<h3 id="solution-fit-3">Solution fit<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#solution-fit-3" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Solution</th><th>Fit</th><th>Why</th></tr></thead><tbody><tr><td><strong>Composite API</strong></td><td><strong>Best</strong></td><td>Up to <strong>25 subrequests</strong> in one call, referencing each other’s results. Cuts round trips and API consumption.</td></tr><tr><td><strong>Composite Graph API</strong></td><td><strong>Best</strong></td><td><strong>75 graphs / 500 nodes</strong>; each graph succeeds or fails as a unit.</td></tr><tr><td><strong>REST API</strong></td><td><strong>Best</strong></td><td>Publish events, query (incl. <strong>Named Query</strong>), CRUD, describe metadata. See <a href="../../CTA-Notes/Integration/10-rest-api" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/10-rest-api">REST API</a>.</td></tr><tr><td><strong>Bulk API 2.0</strong></td><td><strong>Best for bulk</strong></td><td>REST-based async insert/upsert/query/delete. Anything <strong>> 2,000 records</strong> belongs here.</td></tr><tr><td><strong>GraphQL API</strong></td><td><strong>Best</strong></td><td>Superior to REST for <strong>complex multi-object reads with selective fields</strong>. See <a href="../../CTA-Notes/Integration/12-graphql-api" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/12-graphql-api">GraphQL API</a>.</td></tr><tr><td><strong>Pub/Sub API</strong></td><td><strong>Best</strong></td><td>The recommended way for external systems to <strong>publish</strong> onto the event bus (gRPC, OAuth/JWT/session).</td></tr><tr><td><strong>Platform Events via API</strong></td><td><strong>Best</strong></td><td>Publishing is just <code>POST /services/data/vXX.X/sobjects/Event__e/</code>. Decouples the remote caller from Salesforce-side logic.</td></tr><tr><td><strong>SOAP API</strong></td><td><em>Suboptimal</em></td><td>Only when the client can’t do REST, or contract-first is mandated. See <a href="../../CTA-Notes/Integration/13-soap-api" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/13-soap-api">SOAP API</a>.</td></tr><tr><td><strong>Apex web services</strong> (<code>webservice</code> / SOAP)</td><td><em>Suboptimal</em></td><td>Choose only for <strong>full transactional support across objects</strong> or custom logic on the way in. Each service has <strong>its own WSDL</strong> — code-first, so the contract only exists after you build it.</td></tr><tr><td><strong>Apex REST services</strong> (<code>@RestResource</code>)</td><td><em>Suboptimal</em></td><td>Same reasoning without WSDL/stub generation. Composite resources can give you multi-update in one transaction.</td></tr></tbody></table></div>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Why &quot;Best&quot; APIs beat &quot;Suboptimal&quot; custom Apex services </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Custom Apex services are ranked lower <strong>not</strong> because they’re bad, but because they put
+transformation, orchestration and error handling <strong>inside Salesforce</strong> where they cost
+maintenance and governor limits. The doc’s line: those concerns belong in
+<strong>middleware</strong>. Only reach for Apex REST/SOAP services when you need multi-object
+<strong>transactional atomicity</strong> or custom pre/post logic the standard APIs can’t express.</p>
+</div>
+</blockquote>
+<h3 id="sidebars-that-get-challenged-3">Sidebars that get challenged<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#sidebars-that-get-challenged-3" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Data volumes:</strong> SOAP/REST create/update/delete handle <strong>200 records per call</strong>
+(call repeatedly for more). <strong>> 2,000 records → Bulk API 2.0.</strong> Queries return up to
+<strong>2,000 rows</strong> before <code>queryMore</code>.</li>
+<li><strong>Governor limits:</strong> API request caps are per 24 hours, by <strong>edition × licence count</strong>
+(e.g. Unlimited Edition allows 5,000 requests per Platform licence per 24h). Platform
+events: <strong>100k/hr</strong> standard, <strong>250k/hr</strong> high-volume, <strong>1 MB</strong> max message.</li>
+<li><strong>Timeliness:</strong> session timeout per org setting; <strong>SOQL query timeout is 120 seconds</strong>.</li>
+<li><strong>Security:</strong> the platform enforces <strong>the logged-in (integration) user’s</strong> profile,
+sharing and permission sets — so design that user deliberately, with <strong>API-only
+access</strong>. Add <strong>profile IP restrictions</strong>. TLS 1.2+ with ≥128-bit ciphers. Establish an
+<strong>OAuth trust</strong>, and <strong>cache and reuse the access token</strong> rather than re-authenticating
+per call. See <a href="../../CTA-Notes/Security/Identity--and--Access-Management/oauth-saml-flows-and-iam" class="internal" target="_blank" data-slug="CTA-Notes/Security/Identity--and--Access-Management/oauth-saml-flows-and-iam">oauth-saml-flows-and-iam</a> and <a href="../../CTA-Notes/Security/Permissions--and--Sharing/data-security" class="internal" target="_blank" data-slug="CTA-Notes/Security/Permissions--and--Sharing/data-security">data-security</a>.</li>
+<li><strong>Idempotency:</strong> the <strong>remote system (or middleware)</strong> must manage duplicate calls on
+timeout/retry — otherwise you get duplicate inserts and duplicate downstream automation.</li>
+<li><strong>Reliable messaging:</strong> REST/SOAP are synchronous with <strong>no WS-ReliableMessaging</strong>. The
+remote system must implement retry. With platform events, subscribers can use
+<strong>Replay ID</strong> within the 72-hour window.</li>
+<li><strong>Complex scenarios:</strong> aggregation, orchestration, transformation <strong>cannot</strong> be done by
+SOAP/REST API — middleware, preferably.</li>
+</ul>
+<p><strong>Official example:</strong> an on-premises Printer Management System pushes ink/paper levels.
+Salesforce defines a <strong>platform event</strong>; the PMS authenticates (OAuth web-server or
+bearer) and publishes the event via SOAP/REST API; a <strong>Flow</strong> subscriber updates the
+asset and creates an order. Platform events were chosen because the number of
+subscribers is <strong>variable and non-finite</strong> — for simple updates to a known set of
+records, plain SOAP/REST would do.</p>
+<hr/>
+<h2 id="7-ui-update-based-on-data-changes">7. UI Update Based on Data Changes<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#7-ui-update-based-on-data-changes" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type / Timing</strong></td><td>Data / <strong>Asynchronous</strong> (near real time)</td></tr><tr><td><strong>Direction</strong></td><td>Salesforce → Salesforce UI</td></tr><tr><td><strong>Problem</strong></td><td>Notify the user in the Salesforce UI <strong>without a refresh</strong> and without losing their work.</td></tr></tbody></table></div>
+<p><strong>Forces to ask about:</strong> Does the data need to be stored in Salesforce? Can a <strong>custom UI
+layer</strong> be built? Will the user have access to invoke it?</p>
+<h3 id="solution">Solution<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#solution" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Platform events</strong> are the recommended solution — structured payload independent of any
+object, <strong>durable topic with a 72-hour replay window</strong> so a consumer that comes online
+late still gets the message. Moving parts:</p>
+<ul>
+<li>an Apex trigger or Flow that <strong>publishes</strong> the event,</li>
+<li>the <strong>topic/channel</strong>,</li>
+<li><strong>Pub/Sub API</strong> (gRPC + HTTP/2) for efficient consumption by external clients,</li>
+<li>a <strong>Lightning web component</strong> subscribing via <strong><code>lightning/empApi</code></strong>,</li>
+<li>a JavaScript library as a static resource (for CometD-era implementations).</li>
+</ul>
+<h3 id="limits-you-must-volunteer">Limits you must volunteer<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#limits-you-must-volunteer" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Benefit</th><th>Unsupported requirement</th></tr></thead><tbody><tr><td>No custom polling mechanism needed</td><td><strong>Delivery is not guaranteed</strong></td></tr><tr><td>No user-initiated refresh loop</td><td><strong>Order is not guaranteed</strong></td></tr><tr><td></td><td><strong>Bulk API record changes do not generate notifications</strong></td></tr></tbody></table></div>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>The Bulk API blind spot </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>If the upstream process loads data with <strong>Bulk API</strong>, the UI will not light up. This
+single line has sunk otherwise-good board answers where a nightly bulk load was
+expected to drive a live agent console.</p>
+</div>
+</blockquote>
+<p><strong>Official example:</strong> telco managers want to know when a rep closes a case successfully.
+Apex trigger publishes an event on <code>Status = Closed</code> + <code>Resolution = Successful</code>; a
+custom UI subscribes (Pub/Sub API / <code>empApi</code>) and shows alerts filtered to that manager’s
+reps.</p>
+<hr/>
+<h2 id="8-data-virtualisation">8. Data Virtualisation<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-data-virtualisation" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><strong>Type / Timing</strong></td><td>Virtual / <strong>Synchronous</strong></td></tr><tr><td><strong>Direction</strong></td><td>Remote → Salesforce, on demand</td></tr><tr><td><strong>Problem</strong></td><td>View, search and modify external data <strong>without moving it into Salesforce</strong>.</td></tr></tbody></table></div>
+<p><strong>Forces to ask about:</strong> Do you want declarative/point-and-click or a UI mashup? Is the
+data set too large to copy? Do you only need <strong>small amounts at a time</strong>? Is <strong>real-time
+accuracy</strong> required? Are there <strong>data residency</strong> constraints?</p>
+<h3 id="solution-fit-4">Solution fit<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#solution-fit-4" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Solution</th><th>Fit</th><th>Why</th></tr></thead><tbody><tr><td><strong>Salesforce Connect</strong> (external objects)</td><td><strong>Best</strong></td><td>Maps external tables to <strong>external objects</strong> (<code>__x</code>). Adapters: <strong>OData 2.0/4.0</strong>, <strong>cross-org</strong>, <strong>custom Apex (Apex Connector Framework)</strong>. No storage consumed, no sync. See <a href="../../CTA-Notes/Integration/32-salesforce-connect" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/32-salesforce-connect">Salesforce Connect &amp; External Objects</a>.</td></tr><tr><td><strong>Data 360 + Zero Copy</strong></td><td><strong>Best</strong></td><td>Sync via connectors/APIs/MuleSoft, or <strong>reference</strong> data with zero copy, then use the OOTB integrations from Data 360.</td></tr><tr><td><strong>Data 360 + Data Cloud One</strong></td><td><strong>Best</strong></td><td>Harmonise via the Customer 360 Data Model, identity resolution and data federation into one customer view.</td></tr><tr><td>Request &amp; Reply (custom page/button → Apex callout, or a <strong>mashup/Canvas app</strong>)</td><td><em>Suboptimal</em></td><td>Works for narrow read-only views; you own the UI, error handling and caching. Justify it on cost when Salesforce Connect can’t be licensed.</td></tr></tbody></table></div>
+<h3 id="external-object-relationships--memorise-this-table">External object relationships — memorise this table<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#external-object-relationships--memorise-this-table" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Relationship</th><th>Allowed child</th><th>Allowed parent</th><th>Matched on</th></tr></thead><tbody><tr><td><strong>Lookup</strong></td><td>Standard, Custom, External</td><td>Standard, Custom</td><td>18-character Salesforce record ID</td></tr><tr><td><strong>External lookup</strong></td><td>Standard, Custom, External</td><td><strong>External</strong></td><td>The <strong>External ID standard field</strong></td></tr><tr><td><strong>Indirect lookup</strong></td><td><strong>External only</strong></td><td>Standard, Custom</td><td>A custom field marked <strong>External ID <em>and</em> Unique</strong></td></tr></tbody></table></div>
+<h3 id="sidebars-that-get-challenged-4">Sidebars that get challenged<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#sidebars-that-get-challenged-4" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>No record-level sharing on external objects.</strong> Access to the object means access to
+<strong>every row</strong>. If row-level security is a requirement, Data Virtualisation via external
+objects is out — say so before the examiner does.</li>
+<li><strong>Timeliness:</strong> configurable <strong>120-second</strong> max wait for the external system. Users are
+waiting, so this pattern is <strong>small-volume real-time only</strong> — never batch payloads.</li>
+<li><strong>Rate limits:</strong> OData adapters have hourly callout caps. If you hit them, enable
+<strong>High Data Volume</strong> on the external data source to bypass most rate limits (accepting
+its own behaviours/limitations). Reports over external objects are the usual culprit.</li>
+<li><strong>Paging:</strong> choose <strong>server-driven</strong> or <strong>client-driven</strong> paging via the <em>Server Driven
+Pagination</em> field on the external data source.</li>
+<li><strong>CSRF:</strong> OData 2.0/4.0 external data sources have specific CSRF behaviours to review.</li>
+<li><strong>Validation:</strong> the <strong>Salesforce Connect Validator</strong> is a free tool for shaking out
+common query failures.</li>
+<li><strong>Compatibility:</strong> external objects behave like custom objects but a long list of
+features doesn’t apply (and report performance suffers) — cite the considerations docs.</li>
+</ul>
+<p><strong>Official example:</strong> manufacturer’s service agents need live ERP order data. Configure
+an <strong>OData</strong> external data source (directly or through middleware — Boomi, Informatica,
+Jitterbit, MuleSoft and Progress all ship adapters), sync tables to external objects, and
+Salesforce Connect makes the real-time callout when the page loads.</p>
+<hr/>
+<h2 id="9-cross-pattern-decision-cheatsheet">9. Cross-pattern decision cheatsheet<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#9-cross-pattern-decision-cheatsheet" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>If the requirement says…</th><th>Pattern</th><th>First-choice mechanism</th></tr></thead><tbody><tr><td>”must show the result to the user immediately”</td><td>Request &amp; Reply</td><td>External Services / Flow HTTP Callout / Apex + Continuation</td></tr><tr><td>”notify the downstream system when X happens”</td><td>Fire &amp; Forget</td><td>Flow → platform event; Pub/Sub API subscriber</td></tr><tr><td>”any change to the record must flow out”</td><td>Fire &amp; Forget</td><td><strong>CDC</strong> (declarative, no payload design)</td></tr><tr><td>“stream events to AWS”</td><td>Fire &amp; Forget</td><td><strong>Event Relay</strong> → EventBridge</td></tr><tr><td>”nightly / weekly load of millions of rows”</td><td>Batch Data Sync</td><td>ETL + <strong>Bulk API 2.0</strong> + watermark control tables</td></tr><tr><td>”ERP pushes order status into Salesforce”</td><td>Remote Call-In</td><td>REST/Composite API, or publish a platform event</td></tr><tr><td>”external system needs 25 related writes atomically”</td><td>Remote Call-In</td><td><strong>Composite Graph API</strong> (or Apex REST for true cross-object transactions)</td></tr><tr><td>“agent’s screen must update live”</td><td>UI Update</td><td>Platform event + LWC <code>empApi</code></td></tr><tr><td>”don’t copy the data — show it live”</td><td>Data Virtualisation</td><td>Salesforce Connect (OData / cross-org / Apex adapter)</td></tr><tr><td>“unified profile across many sources”</td><td>Virtual</td><td><strong>Data 360</strong> (+ Zero Copy / Data Cloud One)</td></tr></tbody></table></div>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Board discipline </p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Name the pattern, name the mechanism, then immediately give <strong>volume, timing,
+authentication, error handling and idempotency</strong>. Every pattern above has an
+error-handling and an idempotency sidebar for a reason — those are the two topics QA
+reliably returns to.</p>
+</div>
+</blockquote>
+<hr/>
+<h2 id="10-runnable-samples">10. Runnable samples<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#10-runnable-samples" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Each pattern has a deployable scenario in <code>CTAPrepScripts/03-integration/</code>:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Pattern</th><th>Scenario folder</th></tr></thead><tbody><tr><td>Request &amp; Reply</td><td><code>03-integration/request-reply</code></td></tr><tr><td>Fire &amp; Forget</td><td><code>03-integration/fire-and-forget</code></td></tr><tr><td>Batch Data Synchronisation</td><td><code>03-integration/batch-data-sync</code></td></tr><tr><td>Remote Call-In</td><td><code>03-integration/remote-call-in</code></td></tr><tr><td>UI Update Based on Data Changes</td><td><code>03-integration/ui-update-data-changes</code></td></tr><tr><td>Data Virtualisation</td><td><code>03-integration/data-virtualization</code></td></tr></tbody></table></div>
+<hr/>
+<h2 id="related-notes">Related Notes<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#related-notes" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><a href="../../CTA-Notes/Integration/01-patterns" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/01-patterns">Integration Patterns</a> — one-screen quick reference for the same six patterns</li>
+<li><a href="../../CTA-Notes/Integration/00-integration-overview" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/00-integration-overview">Integration Overview</a> — five-dimension framing, sync vs async inventory</li>
+<li><a href="../../middleware-capabilities" class="internal" target="_blank" data-slug="middleware-capabilities">middleware-capabilities</a> — middleware terms and the per-pattern capability matrix</li>
+<li><a href="../../integration-security-considerations" class="internal" target="_blank" data-slug="integration-security-considerations">integration-security-considerations</a> — proxies, encryption, WS-*, Private Connect</li>
+<li><a href="../../legacy-integration-retirements" class="internal" target="_blank" data-slug="legacy-integration-retirements">legacy-integration-retirements</a> — what’s retiring and the migration target</li>
+<li><a href="../../CTA-Notes/Integration/20-platform-event" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/20-platform-event">Platform Events &amp; Change Data Capture</a> · <a href="../../CTA-Notes/Integration/21-pubsub-api" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/21-pubsub-api">Sub API</a> · <a href="../../CTA-Notes/Integration/22-streaming-api" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/22-streaming-api">Streaming API (PushTopic)</a> — the event bus</li>
+<li><a href="../../CTA-Notes/Integration/10-rest-api" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/10-rest-api">REST API</a> · <a href="../../CTA-Notes/Integration/13-soap-api" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/13-soap-api">SOAP API</a> · <a href="../../CTA-Notes/Integration/11-composite-api" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/11-composite-api">Composite API</a> · <a href="../../CTA-Notes/Integration/12-graphql-api" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/12-graphql-api">GraphQL API</a> · <a href="../../CTA-Notes/Integration/14-uiapi" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/14-uiapi">UI API</a> — the APIs</li>
+<li><a href="../../CTA-Notes/Integration/30-external-services" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/30-external-services">External Services</a> · <a href="../../CTA-Notes/Integration/31-external-services-guide" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/31-external-services-guide">External Services Setup Guide</a> — declarative REST invocation</li>
+<li><a href="../../CTA-Notes/Integration/32-salesforce-connect" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/32-salesforce-connect">Salesforce Connect &amp; External Objects</a> — external objects and adapters</li>
+<li><a href="../../CTA-Notes/Integration/40-named-credentials" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/40-named-credentials">Named Credentials</a> · <a href="../../CTA-Notes/Integration/41-oauth-flows" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/41-oauth-flows">OAuth 2.0 Flows</a> · <a href="../../CTA-Notes/Integration/42-mutual-tls-2way-ssl" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/42-mutual-tls-2way-ssl">Mutual TLS (2-Way SSL)</a> — auth for callouts</li>
+<li><a href="../../CTA-Notes/Integration/50-mulesoft" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/50-mulesoft">MuleSoft &amp; Middleware Positioning</a> · <a href="../../CTA-Notes/Integration/51-mulesoft-notes" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/51-mulesoft-notes">MuleSoft Notes</a> — API-led connectivity</li>
+<li><a href="../../CTA-Notes/Data-Management/LDV/ldv-best-practices" class="internal" target="_blank" data-slug="CTA-Notes/Data-Management/LDV/ldv-best-practices">ldv-best-practices</a> — the volume side of Batch Data Synchronisation</li>
+<li><a href="../../CTA-Notes/Integration/03-integration-solution-template" class="internal alias" target="_blank" data-slug="CTA-Notes/Integration/03-integration-solution-template">Integration Solution Template</a> — fill this in per interface in a board</li>
+</ul></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Graph View</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-83" aria-expanded="true"><h3>Table of Contents</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#1-three-integration-categories" data-for="1-three-integration-categories">1. Three integration categories</a></li><li class="depth-0"><a href="#2-pattern-selection-matrices" data-for="2-pattern-selection-matrices">2. Pattern selection matrices</a></li><li class="depth-1"><a href="#salesforce--another-system" data-for="salesforce--another-system">Salesforce → another system</a></li><li class="depth-1"><a href="#another-system--salesforce" data-for="another-system--salesforce">Another system → Salesforce</a></li><li class="depth-0"><a href="#3-remote-process-invocation--request-and-reply" data-for="3-remote-process-invocation--request-and-reply">3. Remote Process Invocation — Request and Reply</a></li><li class="depth-1"><a href="#solution-fit" data-for="solution-fit">Solution fit</a></li><li class="depth-1"><a href="#sidebars-that-get-challenged" data-for="sidebars-that-get-challenged">Sidebars that get challenged</a></li><li class="depth-0"><a href="#4-remote-process-invocation--fire-and-forget" data-for="4-remote-process-invocation--fire-and-forget">4. Remote Process Invocation — Fire and Forget</a></li><li class="depth-1"><a href="#solution-fit-1" data-for="solution-fit-1">Solution fit</a></li><li class="depth-1"><a href="#sidebars-that-get-challenged-1" data-for="sidebars-that-get-challenged-1">Sidebars that get challenged</a></li><li class="depth-0"><a href="#5-batch-data-synchronisation" data-for="5-batch-data-synchronisation">5. Batch Data Synchronisation</a></li><li class="depth-1"><a href="#solution-fit-2" data-for="solution-fit-2">Solution fit</a></li><li class="depth-1"><a href="#the-etl-control-table-watermark-design--say-this-out-loud-in-a-board" data-for="the-etl-control-table-watermark-design--say-this-out-loud-in-a-board">The ETL control-table (watermark) design — say this out loud in a board</a></li><li class="depth-1"><a href="#sidebars-that-get-challenged-2" data-for="sidebars-that-get-challenged-2">Sidebars that get challenged</a></li><li class="depth-0"><a href="#6-remote-call-in" data-for="6-remote-call-in">6. Remote Call-In</a></li><li class="depth-1"><a href="#solution-fit-3" data-for="solution-fit-3">Solution fit</a></li><li class="depth-1"><a href="#sidebars-that-get-challenged-3" data-for="sidebars-that-get-challenged-3">Sidebars that get challenged</a></li><li class="depth-0"><a href="#7-ui-update-based-on-data-changes" data-for="7-ui-update-based-on-data-changes">7. UI Update Based on Data Changes</a></li><li class="depth-1"><a href="#solution" data-for="solution">Solution</a></li><li class="depth-1"><a href="#limits-you-must-volunteer" data-for="limits-you-must-volunteer">Limits you must volunteer</a></li><li class="depth-0"><a href="#8-data-virtualisation" data-for="8-data-virtualisation">8. Data Virtualisation</a></li><li class="depth-1"><a href="#solution-fit-4" data-for="solution-fit-4">Solution fit</a></li><li class="depth-1"><a href="#external-object-relationships--memorise-this-table" data-for="external-object-relationships--memorise-this-table">External object relationships — memorise this table</a></li><li class="depth-1"><a href="#sidebars-that-get-challenged-4" data-for="sidebars-that-get-challenged-4">Sidebars that get challenged</a></li><li class="depth-0"><a href="#9-cross-pattern-decision-cheatsheet" data-for="9-cross-pattern-decision-cheatsheet">9. Cross-pattern decision cheatsheet</a></li><li class="depth-0"><a href="#10-runnable-samples" data-for="10-runnable-samples">10. Runnable samples</a></li><li class="depth-0"><a href="#related-notes" data-for="related-notes">Related Notes</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Backlinks</h3><ul id="list-2" class="overflow"><li><a href="../../CTA-Notes/Integration/00-integration-overview" class="internal">Integration Overview</a></li><li><a href="../../CTA-Notes/Security/Identity--and--Access-Management/iam-solution-design-and-scenarios" class="internal">IAM Solution Design and Board Scenarios</a></li><li><a href="../../CTA-Notes/cta-study-guide-overview" class="internal">CTA Study Guide — Overview (Harvested)</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript" data-persist="true">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module" data-persist="true">function E(a,e){if(!a)return;function t(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function n(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}a?.addEventListener("click",t),window.addCleanup(()=>a?.removeEventListener("click",t)),document.addEventListener("keydown",n),window.addCleanup(()=>document.removeEventListener("keydown",n))}function f(a){for(;a.firstChild;)a.removeChild(a.firstChild)}var m=class{constructor(e,t){this.container=e;this.content=t;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),t=this.onMouseMove.bind(this),n=this.onMouseUp.bind(this),o=this.onTouchStart.bind(this),r=this.onTouchMove.bind(this),i=this.onTouchEnd.bind(this),s=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",t),document.addEventListener("mouseup",n),this.container.addEventListener("touchstart",o,{passive:!1}),document.addEventListener("touchmove",r,{passive:!1}),document.addEventListener("touchend",i),window.addEventListener("resize",s),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",t),()=>document.removeEventListener("mouseup",n),()=>this.container.removeEventListener("touchstart",o),()=>document.removeEventListener("touchmove",r),()=>document.removeEventListener("touchend",i),()=>window.removeEventListener("resize",s))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let t=this.createButton("+",()=>this.zoom(.1)),n=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(n),e.appendChild(o),e.appendChild(t),this.container.appendChild(e)}createButton(e,t){let n=document.createElement("button");return n.textContent=e,n.className="mermaid-control-button",n.addEventListener("click",t),window.addCleanup(()=>n.removeEventListener("click",t)),n}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}onTouchStart(e){if(e.touches.length!==1)return;this.isDragging=!0;let t=e.touches[0];this.startPan={x:t.clientX-this.currentPan.x,y:t.clientY-this.currentPan.y}}onTouchMove(e){if(!this.isDragging||e.touches.length!==1)return;e.preventDefault();let t=e.touches[0];this.currentPan={x:t.clientX-this.startPan.x,y:t.clientY-this.startPan.y},this.updateTransform()}onTouchEnd(){this.isDragging=!1}zoom(e){let t=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),n=this.content.getBoundingClientRect(),o=n.width/2,r=n.height/2,i=t-this.scale;this.currentPan.x-=o*i,this.currentPan.y-=r*i,this.scale=t,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){let t=this.content.querySelector("svg").getBoundingClientRect(),n=t.width/this.scale,o=t.height/this.scale;this.scale=1,this.currentPan={x:(this.container.clientWidth-n)/2,y:(this.container.clientHeight-o)/2},this.updateTransform()}},T=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],y;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;y||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let t=y.default,n=new WeakMap;for(let r of e)n.set(r,r.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let c=n.get(s);c&&(s.innerHTML=c)}let r=T.reduce((s,c)=>(s[c]=window.getComputedStyle(document.documentElement).getPropertyValue(c),s),{}),i=document.documentElement.getAttribute("saved-theme")==="dark";t.initialize({startOnLoad:!1,securityLevel:"loose",theme:i?"dark":"base",themeVariables:{fontFamily:r["--codeFont"],primaryColor:r["--light"],primaryTextColor:r["--darkgray"],primaryBorderColor:r["--tertiary"],lineColor:r["--darkgray"],secondaryColor:r["--secondary"],tertiaryColor:r["--tertiary"],clusterBkg:r["--light"],edgeLabelBackground:r["--highlight"]}}),await t.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let r=0;r<e.length;r++){let v=function(){let g=l.querySelector("#mermaid-space"),h=l.querySelector(".mermaid-content");if(!h)return;f(h);let w=i.querySelector("svg").cloneNode(!0);h.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new m(g,h)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},i=e[r],s=i.parentElement,c=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(c),L=c.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),E(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript" data-persist="true"></script><script src="../../postscript.js" type="module" data-persist="true"></script></html>
