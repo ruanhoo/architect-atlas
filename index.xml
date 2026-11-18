@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+    <channel>
+      <title>Alan&#039;s Architect Atlas</title>
+      <link>https://ruanhoo.github.io/architect-atlas</link>
+      <description>Last 10 notes on Alan&#039;s Architect Atlas</description>
+      <generator>Quartz -- quartz.jzhao.xyz</generator>
+      <item>
+    <title>Action Plans — Overview</title>
+    <link>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Action-Plans/action-plans-overview</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Action-Plans/action-plans-overview</guid>
+    <description><![CDATA[ An action plan defines the tasks and items needed to complete a business process. ]]></description>
+    <pubDate>Wed, 18 Nov 2026 12:28:40 GMT</pubDate>
+  </item><item>
+    <title>Actionable Relationship Center (ARC)</title>
+    <link>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Actionable-Relationship-Center/actionable-relationship-center-overview</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Actionable-Relationship-Center/actionable-relationship-center-overview</guid>
+    <description><![CDATA[ ARC lets users view customer or constituent relationships in an easy-to-navigate, interactive graph (ARC overview). ]]></description>
+    <pubDate>Wed, 18 Nov 2026 12:28:40 GMT</pubDate>
+  </item><item>
+    <title>Hierarchical View (Public Sector)</title>
+    <link>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Actionable-Relationship-Center/hierarchical-view</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Actionable-Relationship-Center/hierarchical-view</guid>
+    <description><![CDATA[  Warning Hierarchical View is documented separately from ARC. ]]></description>
+    <pubDate>Wed, 18 Nov 2026 12:28:40 GMT</pubDate>
+  </item><item>
+    <title>Application Forms with Omniscript (Public Sector)</title>
+    <link>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Application-Form-Framework/application-forms-with-omniscript</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Application-Form-Framework/application-forms-with-omniscript</guid>
+    <description><![CDATA[ Public Sector constituents apply for licenses, permits, programs and services through dynamic forms on a public portal. ]]></description>
+    <pubDate>Wed, 18 Nov 2026 12:28:40 GMT</pubDate>
+  </item><item>
+    <title>Expression Sets</title>
+    <link>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Business-Rules-Engine/expression-sets</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Business-Rules-Engine/expression-sets</guid>
+    <description><![CDATA[ The calculation engine of BRE. An expression set is a sequence of steps run in order, built in Expression Set Builder. ]]></description>
+    <pubDate>Wed, 18 Nov 2026 12:28:40 GMT</pubDate>
+  </item><item>
+    <title>CDS — Limits and Public Sector Usage</title>
+    <link>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Compliant-Data-Sharing/compliant-data-sharing-considerations-and-public-sector</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Compliant-Data-Sharing/compliant-data-sharing-considerations-and-public-sector</guid>
+    <description><![CDATA[ Companion to compliant-data-sharing-overview. ]]></description>
+    <pubDate>Wed, 18 Nov 2026 12:28:40 GMT</pubDate>
+  </item><item>
+    <title>Compliant Data Sharing (CDS) — Overview</title>
+    <link>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Compliant-Data-Sharing/compliant-data-sharing-overview</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Compliant-Data-Sharing/compliant-data-sharing-overview</guid>
+    <description><![CDATA[ Lets admins and compliance managers configure advanced data sharing so they can control and monitor what data is shared with whom, without code (Compliant Data Sharing). ]]></description>
+    <pubDate>Wed, 18 Nov 2026 12:28:40 GMT</pubDate>
+  </item><item>
+    <title>Context Definitions, Tags and Mappings</title>
+    <link>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Context-Service/context-definitions-and-mappings</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Context-Service/context-definitions-and-mappings</guid>
+    <description><![CDATA[ Build order: create definition, define structure and attributes, generate tags, add a mapping, activate. Part of context-service-overview. ]]></description>
+    <pubDate>Wed, 18 Nov 2026 12:28:40 GMT</pubDate>
+  </item><item>
+    <title>Context Service — Overview</title>
+    <link>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Context-Service/context-service-overview</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Context-Service/context-service-overview</guid>
+    <description><![CDATA[ Context Service is a shared Industries layer between applications and procedures. ]]></description>
+    <pubDate>Wed, 18 Nov 2026 12:28:40 GMT</pubDate>
+  </item><item>
+    <title>Context Service with BRE Expression Sets</title>
+    <link>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Context-Service/context-service-with-expression-sets</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Context-Service/context-service-with-expression-sets</guid>
+    <description><![CDATA[ An expression set in business-rules-engine-overview can be associated with a context definition so its steps work on structured, mapped data instead of only flat input variables. ]]></description>
+    <pubDate>Wed, 18 Nov 2026 12:28:40 GMT</pubDate>
+  </item>
+    </channel>
+  </rss>
