@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"><head><title>BRE Use Case: Benefit Eligibility</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Alan's Architect Atlas"/><meta property="og:title" content="BRE Use Case: Benefit Eligibility"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="BRE Use Case: Benefit Eligibility"/><meta name="twitter:description" content="End-to-end walkthrough demonstrating decision matrix vs decision table, matrix types (standard vs grouped), expression set orchestration, versioning, and explainability."/><meta property="og:description" content="End-to-end walkthrough demonstrating decision matrix vs decision table, matrix types (standard vs grouped), expression set orchestration, versioning, and explainability."/><meta property="og:image:alt" content="End-to-end walkthrough demonstrating decision matrix vs decision table, matrix types (standard vs grouped), expression set orchestration, versioning, and explainability."/><meta property="og:image" content="https://ruanhoo.github.io/architect-atlas/static/og-image.png"/><meta property="og:image:url" content="https://ruanhoo.github.io/architect-atlas/static/og-image.png"/><meta name="twitter:image" content="https://ruanhoo.github.io/architect-atlas/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="ruanhoo.github.io/architect-atlas"/><meta property="og:url" content="https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Business-Rules-Engine/06-bre-use-case-benefit-eligibility"/><meta property="twitter:url" content="https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Business-Rules-Engine/06-bre-use-case-benefit-eligibility"/><link rel="icon" href="../../../static/icon.png"/><meta name="description" content="End-to-end walkthrough demonstrating decision matrix vs decision table, matrix types (standard vs grouped), expression set orchestration, versioning, and explainability."/><meta name="generator" content="Quartz"/><link href="../../../index.css" rel="stylesheet" type="text/css" data-persist="true"/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvYXJjaGl0ZWN0LWF0bGFzLXZhdWx0L2FyY2hpdGVjdC1hdGxhcy12YXVsdC9zaXRlL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBSUo7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTs7QUFFQTtFQUNFOztBQUdGO0VBQ0U7O0FBSUY7RUFDRTtFQUNBO0VBQ0EiLCJzb3VyY2VzQ29udGVudCI6WyIuZXhwYW5kLWJ1dHRvbiB7XG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgZGlzcGxheTogZmxleDtcbiAgZmxvYXQ6IHJpZ2h0O1xuICBwYWRkaW5nOiAwLjRyZW07XG4gIG1hcmdpbjogMC4zcmVtO1xuICByaWdodDogMDsgLy8gTk9URTogcmlnaHQgd2lsbCBiZSBzZXQgaW4gbWVybWFpZC5pbmxpbmUudHNcbiAgY29sb3I6IHZhcigtLWdyYXkpO1xuICBib3JkZXItY29sb3I6IHZhcigtLWRhcmspO1xuICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gIGJvcmRlcjogMXB4IHNvbGlkO1xuICBib3JkZXItcmFkaXVzOiA1cHg7XG4gIG9wYWNpdHk6IDA7XG4gIHRyYW5zaXRpb246IDAuMnM7XG5cbiAgJiA+IHN2ZyB7XG4gICAgZmlsbDogdmFyKC0tbGlnaHQpO1xuICAgIGZpbHRlcjogY29udHJhc3QoMC4zKTtcbiAgfVxuXG4gICY6aG92ZXIge1xuICAgIGN1cnNvcjogcG9pbnRlcjtcbiAgICBib3JkZXItY29sb3I6IHZhcigtLXNlY29uZGFyeSk7XG4gIH1cblxuICAmOmZvY3VzIHtcbiAgICBvdXRsaW5lOiAwO1xuICB9XG59XG5cbnByZSB7XG4gICY6aG92ZXIgPiAuZXhwYW5kLWJ1dHRvbiB7XG4gICAgb3BhY2l0eTogMTtcbiAgICB0cmFuc2l0aW9uOiAwLjJzO1xuICB9XG59XG5cbiNtZXJtYWlkLWNvbnRhaW5lciB7XG4gIHBvc2l0aW9uOiBmaXhlZDtcbiAgY29udGFpbjogbGF5b3V0O1xuICB6LWluZGV4OiA5OTk7XG4gIGxlZnQ6IDA7XG4gIHRvcDogMDtcbiAgd2lkdGg6IDEwMHZ3O1xuICBoZWlnaHQ6IDEwMHZoO1xuICBvdmVyZmxvdzogaGlkZGVuO1xuICBkaXNwbGF5OiBub25lO1xuICBiYWNrZHJvcC1maWx0ZXI6IGJsdXIoNHB4KTtcbiAgYmFja2dyb3VuZDogcmdiYSgwLCAwLCAwLCAwLjUpO1xuXG4gICYuYWN0aXZlIHtcbiAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XG4gIH1cblxuICAmID4gI21lcm1haWQtc3BhY2Uge1xuICAgIGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWxpZ2h0Z3JheSk7XG4gICAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tbGlnaHQpO1xuICAgIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgICBwb3NpdGlvbjogZml4ZWQ7XG4gICAgdG9wOiA1MCU7XG4gICAgbGVmdDogNTAlO1xuICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlKC01MCUsIC01MCUpO1xuICAgIGhlaWdodDogODB2aDtcbiAgICB3aWR0aDogODB2dztcbiAgICBvdmVyZmxvdzogaGlkZGVuO1xuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRlbnQge1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" data-persist="true"/><script src="../../../prescript.js" type="application/javascript" data-persist="true"></script><script type="application/javascript" data-persist="true">const fetchData = fetch("../../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://ruanhoo.github.io/architect-atlas/index.xml"/></head><body data-slug="Industry-Cloud/Common-Component/Business-Rules-Engine/06-bre-use-case-benefit-eligibility"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../../..">Alan's Architect Atlas</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Search</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Search for something" placeholder="Search for something"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Dark mode"><title>Dark mode</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Light mode"><title>Light mode</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Reader mode"><title>Reader mode</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>{if(a.isFolder!==b.isFolder)return a.isFolder?-1:1;if(a.isFolder){let order=[\&quot;data management\&quot;,\&quot;data model\&quot;,\&quot;ldv\&quot;,\&quot;data migration\&quot;,\&quot;security\&quot;,\&quot;permissions &amp; sharing\&quot;,\&quot;other security capabilities\&quot;,\&quot;identity &amp; access management\&quot;,\&quot;integration\&quot;,\&quot;system landscape\&quot;,\&quot;sf licensing\&quot;,\&quot;org strategy\&quot;,\&quot;document management strategy\&quot;,\&quot;other key elements\&quot;,\&quot;sf solutioning\&quot;,\&quot;choosing the right capability\&quot;,\&quot;appexchange (buy vs build)\&quot;,\&quot;experience cloud\&quot;,\&quot;deployment &amp; dev lifecycle\&quot;,\&quot;communication\&quot;],last=[\&quot;references\&quot;],r=[a,b].map(n=>{let k=String(n.displayName).trim().toLowerCase();if(last.includes(k))return 2e3;let i=order.indexOf(k);return i===-1?1e3:i}),d=r[0]-r[1];if(d!==0)return d}else{let na=/^(\\d+)-/.exec(a.slugSegment),nb=/^(\\d+)-/.exec(b.slugSegment);if(na&amp;&amp;!nb)return-1;if(!na&amp;&amp;nb)return 1;if(na&amp;&amp;nb&amp;&amp;Number(na[1])!==Number(nb[1]))return Number(na[1])-Number(nb[1])}return a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;})}&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-425"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Explorer</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-425" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div><div class="sidebar-resizer" role="separator" aria-orientation="vertical" aria-label="Resize sidebar (drag, or use arrow keys; double-click to reset)" tabindex="0"></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../../Industry-Cloud/">Industry Cloud</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../../Industry-Cloud/Common-Component/">Common Component</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../../Industry-Cloud/Common-Component/Business-Rules-Engine/">Business Rules Engine</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>BRE Use Case: Benefit Eligibility</a></div></nav><h1 class="article-title">BRE Use Case: Benefit Eligibility</h1><p show-comma="true" class="content-meta"><time datetime="2026-11-27T10:21:04.000Z">Nov 27, 2026</time><span>13 min read</span></p><ul class="tags"><li><a href="../../../tags/industry-cloud" class="internal tag-link">industry-cloud</a></li><li><a href="../../../tags/business-rules-engine" class="internal tag-link">business-rules-engine</a></li><li><a href="../../../tags/public-sector" class="internal tag-link">public-sector</a></li></ul></div></div><article class="popover-hint"><p>End-to-end walkthrough demonstrating <strong>decision matrix vs decision table</strong>, matrix types (standard vs grouped), expression set orchestration, versioning, and explainability. Includes setup steps with screenshot placeholders. Customer is fictional. Background: <a href="../../../Industry-Cloud/Common-Component/Business-Rules-Engine/01-business-rules-engine-overview" class="internal" target="_blank" data-slug="Industry-Cloud/Common-Component/Business-Rules-Engine/01-business-rules-engine-overview">01-business-rules-engine-overview</a>, <a href="../../../Industry-Cloud/Common-Component/Business-Rules-Engine/02-expression-sets" class="internal" target="_blank" data-slug="Industry-Cloud/Common-Component/Business-Rules-Engine/02-expression-sets">02-expression-sets</a>, <a href="../../../Industry-Cloud/Common-Component/Business-Rules-Engine/03-decision-matrices-and-decision-tables" class="internal" target="_blank" data-slug="Industry-Cloud/Common-Component/Business-Rules-Engine/03-decision-matrices-and-decision-tables">03-decision-matrices-and-decision-tables</a>, <a href="../../../Industry-Cloud/Common-Component/Business-Rules-Engine/04-decision-explainer" class="internal" target="_blank" data-slug="Industry-Cloud/Common-Component/Business-Rules-Engine/04-decision-explainer">04-decision-explainer</a>, <a href="../../../Industry-Cloud/Common-Component/Business-Rules-Engine/05-bre-integration-and-operations" class="internal" target="_blank" data-slug="Industry-Cloud/Common-Component/Business-Rules-Engine/05-bre-integration-and-operations">05-bre-integration-and-operations</a>.</p>
+<h2 id="context">Context<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#context" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Harbor County Housing</strong> administers a rent-assistance program:</p>
+<ul>
+<li>~120k applications/year; spike to ~40k in the first two weeks of the annual enrollment window</li>
+<li>Caseworkers use Salesforce (Public Sector Solution); applicants use an Experience Cloud portal with Omnistudio intake</li>
+<li><strong>Policy changes yearly</strong> (income thresholds, subsidy rates) and occasionally mid-year by emergency order</li>
+<li>Policy analysts (not developers) maintain the numbers</li>
+<li>Applicants and auditors must see <strong>why</strong> a determination was made</li>
+<li>Each county service office has caseload rules stored as <strong>records</strong> (office, postcode, program), maintained by operations via normal UI and data loads</li>
+</ul>
+<h2 id="requirements">Requirements<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#requirements" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Functional</strong></p>
+<ol>
+<li>Compute household eligibility from household size, gross income, and region</li>
+<li>Compute monthly subsidy: base rate (by size + region) + add-ons (dependents, disability, emergency uplift)</li>
+<li>Route each approved application to the correct service office and caseworker group</li>
+<li>Run the same rules in the portal (real time), caseworker Flow, and nightly over the whole open caseload</li>
+<li>Show readable explanations to applicants and auditors</li>
+</ol>
+<p><strong>Non-functional</strong></p>
+<ul>
+<li>Policy changes schedulable by effective date without deployment</li>
+<li>Rules maintained by analysts; no Apex for rule logic</li>
+<li>Portal determination in a single interactive call; nightly recalculation of up to ~120k applications</li>
+<li>Guest/community users can run determinations but not edit rules</li>
+</ul>
+<h2 id="why-decision-matrix-vs-decision-table">Why Decision Matrix vs Decision Table?<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#why-decision-matrix-vs-decision-table" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Aspect</th><th>Decision Matrix</th><th>Decision Table</th></tr></thead><tbody><tr><td><strong>Data source</strong></td><td>Rows/columns in the matrix itself</td><td>Records in a standard/custom object or custom metadata type</td></tr><tr><td><strong>Who owns it</strong></td><td>Policy analysts edit CSV files</td><td>Operations maintains records via normal UI or data loads</td></tr><tr><td><strong>Versioning</strong></td><td>Built-in: start/end date + rank; multiple versions active, highest rank wins</td><td>Activate/refresh; no built-in effective dating</td></tr><tr><td><strong>When source changes</strong></td><td>Upload new CSV or create new version</td><td>Must <strong>refresh</strong> the table (async operation)</td></tr><tr><td><strong>Duplicate data?</strong></td><td>Yes — matrix holds a copy of the numbers</td><td>No — table reads records in place</td></tr><tr><td><strong>Best for</strong></td><td>Small-to-medium grids of policy numbers that change on a schedule</td><td>Rules already stored as records; larger datasets</td></tr><tr><td><strong>Limits</strong></td><td>100 MB CSV; 200 input sets per lookup</td><td>100k rows; 10 outputs; needs CreatedDate + IsDeleted on source object</td></tr></tbody></table></div>
+<p><strong>This use case:</strong></p>
+<ul>
+<li><strong>Subsidy rates</strong> → decision matrix (analysts own, CSV edits, fiscal-year versions)</li>
+<li><strong>Service office routing</strong> → decision table (operations already maintains area records)</li>
+</ul>
+<h2 id="decision-matrix-setup-subsidy-rates-grouped-matrix">Decision Matrix Setup: Subsidy Rates (Grouped Matrix)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#decision-matrix-setup-subsidy-rates-grouped-matrix" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="why-grouped">Why Grouped?<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#why-grouped" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>A <strong>grouped decision matrix</strong> avoids repeating the region column in every row. The <strong>matrix key</strong> (region) becomes an input variable; only the matching version is considered for lookup.</p>
+<p><strong>Without grouping (standard matrix):</strong></p>
+<pre><code>HouseholdSize | Region  | IncomeCeiling | BaseSubsidy
+1             | North   | 25000         | 400
+2             | North   | 35000         | 650
+3             | North   | 45000         | 850
+1             | South   | 22000         | 380
+2             | South   | 32000         | 620
+...
+</code></pre>
+<p><strong>With grouping (grouped matrix, key = Region):</strong></p>
+<ul>
+<li>Version “North”: only North rows</li>
+<li>Version “South”: only South rows</li>
+</ul>
+<pre><code>Version: North
+HouseholdSize | IncomeCeiling | BaseSubsidy
+1             | 25000         | 400
+2             | 35000         | 650
+3             | 45000         | 850
+
+Version: South
+HouseholdSize | IncomeCeiling | BaseSubsidy
+1             | 22000         | 380
+2             | 32000         | 620
+...
+</code></pre>
+<h3 id="setup-steps">Setup Steps<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#setup-steps" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ol>
+<li><strong>App Launcher</strong> → <strong>Business Rules Engine</strong> → <strong>Lookup Tables</strong> → <strong>New</strong></li>
+<li>Select <strong>Decision Matrix</strong> → <strong>Next</strong></li>
+<li>Enter:
+<ul>
+<li>Name: <code>Subsidy_Rates_FY2027</code></li>
+<li>Type: <strong>Grouped</strong></li>
+<li>Matrix Key: <code>Region</code> (Text)</li>
+</ul>
+</li>
+<li><strong>Save</strong></li>
+<li>On the Related tab, click the first version</li>
+<li><strong>Add Column</strong>:
+<ul>
+<li>Input columns: <code>HouseholdSize</code> (Number), <code>IncomeCeiling</code> (Currency)</li>
+<li>Output columns: <code>BaseSubsidy</code> (Currency)</li>
+</ul>
+</li>
+<li><strong>Add Rows</strong> (manual or CSV upload):
+<ul>
+<li>For key value “North”: 3 rows (household sizes 1–3)</li>
+<li>For key value “South”: 3 rows</li>
+</ul>
+</li>
+<li>Set version start date, rank, and <strong>Activate</strong></li>
+</ol>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Screenshot placeholder </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>Matrix definition page showing Type = Grouped, Matrix Key = Region</li>
+<li>Version list showing two key values (North, South)</li>
+<li>Matrix tab showing columns and rows for one version</li>
+</ul>
+</div>
+</blockquote>
+<h3 id="adding-a-second-fiscal-year">Adding a Second Fiscal Year<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#adding-a-second-fiscal-year" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ol>
+<li>Create <strong>new version</strong> in the same matrix: <code>Subsidy_Rates_FY2028 V1</code></li>
+<li>Set start date = <code>2027-07-01</code>, rank = 2 (higher than FY2027’s rank 1)</li>
+<li>Upload new CSV or manually edit rows</li>
+<li><strong>Activate</strong></li>
+</ol>
+<p>Both versions are now active; when the expression set passes <code>effectiveDate = 2027-08-01</code>, rank 2 wins.</p>
+<h3 id="emergency-uplift-temporary-override">Emergency Uplift (Temporary Override)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#emergency-uplift-temporary-override" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ol>
+<li>Create <strong>another version</strong>: <code>Subsidy_Rates_FY2027_Emergency V1</code></li>
+<li>Increase <code>BaseSubsidy</code> by 10% in all rows</li>
+<li>Set:
+<ul>
+<li>Start date: <code>2027-01-15</code></li>
+<li>End date: <code>2027-03-31</code></li>
+<li>Rank: <code>3</code> (highest)</li>
+</ul>
+</li>
+<li><strong>Activate</strong></li>
+</ol>
+<p>From Jan 15 to Mar 31, rank 3 wins; after Mar 31, the original FY2027 version applies again.</p>
+<h2 id="decision-table-setup-service-office-routing">Decision Table Setup: Service Office Routing<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#decision-table-setup-service-office-routing" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="why-decision-table">Why Decision Table?<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#why-decision-table" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Operations already maintains <code>Service_Area__c</code> records (office, postcode, program). A decision table <strong>reads them in place</strong> — no duplicate data to sync.</p>
+<h3 id="object-preparation">Object Preparation<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#object-preparation" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Create custom object <code>Service_Area__c</code> (or use an existing one):</p>
+<ul>
+<li>Must have <code>CreatedDate</code> and <code>IsDeleted</code> fields (standard on custom objects)</li>
+<li>Fields:
+<ul>
+<li><code>Postcode__c</code> (Text)</li>
+<li><code>Program__c</code> (Picklist: Rent Assistance, Emergency Housing, …)</li>
+<li><code>Service_Office__c</code> (Text or Lookup to Account)</li>
+<li><code>Caseworker_Group__c</code> (Text or Lookup to Queue)</li>
+</ul>
+</li>
+</ul>
+<p>Load sample records:</p>
+<pre><code>Postcode | Program           | Service_Office | Caseworker_Group
+94102    | Rent Assistance   | SF Downtown    | Queue_SF_RA
+94102    | Emergency Housing | SF Downtown    | Queue_SF_Emerg
+94110    | Rent Assistance   | SF Mission     | Queue_SF_RA
+...
+</code></pre>
+<h3 id="setup-steps-1">Setup Steps<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#setup-steps-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ol>
+<li><strong>App Launcher</strong> → <strong>Business Rules Engine</strong> → <strong>Lookup Tables</strong> → <strong>New</strong></li>
+<li>Select <strong>Decision Table</strong> → <strong>Next</strong></li>
+<li>Enter:
+<ul>
+<li>Name: <code>Service_Office_Routing</code></li>
+<li>Type: <strong>Standard Decision Table</strong> (not Advanced)</li>
+<li>Source Object: <code>Service_Area__c</code></li>
+</ul>
+</li>
+<li><strong>Save</strong></li>
+<li>Click the table to configure:
+<ul>
+<li><strong>Input Fields</strong>: <code>Postcode__c</code> (Equals), <code>Program__c</code> (Equals)</li>
+<li><strong>Output Fields</strong>: <code>Service_Office__c</code>, <code>Caseworker_Group__c</code></li>
+<li><strong>Effective Logic</strong>: <code>1 AND 2</code> (both inputs must match)</li>
+</ul>
+</li>
+<li><strong>Activate</strong> (async; watch DecisionTableActionEvent or poll the status)</li>
+</ol>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Screenshot placeholder </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>Decision table definition: source object, input/output fields</li>
+<li>Activate button and status</li>
+<li>Sample source records in the Service_Area__c object</li>
+</ul>
+</div>
+</blockquote>
+<h3 id="when-source-records-change">When Source Records Change<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#when-source-records-change" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Operations adds a new postcode → must <strong>Refresh</strong> the table:</p>
+<ol>
+<li>Open the decision table</li>
+<li>Click <strong>Refresh</strong> (async operation)</li>
+<li>Or automate via Flow: on <code>Service_Area__c</code> after-insert/update trigger, call Decision Table Refresh action</li>
+</ol>
+<blockquote class="callout warning" data-callout="warning">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Warning</p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Changes made <strong>during</strong> activation or refresh may not be picked up. Run Refresh after all updates finish.</p>
+</div>
+</blockquote>
+<h3 id="standard-vs-advanced-decision-table">Standard vs Advanced Decision Table<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#standard-vs-advanced-decision-table" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Feature</th><th>Standard</th><th>Advanced</th></tr></thead><tbody><tr><td><strong>Grouping</strong></td><td>Group by up to 2 input fields (Equals)</td><td>Same</td></tr><tr><td><strong>Result filters</strong></td><td>Filter outputs after matching</td><td>Same</td></tr><tr><td><strong>Source filters</strong></td><td>Pre-filter source records</td><td>Same</td></tr><tr><td><strong>Input conditions</strong></td><td>Simple operators</td><td>More complex custom logic</td></tr><tr><td><strong>Best for</strong></td><td>Most lookups</td><td>Very complex multi-condition rules</td></tr></tbody></table></div>
+<p>This use case uses <strong>Standard</strong> (simpler setup, sufficient for postcode + program lookup).</p>
+<h2 id="expression-set-orchestration">Expression Set Orchestration<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#expression-set-orchestration" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>The expression set ties the matrix and table together, adds calculations, and applies business logic.</p>
+<h3 id="design">Design<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#design" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ol>
+<li><strong>Inputs</strong> (variables):
+<ul>
+<li><code>HouseholdSize</code> (Number)</li>
+<li><code>GrossIncome</code> (Currency)</li>
+<li><code>Region</code> (Text)</li>
+<li><code>EffectiveDate</code> (Date)</li>
+<li><code>Postcode</code> (Text)</li>
+<li><code>Program</code> (Text)</li>
+<li><code>HouseholdMembers</code> (List, via Context Definition if reading from records)</li>
+</ul>
+</li>
+<li><strong>Step 1: Lookup Table</strong> → <code>Subsidy_Rates_FY2027</code> decision matrix
+<ul>
+<li>Inputs: <code>HouseholdSize</code>, <code>Region</code>, <code>EffectiveDate</code></li>
+<li>Outputs: <code>IncomeCeiling</code>, <code>BaseSubsidy</code> (become local resources)</li>
+</ul>
+</li>
+<li><strong>Step 2: Conditional Group</strong>
+<ul>
+<li>Condition: <code>IF GrossIncome > IncomeCeiling</code></li>
+<li>True path: set <code>Eligibility = false</code>, <code>TotalSubsidy = 0</code>, stop</li>
+</ul>
+</li>
+<li><strong>Step 3: Branch</strong> (priority order for add-ons)
+<ul>
+<li>Path 1 (highest priority): Emergency order active → set <code>EmergencyUplift = 50</code></li>
+<li>Path 2: Disability in household → set <code>DisabilityAddon = 100</code></li>
+<li>Default path: no extra uplift</li>
+</ul>
+</li>
+<li><strong>Step 4: List Group + List Filter</strong>
+<ul>
+<li>Filter <code>HouseholdMembers</code> where <code>Age &lt; 18</code></li>
+<li>Count → <code>DependentCount</code></li>
+</ul>
+</li>
+<li><strong>Step 5: Aggregate</strong> (if looping over multiple members)
+<ul>
+<li><code>SUM</code> of per-dependent add-on: <code>DependentAddon = DependentCount * 25</code></li>
+</ul>
+</li>
+<li><strong>Step 6: Calculation</strong>
+<ul>
+<li><code>TotalSubsidy = BaseSubsidy + DisabilityAddon + DependentAddon + EmergencyUplift</code></li>
+</ul>
+</li>
+<li><strong>Step 7: Lookup Table</strong> → <code>Service_Office_Routing</code> decision table
+<ul>
+<li>Inputs: <code>Postcode</code>, <code>Program</code></li>
+<li>Outputs: <code>ServiceOffice</code>, <code>CaseworkerGroup</code></li>
+</ul>
+</li>
+<li><strong>Step 8: Subexpression</strong> (optional, for reusable logic)
+<ul>
+<li>E.g. proration for partial-month start: call <code>Prorate_Subsidy</code> subexpression</li>
+</ul>
+</li>
+<li><strong>Outputs</strong>: <code>Eligibility</code>, <code>TotalSubsidy</code>, <code>ServiceOffice</code>, <code>CaseworkerGroup</code>, <code>IncomeCeiling</code> (for explanation)</li>
+</ol>
+<h3 id="setup-steps-abbreviated">Setup Steps (abbreviated)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#setup-steps-abbreviated" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ol>
+<li><strong>Expression Sets</strong> → <strong>New</strong>
+<ul>
+<li>Name: <code>Benefit_Eligibility_Check</code></li>
+<li>Usage Type: Default (or select a Public Sector-specific type if available)</li>
+<li>Context Definition: (optional, if reading Household/Member records via Context Service)</li>
+</ul>
+</li>
+<li><strong>Resource Manager</strong>: add Variables (inputs/outputs), Constants</li>
+<li><strong>Canvas</strong>: add steps in order (Lookup Table, Conditional Group, Branch, Calculation, …)</li>
+<li><strong>Simulate</strong> with test values:
+<ul>
+<li>Scenario 1: eligible household → check subsidy calculation</li>
+<li>Scenario 2: income over ceiling → eligibility = false</li>
+<li>Scenario 3: emergency uplift period → higher subsidy</li>
+<li>Scenario 4: no matching decision table row → outputs stay at previous values (test!)</li>
+</ul>
+</li>
+<li><strong>Activate</strong> the expression set version</li>
+</ol>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Screenshot placeholder </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>Expression Set Builder canvas showing step sequence</li>
+<li>Resource Manager showing variables</li>
+<li>Simulation panel with test inputs and outputs</li>
+</ul>
+</div>
+</blockquote>
+<h2 id="invocation-patterns">Invocation Patterns<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#invocation-patterns" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Channel</th><th>Mechanism</th><th>Notes</th></tr></thead><tbody><tr><td>Portal (real-time)</td><td>Omnistudio Integration Procedure → <strong>Expression Set Action</strong></td><td>Single call; guest user needs Run Expression Sets permission</td></tr><tr><td>Caseworker Flow</td><td>Screen Flow → <strong>Invoke Expression Set</strong> action with Decision Explainer enabled</td><td>Shows explanation on the case page</td></tr><tr><td>Nightly recalculation (120k apps)</td><td>Option 1: <strong>Batch Management</strong> batch job definitions + Flow</td><td>Scales to millions in batches; not real-time</td></tr><tr><td></td><td>Option 2: <strong>Context Service</strong> + expression set in one call</td><td>Thousands of records, real-time results; needs context definition modeling</td></tr></tbody></table></div>
+<h3 id="flow-setup-caseworker-screen-flow">Flow Setup (Caseworker Screen Flow)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#flow-setup-caseworker-screen-flow" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ol>
+<li><strong>Screen</strong>: capture inputs (household size, income, region, postcode, program)</li>
+<li><strong>Action: Invoke Expression Set</strong>
+<ul>
+<li>Expression Set: <code>Benefit_Eligibility_Check</code></li>
+<li>Inputs: map screen variables → expression set inputs</li>
+<li>Enable Decision Explainer: <strong>checked</strong></li>
+</ul>
+</li>
+<li><strong>Decision</strong>: if <code>Eligibility = true</code>, show subsidy; else show reason</li>
+<li><strong>Screen</strong>: display results + Decision Explainer log</li>
+</ol>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Screenshot placeholder </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>Flow canvas showing Screen → Action → Decision → Screen</li>
+<li>Action configuration: expression set selection, input mapping, Decision Explainer toggle</li>
+</ul>
+</div>
+</blockquote>
+<h2 id="decision-explainer-setup">Decision Explainer Setup<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#decision-explainer-setup" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ol>
+<li><strong>Expression Set Builder</strong> → open <code>Benefit_Eligibility_Check V1</code></li>
+<li><strong>Create Message Templates</strong>:
+<ul>
+<li>Template 1 (success): “Eligible for <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">o</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.05764em;">lS</span><span class="mord mathnormal">u</span><span class="mord mathnormal">b</span><span class="mord mathnormal">s</span><span class="mord mathnormal">i</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span><span class="mord mathnormal">ba</span><span class="mord mathnormal">se</span><span class="mord mathnormal">d</span><span class="mord mathnormal">o</span><span class="mord mathnormal">nh</span><span class="mord mathnormal">o</span><span class="mord mathnormal">u</span><span class="mord mathnormal">se</span><span class="mord mathnormal">h</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">d</span><span class="mord mathnormal">s</span><span class="mord mathnormal">i</span><span class="mord mathnormal">ze</span></span></span></span>{HouseholdSize} and income below ceiling ${IncomeCeiling}.”</li>
+<li>Template 2 (failure): “Not eligible: income <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="mord mathnormal">ross</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal">n</span><span class="mord mathnormal">co</span><span class="mord mathnormal">m</span><span class="mord mathnormal">e</span></span><span class="mord mathnormal">e</span><span class="mord mathnormal">x</span><span class="mord mathnormal">cee</span><span class="mord mathnormal">d</span><span class="mord mathnormal">sce</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">in</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span></span></span></span>{IncomeCeiling} for household size ${HouseholdSize}.”</li>
+</ul>
+</li>
+<li><strong>Create Expression Set Message Tokens</strong>: map step outputs to template placeholders</li>
+<li><strong>Assign templates to steps</strong>:
+<ul>
+<li>Conditional Group (income check) → Template 2 if condition is true</li>
+<li>Calculation (total subsidy) → Template 1</li>
+</ul>
+</li>
+<li><strong>Activate</strong> the version</li>
+<li><strong>Run from Flow</strong> → view <strong>Decision Explainer Log History</strong> on the case record</li>
+</ol>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Screenshot placeholder </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li>Message template editor</li>
+<li>Expression Set Builder with template assignments on steps</li>
+<li>Decision Explainer Log History showing run details</li>
+</ul>
+</div>
+</blockquote>
+<h2 id="versioning-in-action">Versioning in Action<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#versioning-in-action" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Scenario</th><th>Version Selection</th><th>Notes</th></tr></thead><tbody><tr><td>Application filed 2026-12-01, processed 2026-12-05</td><td>FY2027 (rank 1)</td><td>No overlap yet</td></tr><tr><td>Application filed 2027-01-20, processed 2027-01-25</td><td>FY2027 Emergency (rank 3)</td><td>Emergency version active, highest rank wins</td></tr><tr><td>Application filed 2027-01-20, processed 2027-05-01</td><td>FY2027 (rank 1)</td><td>Emergency version ended 2027-03-31, so rank 1 applies</td></tr><tr><td>Application filed 2027-03-01, processed 2027-08-01</td><td>FY2027 (rank 1)</td><td>Caller passes <code>EffectiveDate = 2027-03-01</code>; rank 2 (FY2028) not yet active on that date</td></tr><tr><td>Application filed 2027-08-01, processed 2027-08-05</td><td>FY2028 (rank 2)</td><td>FY2028 start date passed, rank 2 wins</td></tr></tbody></table></div>
+<p><strong>Key:</strong> Always pass the application’s <strong>effective date</strong> to the expression set/matrix so late processing uses the right policy.</p>
+<h2 id="trade-offs-considered">Trade-offs Considered<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#trade-offs-considered" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Option</th><th>Pros</th><th>Cons</th><th>When to use</th></tr></thead><tbody><tr><td><strong>Grouped matrix</strong> for rates</td><td>Avoids repeating region column; analysts edit CSV; built-in versioning with dates + rank</td><td>Data lives in the matrix (a second copy); 100 MB CSV limit; 200 input sets per lookup</td><td>Small-to-medium grids where one input (the key) groups many rows</td></tr><tr><td><strong>Standard matrix</strong> for rates</td><td>Simpler setup (no key/grouping)</td><td>Region column repeated in every row; harder to maintain</td><td>Small grids where grouping doesn’t save much</td></tr><tr><td><strong>Decision table</strong> for routing</td><td>Reads existing records, no duplicate data; operations owns</td><td>Needs activation and refresh; source object must have CreatedDate + IsDeleted; expression set reads only first result from object-based tables</td><td>Rules already stored as records or custom metadata</td></tr><tr><td><strong>Hard-code in Apex / Flow decisions</strong></td><td>Familiar to developers</td><td>Policy change means deployment; opaque to auditors; no explainer</td><td>Trivial, stable logic only</td></tr><tr><td><strong>Custom metadata + formulas</strong></td><td>Deployable, simple</td><td>No effective-dated versioning, no explainer, awkward for multi-input lookups</td><td>Few static values</td></tr><tr><td><strong>Context Service for bulk</strong></td><td>Single large real-time call, fast data access</td><td>Needs context definition modeling; more complex setup</td><td>Thousands of records, immediate results</td></tr><tr><td><strong>Batch Management for bulk</strong></td><td>Scales to millions in batches; simpler than Context Service</td><td>Not real time; nightly or scheduled only</td><td>Nightly recalculation, historical runs</td></tr></tbody></table></div>
+<blockquote class="callout tip" data-callout="tip">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Rule of thumb </p></div>
+                  
+                </div>
+<div class="callout-content">
+<ul>
+<li><strong>Numbers analysts own</strong> → decision matrix (grouped if one input acts as a natural key)</li>
+<li><strong>Rules that already live as records</strong> → decision table</li>
+<li><strong>Logic that ties lookups together</strong> → expression set</li>
+<li><strong>Readable explanations</strong> → Decision Explainer</li>
+</ul>
+</div>
+</blockquote>
+<h2 id="examiner-questions--answers">Examiner Questions &amp; Answers<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#examiner-questions--answers" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Why a decision matrix for rates and a decision table for routing?</strong>
+Rates are a small grid owned by analysts who edit CSVs and need dated versions. Routing rules are already records maintained by operations; a decision table reads them in place, so there’s no duplicate to sync. Trade-off: the table must be refreshed after source changes.</p>
+<p><strong>When would you use a standard matrix instead of a grouped matrix?</strong>
+If the “key” column (region) doesn’t group many rows, or if you have multiple keys (region + year), grouping adds complexity without much benefit. Grouped matrices shine when one input naturally partitions the data into several versions.</p>
+<p><strong>How do you handle a mid-year emergency uplift?</strong>
+Add a new version with a higher rank and an end date. When versions overlap, the highest rank wins; after the end date the prior version applies again. No deployment.</p>
+<p><strong>An application filed in March is processed in June after a policy change. Which rules apply?</strong>
+Pass the application’s effective date to the lookups so the version active on that date is selected. Without an effective date the default is today.</p>
+<p><strong>What if the decision table has no matching row?</strong>
+Variables keep their previous values and the step shows as executed. Initialize defaults deliberately and test the no-match path.</p>
+<p><strong>What happens to null outputs from a lookup?</strong>
+Depends on “Initialize resources to default values” (expression set setting): on, a user default (or 0) replaces null; off, null is preserved and you handle it with IsNull / IsNotNull.</p>
+<p><strong>The table returns several offices for one postcode. Which one is used?</strong>
+An expression set reading an object-based decision table takes only the <strong>first</strong> result, so design the table to return one row (or make the rule unambiguous with more input fields) rather than relying on ordering.</p>
+<p><strong>How do you run 120k determinations overnight?</strong>
+Batch Management batch job definitions invoked from Flow, keeping batch size within guardrails (watch hourly limits: 5M expression set runs, 400k decision matrix invocations, 2M standard decision table invocations); or Context Service for large single calls where real-time results matter.</p>
+<p><strong>How do you explain a denial to an applicant?</strong>
+Enable Decision Explainer on the expression set, define message templates and expression set message tokens, and show the explanation in the portal or case view. Auditors can compare runs.</p>
+<p><strong>Where could this design break?</strong></p>
+<ul>
+<li>Subexpression depth is limited to 2 levels.</li>
+<li>A version can have at most 200 steps by default and 50 business elements (extensible).</li>
+<li>Guest users calling rules need explicit Run Expression Sets / Run Decision Matrices permissions.</li>
+<li>Decision matrices need new versions for every policy change; keep ownership clear.</li>
+<li>Decision tables need manual or automated refresh after source data changes.</li>
+</ul>
+<h2 id="build-exercise-to-validate-in-a-scratch-org">Build Exercise (to validate in a scratch org)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#build-exercise-to-validate-in-a-scratch-org" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ol>
+<li><strong>Create grouped decision matrix</strong> (key = region) with household size → ceiling, base subsidy; two versions with different dates and ranks. Upload CSV or add rows manually.</li>
+<li><strong>Create decision table</strong> on a <code>Service_Area__c</code> custom object (postcode, program → office, group); activate, then add a row and refresh. Watch DecisionTableActionEvent.</li>
+<li><strong>Create expression set</strong> with Lookup Table ×2, Conditional Group, Branch, List Group + Aggregate, Calculation; simulate edge cases (no table match, null income, overlapping versions, effective date in the past).</li>
+<li><strong>Call from a Flow</strong> and via REST; compare results.</li>
+<li><strong>Add Decision Explainer</strong> templates and view the run history.</li>
+<li><strong>Test versioning</strong>: create an emergency uplift version with higher rank and end date; verify it wins during the period and reverts after.</li>
+<li><strong>Test null handling</strong>: toggle “Initialize resources to default values” and pass null income; verify behavior.</li>
+<li><strong>Test decision table refresh</strong>: add a Service_Area__c record, run the expression set (should not see the new office), refresh the table, run again (should see it).</li>
+</ol>
+<blockquote class="callout note" data-callout="note">
+<div class="callout-title">
+                  <div class="callout-icon"></div>
+                  <div class="callout-title-inner"><p>Note</p></div>
+                  
+                </div>
+<div class="callout-content">
+<p>Not yet org-validated. Items flagged above (expression set version selection with past effective date, decision table first-result behavior, null handling) are the ones to test first.</p>
+</div>
+</blockquote>
+<h2 id="related">Related<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#related" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><a href="../../../Industry-Cloud/Common-Component/Business-Rules-Engine/01-business-rules-engine-overview" class="internal" target="_blank" data-slug="Industry-Cloud/Common-Component/Business-Rules-Engine/01-business-rules-engine-overview">01-business-rules-engine-overview</a> — components and limits</li>
+<li><a href="../../../Industry-Cloud/Common-Component/Business-Rules-Engine/02-expression-sets" class="internal" target="_blank" data-slug="Industry-Cloud/Common-Component/Business-Rules-Engine/02-expression-sets">02-expression-sets</a> — step elements, versioning, null handling</li>
+<li><a href="../../../Industry-Cloud/Common-Component/Business-Rules-Engine/03-decision-matrices-and-decision-tables" class="internal" target="_blank" data-slug="Industry-Cloud/Common-Component/Business-Rules-Engine/03-decision-matrices-and-decision-tables">03-decision-matrices-and-decision-tables</a> — comparison table</li>
+<li><a href="../../../Industry-Cloud/Common-Component/Business-Rules-Engine/04-decision-explainer" class="internal" target="_blank" data-slug="Industry-Cloud/Common-Component/Business-Rules-Engine/04-decision-explainer">04-decision-explainer</a> — message templates and tokens</li>
+<li><a href="../../../Industry-Cloud/Common-Component/Business-Rules-Engine/05-bre-integration-and-operations" class="internal" target="_blank" data-slug="Industry-Cloud/Common-Component/Business-Rules-Engine/05-bre-integration-and-operations">05-bre-integration-and-operations</a> — calling patterns, bulk execution, migration</li>
+</ul>
+<h2 id="references">References<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#references" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li>Salesforce Help: <a href="https://help.salesforce.com/s/articleView?id=ind.bre_hc_prior_auth.htm" class="external" target="_blank">How to Use Business Rules Engine to Preapprove Health Cloud Care Requests<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> — similar end-to-end walkthrough with Context Service</li>
+<li>Salesforce Help: <a href="https://help.salesforce.com/s/articleView?id=ind.decision_matrices.htm" class="external" target="_blank">Decision Matrices<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>, <a href="https://help.salesforce.com/s/articleView?id=ind.decision_tables.htm" class="external" target="_blank">Decision Tables<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>, <a href="https://help.salesforce.com/s/articleView?id=ind.expression_sets.htm" class="external" target="_blank">Expression Sets<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+</ul></article><hr/><div class="page-footer"><div class="giscus" data-repo="ruanhoo/architect-atlas" data-repo-id="R_kgDOVmzApA" data-category="Announcements" data-category-id="DIC_kwDOVmzApM4DMK9z" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-input-position="top" data-light-theme="light" data-dark-theme="dark" data-theme-url="https://ruanhoo.github.io/architect-atlas/static/giscus" data-lang="en"></div></div></div><div class="right sidebar"><div class="graph"><h3>Graph View</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-182" aria-expanded="true"><h3>Table of Contents</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#context" data-for="context">Context</a></li><li class="depth-0"><a href="#requirements" data-for="requirements">Requirements</a></li><li class="depth-0"><a href="#why-decision-matrix-vs-decision-table" data-for="why-decision-matrix-vs-decision-table">Why Decision Matrix vs Decision Table?</a></li><li class="depth-0"><a href="#decision-matrix-setup-subsidy-rates-grouped-matrix" data-for="decision-matrix-setup-subsidy-rates-grouped-matrix">Decision Matrix Setup: Subsidy Rates (Grouped Matrix)</a></li><li class="depth-1"><a href="#why-grouped" data-for="why-grouped">Why Grouped?</a></li><li class="depth-1"><a href="#setup-steps" data-for="setup-steps">Setup Steps</a></li><li class="depth-1"><a href="#adding-a-second-fiscal-year" data-for="adding-a-second-fiscal-year">Adding a Second Fiscal Year</a></li><li class="depth-1"><a href="#emergency-uplift-temporary-override" data-for="emergency-uplift-temporary-override">Emergency Uplift (Temporary Override)</a></li><li class="depth-0"><a href="#decision-table-setup-service-office-routing" data-for="decision-table-setup-service-office-routing">Decision Table Setup: Service Office Routing</a></li><li class="depth-1"><a href="#why-decision-table" data-for="why-decision-table">Why Decision Table?</a></li><li class="depth-1"><a href="#object-preparation" data-for="object-preparation">Object Preparation</a></li><li class="depth-1"><a href="#setup-steps-1" data-for="setup-steps-1">Setup Steps</a></li><li class="depth-1"><a href="#when-source-records-change" data-for="when-source-records-change">When Source Records Change</a></li><li class="depth-1"><a href="#standard-vs-advanced-decision-table" data-for="standard-vs-advanced-decision-table">Standard vs Advanced Decision Table</a></li><li class="depth-0"><a href="#expression-set-orchestration" data-for="expression-set-orchestration">Expression Set Orchestration</a></li><li class="depth-1"><a href="#design" data-for="design">Design</a></li><li class="depth-1"><a href="#setup-steps-abbreviated" data-for="setup-steps-abbreviated">Setup Steps (abbreviated)</a></li><li class="depth-0"><a href="#invocation-patterns" data-for="invocation-patterns">Invocation Patterns</a></li><li class="depth-1"><a href="#flow-setup-caseworker-screen-flow" data-for="flow-setup-caseworker-screen-flow">Flow Setup (Caseworker Screen Flow)</a></li><li class="depth-0"><a href="#decision-explainer-setup" data-for="decision-explainer-setup">Decision Explainer Setup</a></li><li class="depth-0"><a href="#versioning-in-action" data-for="versioning-in-action">Versioning in Action</a></li><li class="depth-0"><a href="#trade-offs-considered" data-for="trade-offs-considered">Trade-offs Considered</a></li><li class="depth-0"><a href="#examiner-questions--answers" data-for="examiner-questions--answers">Examiner Questions &amp; Answers</a></li><li class="depth-0"><a href="#build-exercise-to-validate-in-a-scratch-org" data-for="build-exercise-to-validate-in-a-scratch-org">Build Exercise (to validate in a scratch org)</a></li><li class="depth-0"><a href="#related" data-for="related">Related</a></li><li class="depth-0"><a href="#references" data-for="references">References</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Backlinks</h3><ul id="list-2" class="overflow"><li><a href="../../../Industry-Cloud/Common-Component/Business-Rules-Engine/02-expression-sets" class="internal">Expression Sets</a></li><li><a href="../../../Industry-Cloud/Common-Component/Business-Rules-Engine/04-decision-explainer" class="internal">Decision Explainer</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript" data-persist="true">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module" data-persist="true">function E(a,e){if(!a)return;function t(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function n(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}a?.addEventListener("click",t),window.addCleanup(()=>a?.removeEventListener("click",t)),document.addEventListener("keydown",n),window.addCleanup(()=>document.removeEventListener("keydown",n))}function f(a){for(;a.firstChild;)a.removeChild(a.firstChild)}var m=class{constructor(e,t){this.container=e;this.content=t;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),t=this.onMouseMove.bind(this),n=this.onMouseUp.bind(this),o=this.onTouchStart.bind(this),r=this.onTouchMove.bind(this),i=this.onTouchEnd.bind(this),s=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",t),document.addEventListener("mouseup",n),this.container.addEventListener("touchstart",o,{passive:!1}),document.addEventListener("touchmove",r,{passive:!1}),document.addEventListener("touchend",i),window.addEventListener("resize",s),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",t),()=>document.removeEventListener("mouseup",n),()=>this.container.removeEventListener("touchstart",o),()=>document.removeEventListener("touchmove",r),()=>document.removeEventListener("touchend",i),()=>window.removeEventListener("resize",s))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let t=this.createButton("+",()=>this.zoom(.1)),n=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(n),e.appendChild(o),e.appendChild(t),this.container.appendChild(e)}createButton(e,t){let n=document.createElement("button");return n.textContent=e,n.className="mermaid-control-button",n.addEventListener("click",t),window.addCleanup(()=>n.removeEventListener("click",t)),n}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}onTouchStart(e){if(e.touches.length!==1)return;this.isDragging=!0;let t=e.touches[0];this.startPan={x:t.clientX-this.currentPan.x,y:t.clientY-this.currentPan.y}}onTouchMove(e){if(!this.isDragging||e.touches.length!==1)return;e.preventDefault();let t=e.touches[0];this.currentPan={x:t.clientX-this.startPan.x,y:t.clientY-this.startPan.y},this.updateTransform()}onTouchEnd(){this.isDragging=!1}zoom(e){let t=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),n=this.content.getBoundingClientRect(),o=n.width/2,r=n.height/2,i=t-this.scale;this.currentPan.x-=o*i,this.currentPan.y-=r*i,this.scale=t,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){let t=this.content.querySelector("svg").getBoundingClientRect(),n=t.width/this.scale,o=t.height/this.scale;this.scale=1,this.currentPan={x:(this.container.clientWidth-n)/2,y:(this.container.clientHeight-o)/2},this.updateTransform()}},T=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],y;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;y||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let t=y.default,n=new WeakMap;for(let r of e)n.set(r,r.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let c=n.get(s);c&&(s.innerHTML=c)}let r=T.reduce((s,c)=>(s[c]=window.getComputedStyle(document.documentElement).getPropertyValue(c),s),{}),i=document.documentElement.getAttribute("saved-theme")==="dark";t.initialize({startOnLoad:!1,securityLevel:"loose",theme:i?"dark":"base",themeVariables:{fontFamily:r["--codeFont"],primaryColor:r["--light"],primaryTextColor:r["--darkgray"],primaryBorderColor:r["--tertiary"],lineColor:r["--darkgray"],secondaryColor:r["--secondary"],tertiaryColor:r["--tertiary"],clusterBkg:r["--light"],edgeLabelBackground:r["--highlight"]}}),await t.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let r=0;r<e.length;r++){let v=function(){let g=l.querySelector("#mermaid-space"),h=l.querySelector(".mermaid-content");if(!h)return;f(h);let w=i.querySelector("svg").cloneNode(!0);h.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new m(g,h)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},i=e[r],s=i.parentElement,c=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(c),L=c.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),E(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript" data-persist="true"></script><script src="../../../postscript.js" type="module" data-persist="true"></script></html>

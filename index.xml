@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+    <channel>
+      <title>Alan&#039;s Architect Atlas</title>
+      <link>https://ruanhoo.github.io/architect-atlas</link>
+      <description>Last 10 notes on Alan&#039;s Architect Atlas</description>
+      <generator>Quartz -- quartz.jzhao.xyz</generator>
+      <item>
+    <title>Hands-On: Student Scholarship Calculator</title>
+    <link>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Business-Rules-Engine/02a-expression-set-hands-on-scholarship</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Business-Rules-Engine/02a-expression-set-hands-on-scholarship</guid>
+    <description><![CDATA[ A step-by-step build of an expression set from scratch. For the concepts (resources, step elements, versioning), see 02-expression-sets. ]]></description>
+    <pubDate>Sat, 28 Nov 2026 12:46:28 GMT</pubDate>
+  </item><item>
+    <title>Expression Sets</title>
+    <link>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Business-Rules-Engine/02-expression-sets</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Business-Rules-Engine/02-expression-sets</guid>
+    <description><![CDATA[ The calculation engine of BRE. An expression set is a sequence of steps run in order, built in Expression Set Builder. ]]></description>
+    <pubDate>Sat, 28 Nov 2026 12:43:29 GMT</pubDate>
+  </item><item>
+    <title>Decision Explainer</title>
+    <link>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Business-Rules-Engine/04-decision-explainer</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Business-Rules-Engine/04-decision-explainer</guid>
+    <description><![CDATA[ A service that records and surfaces why a business rule produced a specific result. Part of 01-business-rules-engine-overview. ]]></description>
+    <pubDate>Sat, 28 Nov 2026 02:02:56 GMT</pubDate>
+  </item><item>
+    <title>Business Rules Engine (BRE) — Overview</title>
+    <link>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Business-Rules-Engine/01-business-rules-engine-overview</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Business-Rules-Engine/01-business-rules-engine-overview</guid>
+    <description><![CDATA[ Business Rules Engine is a shared Industries component (not specific to one cloud) for building eligibility, qualification, pricing and calculation logic outside of code. ]]></description>
+    <pubDate>Sat, 28 Nov 2026 01:48:12 GMT</pubDate>
+  </item><item>
+    <title>Decision Matrices and Decision Tables</title>
+    <link>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Business-Rules-Engine/03-decision-matrices-and-decision-tables</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Business-Rules-Engine/03-decision-matrices-and-decision-tables</guid>
+    <description><![CDATA[ Together these are BRE lookup tables, usable as a 02-expression-sets Lookup Table step, directly in Flow, or via API. ]]></description>
+    <pubDate>Fri, 27 Nov 2026 10:21:24 GMT</pubDate>
+  </item><item>
+    <title>BRE Integration and Operations</title>
+    <link>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Business-Rules-Engine/05-bre-integration-and-operations</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Business-Rules-Engine/05-bre-integration-and-operations</guid>
+    <description><![CDATA[ How to call BRE, run it at scale, and migrate to it. Part of 01-business-rules-engine-overview. ]]></description>
+    <pubDate>Fri, 27 Nov 2026 10:21:24 GMT</pubDate>
+  </item><item>
+    <title>BRE Use Case: Benefit Eligibility</title>
+    <link>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Business-Rules-Engine/06-bre-use-case-benefit-eligibility</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Business-Rules-Engine/06-bre-use-case-benefit-eligibility</guid>
+    <description><![CDATA[ End-to-end walkthrough demonstrating decision matrix vs decision table, matrix types (standard vs grouped), expression set orchestration, versioning, and explainability. ]]></description>
+    <pubDate>Fri, 27 Nov 2026 10:21:04 GMT</pubDate>
+  </item><item>
+    <title>Standard Object Oddities</title>
+    <link>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Data-Management/Data-Model/standard-object-oddities</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/CTA-Notes/Data-Management/Data-Model/standard-object-oddities</guid>
+    <description><![CDATA[  See also Ownership/queue support by object, relationship limits, and delete behaviour: data-model-constraints-and-limits. ]]></description>
+    <pubDate>Tue, 24 Nov 2026 13:24:05 GMT</pubDate>
+  </item><item>
+    <title>Action Plans — Overview</title>
+    <link>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Action-Plans/action-plans-overview</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Action-Plans/action-plans-overview</guid>
+    <description><![CDATA[ An action plan defines the tasks and items needed to complete a business process. ]]></description>
+    <pubDate>Wed, 18 Nov 2026 12:28:40 GMT</pubDate>
+  </item><item>
+    <title>Actionable Relationship Center (ARC)</title>
+    <link>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Actionable-Relationship-Center/actionable-relationship-center-overview</link>
+    <guid>https://ruanhoo.github.io/architect-atlas/Industry-Cloud/Common-Component/Actionable-Relationship-Center/actionable-relationship-center-overview</guid>
+    <description><![CDATA[ ARC lets users view customer or constituent relationships in an easy-to-navigate, interactive graph (ARC overview). ]]></description>
+    <pubDate>Wed, 18 Nov 2026 12:28:40 GMT</pubDate>
+  </item>
+    </channel>
+  </rss>
